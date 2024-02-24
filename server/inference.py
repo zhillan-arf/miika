@@ -3,7 +3,12 @@
 # YOU ALSO NEED TO SET UP THE CUDA FOR THE GPU FIRST
 # DO NOT RUN THIS PROGRAM IF YOU DON'T
 
-# Inference to the LLM
+# LLM Inference Microservice
+
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+PORT = 3002
 
 import os
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
@@ -32,17 +37,13 @@ model = AutoModelForCausalLM.from_pretrained(
     attn_implementation="flash_attention_2"
 )
 
-prompts = [
-    """<|im_start|>system
-You are Mistley, a cheerful couseling agent tasked to listen to people's worries and comfort them.<|im_end|>
-<|im_start|>user
-Hello... who is this?<|im_end|>
-<|im_start|>assistant""",
-    ]
+@app.route("/", methods=["POST"])
+def infer():
+    input = request.data.decode("utf-8")
+    if not input:
+        return jsonify({"error": "No input provided"}), 400
 
-for chat in prompts:
-    print(chat)
-    input_ids = tokenizer(chat, return_tensors="pt").input_ids.to("cuda")
+    input_ids = tokenizer(input, return_tensors="pt").input_ids.to("cuda")
     attn_mask = torch.ones_like(input_ids)
     generated_ids = model.generate(
         input_ids, 
@@ -57,4 +58,9 @@ for chat in prompts:
                                 skip_special_tokens=True, 
                                 clean_up_tokenization_space=True
     )
-    print(f"Response: {response}")
+
+    return jsonify({"response": response})
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=PORT)
