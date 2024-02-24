@@ -1,0 +1,22 @@
+{
+  "name": "miika",
+  "version": "1.0.0",
+  "description": "The place to tell your worries.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhillan-arf/miika.git"
+  },
+  "author": "miiki_mikki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhillan-arf/miika/issues"
+  },
+  "homepage": "https://github.com/zhillan-arf/miika#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
