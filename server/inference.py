@@ -12,15 +12,14 @@ PORT = 3002
 
 import os
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
+this_path = os.path.dirname(os.path.realpath(__file__))
+models_cache = os.path.join(this_path, 'models')  # Name of directory
 
 import torch
 torch.cuda.empty_cache()
 
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
-
 hf_model_id = "NousResearch/Nous-Hermes-2-Mistral-7B-DPO"
-models_cache = "./models"
-
 tokenizer = AutoTokenizer.from_pretrained(hf_model_id, cache_dir=models_cache)
 
 bits_and_bytes_config = BitsAndBytesConfig(
