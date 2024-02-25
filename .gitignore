@@ -1,4 +1,4 @@
 menv/
-server/models/.locks
-server/models/models--NousResearch--Nous-Hermes-2-Mistral-7B-DPO
+server/llm_models/.locks
+server/llm_models/models--NousResearch--Nous-Hermes-2-Mistral-7B-DPO
 node_modules/

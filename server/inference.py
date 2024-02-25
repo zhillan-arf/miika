@@ -8,12 +8,11 @@
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-PORT = 3002
 
 import os
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 this_path = os.path.dirname(os.path.realpath(__file__))
-models_cache = os.path.join(this_path, 'models')  # Name of directory
+models_cache = os.path.join(this_path, 'llm_models')  # Name of directory
 
 import torch
 torch.cuda.empty_cache()
@@ -60,6 +59,6 @@ def infer():
 
     return jsonify({"response": response})
 
-
+PORT = 3002
 if __name__ == '__main__':
     app.run(debug=True, port=PORT)
