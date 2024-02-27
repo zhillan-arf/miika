@@ -59,6 +59,6 @@ def infer():
 
     return jsonify({"response": response})
 
-PORT = 3002
+PORT = 3001
 if __name__ == '__main__':
     app.run(debug=True, port=PORT)

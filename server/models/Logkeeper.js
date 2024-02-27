@@ -1,11 +1,13 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const Logkeeper = mongoose.model('Logkeepers', new mongoose.Schema({
+const logkeeperSchema = new Schema({
     name : String,
     gender : Boolean,
     profpic : Buffer,
     profile : String,
     chat_examples : String
-}))
+});
 
-module.exports = mongoose.model('Logkeeper', logkeeperSchema);
+const Logkeeper = model('Logkeepers', logkeeperSchema)
+
+export default Logkeeper;

@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const Chat = mongoose.model('Chats', new mongoose.Schema({
-    user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    },
-    timestamp : Date,
-    last_access: Date,
-    vibe: String,
-    role: String,
-    chat: String,
-    mentioned_entities: [String]
-}))
+const chatSchema = new Schema({
+  user_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  vibe: String,
+  role: String,
+  chat: String,
+  mentioned_entities: [String]
+}, { timestamps: true });
 
-module.exports = mongoose.model('Chat', chatSchema);
+const Chat = model('Chats', chatSchema);
+
+export default Chat;

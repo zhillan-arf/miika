@@ -1,4 +1,5 @@
 menv/
-server/llm_models/.locks
-server/llm_models/models--NousResearch--Nous-Hermes-2-Mistral-7B-DPO
+microservice/llm_models/.locks
+microservice/llm_models/models--NousResearch--Nous-Hermes-2-Mistral-7B-DPO
 node_modules/
+.env

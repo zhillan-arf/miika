@@ -1,17 +1,25 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const User = mongoose.model('Users', new mongoose.Schema({
-    username : String,
-    hash_password : String,
-    name : String,
-    profpic : Buffer,
-    gender : Boolean,
-    profile : String,
-    personality : String,
-    logkeeper : {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Logkeeper'
-    }
-}));
+const userSchema = new Schema({
+  email: {
+    type: String,
+    require: true
+  },
+  hash: {
+    type: String,
+    require: true
+  },
+  name: String,
+  profpic: Buffer,
+  gender: Boolean,
+  profile: String,
+  personality: String,
+  logkeeper: {
+    type: Schema.Types.ObjectId,
+    ref: 'Logkeeper'
+  }
+});
 
-module.exports = mongoose.model('User', userSchema);
+const User = model('User', userSchema, 'users');
+
+export default User;
