@@ -6,7 +6,7 @@ const src = '/assets/videos/aigis.mp4'
 const Aigis = () => {
   return (
     <div>
-      <video className='aigis-video' autoPlay muted>
+      <video className='aigis-video' autoPlay muted loop>
         <source src={src} type='video/mp4'/>
       </video>
     </div>

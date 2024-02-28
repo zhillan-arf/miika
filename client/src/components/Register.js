@@ -20,7 +20,7 @@ function Register() {
             const response = await fetch(`${REACT_APP_BACKEND_URI}/register`, {
                 method: 'POST',
                 headers: {
-                    'Content-type': 'application/json',
+                    'Content-type': 'application/json'
                 },
                 body: JSON.stringify({ email, password })
             });
