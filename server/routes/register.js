@@ -20,9 +20,10 @@ router.post('/register', async (req, res) => {
                 _id: registeredUser._id,
                 username: registeredUser.email,
             };
-            res.status(500).json(userResponse);
+            console.log(userResponse);
+            res.status(201).json(userResponse);
         } catch (error) {
-            res.status(400).send(error)
+            res.status(500).send(error);
         }
     } else {
         res.status(400).send('Not an email!')
