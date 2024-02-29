@@ -31,6 +31,8 @@ import registerRouter from './routes/register.js';
 app.use(registerRouter);
 import loginRouter from './routes/login.js';
 app.use(loginRouter);
+import verifyRouter from './routes/verify.js';
+app.use(verifyRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello, world!');

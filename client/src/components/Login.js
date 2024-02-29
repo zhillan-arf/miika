@@ -7,7 +7,7 @@ const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     const handleLogin = async(e) => {
         e.preventDefault();
@@ -21,7 +21,7 @@ function Login() {
             })
             console.log("Retrieved!");
             if (response.ok) {
-                history('/aigis');
+                navigate('/aigis');
             } else {
                 alert(response.status);
             }

@@ -1,8 +1,8 @@
 import { Router } from 'express';
-const router = Router();
 import User from '../models/User.js';
 import { hash }  from 'bcrypt';
 
+const router = Router();
 const saltRounds = 10;
 
 function isValidEmail(email) {
@@ -28,6 +28,6 @@ router.post('/register', async (req, res) => {
     } else {
         res.status(400).send('Not an email!')
     }
-})
+});
 
 export default router;

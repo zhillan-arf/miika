@@ -8,7 +8,7 @@ function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     const handleNewUser = async(e) => {
         e.preventDefault();
@@ -25,7 +25,7 @@ function Register() {
                 body: JSON.stringify({ email, password })
             });
             if (response.ok) {
-                history('/aigis');
+                navigate('/aigis');
             } else {
                 alert(response.status);
             }
