@@ -5,7 +5,7 @@ import '../assets/login.css';
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
-function Login() {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { setIsAuth } = useContext(AuthContext);

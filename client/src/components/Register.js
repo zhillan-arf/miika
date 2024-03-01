@@ -4,7 +4,7 @@ import '../assets/register.css';
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
-function Register() {
+const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
