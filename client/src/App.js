@@ -9,15 +9,15 @@ import Aigis from './components/Aigis';
 function App() {
     return (
         <Router>
-            <Routes>
-                <AuthProvider>
-                    <Route path='/' exact element={<Aigis/>}/>
+            <AuthProvider>
+                <Routes>
+                    <Route path='/' exact element={<AuthLocker><Aigis/></AuthLocker>}/>
                     <Route path='/register' exact element={<Register/>}/>
                     <Route path='/login' exact element={<Login/>}/>
                     <Route path='/aigis' exact element={<AuthLocker><Aigis/></AuthLocker>}/>
-                    <Route path='*' element={<AuthLocker><Aigis/></AuthLocker>}/>
-                </AuthProvider>
-            </Routes>
+                    <Route path='*' exact element={<AuthLocker><Aigis/></AuthLocker>}/>
+                </Routes>
+            </AuthProvider>
         </Router>
     );
 }

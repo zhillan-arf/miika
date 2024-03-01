@@ -1,17 +1,28 @@
 // Module imports
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import mongoosePkg from 'mongoose';
 const { connect, connection } = mongoosePkg;
 import cors from 'cors';
-import dotenv from 'dotenv';
-dotenv.config();
 
 // Server app
 const app = express();
 
 // Middlewares
+const CLIENT_URI = process.env.CLIENT_URI;
+const corsOption = { 
+  origin: CLIENT_URI,
+  credentials: true
+};
+app.use(cors(corsOption));
 app.use(express.json());
-app.use(cors());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', CLIENT_URI);
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 // MongoDB connection
 const MONGO_USER = process.env.MONGO_USER;

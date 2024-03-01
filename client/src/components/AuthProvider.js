@@ -1,33 +1,29 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
 export const AuthProvider = ({ children }) => {
     const [isAuth, setIsAuth ] = useState(false);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const validateToken = async() => {
             try {
                 const response = await fetch(`${REACT_APP_BACKEND_URI}/api/verify`, {
+                    method: 'GET',
                     credentials: 'include'
                 });
-                if (response.ok) {
-                    setIsAuth(true);
-                } else {
-                    navigate('/login');
-                }
+                setIsAuth(response.ok);  // Based on response statuds
             } catch (error) {
-                navigate('/login');
+                setIsAuth(false);
             }
         };
         validateToken();
-    }, [navigate]);
+    }, []);
 
+    const value = { isAuth, setIsAuth };
     return (
-        <AuthContext.Provider value={{isAuth}}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );

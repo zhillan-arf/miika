@@ -6,7 +6,7 @@ const router = Router();
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 router.get('/api/verify', (req, res) => {
-    const token = req.cookies['token'];
+    const token = req.cookies ? req.cookies['token'] : null;
 
     if (!token) return res.status(401).send("No token provided!");
     

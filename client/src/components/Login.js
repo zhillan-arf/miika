@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthProvider'
 import '../assets/login.css';
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
@@ -7,6 +8,7 @@ const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { setIsAuth } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleLogin = async(e) => {
@@ -14,13 +16,14 @@ function Login() {
         try {
             const response = await fetch(`${REACT_APP_BACKEND_URI}/login`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify({email, password})
             })
-            console.log("Retrieved!");
             if (response.ok) {
+                setIsAuth(true); 
                 navigate('/aigis');
             } else {
                 alert(response.status);

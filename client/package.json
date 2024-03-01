@@ -13,7 +13,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "PORT=3003 react-scripts start",
+    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider PORT=3003 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -37,6 +37,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "dotenv-webpack": "^8.0.1"
   }
 }

@@ -1,7 +1,8 @@
 import User from '../models/User.js';
 import { compare }  from 'bcrypt';
 import { Router } from 'express';
-import sign from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
+const { sign } = jwt;
 
 const router = Router();
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
@@ -9,8 +10,8 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 router.post('/login', async (req, res) => {
     // Authenticate user
     const { email, password } = req.body;
+    console.log( email );
     const user = await User.findOne({ email });
-    console.log(user.email);
     if (user) {
         const isMatch = await compare(password, user.hash);
         console.log(isMatch);
@@ -21,12 +22,12 @@ router.post('/login', async (req, res) => {
                 JWT_SECRET_KEY,
                 { expiresIn: '3h' }
             )
-            res.cookie('token', accessToken), {
+            res.cookie('token', accessToken, {
                 httpOnly: true,
                 secure: false,
                 sameSite: 'strict',
-                maxAge: 3600000
-            }
+                maxAge: 10800000  // 3h
+            })
             .status(200)
             .send(`${user.email} is logged in.`);
         }
