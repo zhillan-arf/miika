@@ -1,0 +1,14 @@
+.container {
+    background-color: #2B2D31;
+    width: 100vw;
+    height: 100vh;
+}
+
+.container-chatroom {
+    display: flex;
+    width: 60%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    flex-direction: column;
+    background-color: #2B2D31;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Chat from "./Chat";
+import "../assets/chatroom.css";
 
 const Chatroom = () => {
     const [chats, setChats] = useState([{id: 'chat-0', text: '', autoFocus: true, readOnly: false}]);
@@ -7,22 +8,24 @@ const Chatroom = () => {
     const handleEnter = (newText, index) => {
         const updatedChats = chats.map(chat => ({...chat, readOnly: true}));
         updatedChats[index].text = newText;
-        updatedChats.push({key: `chat-${chats.length}`, text: '', autoFocus: true});
+        updatedChats.push({id: `chat-${chats.length}`, text: '', autoFocus: true, readOnly: false});
         setChats(updatedChats);
     }
     return (
-        <div>
-            {chats.map((chat, index) => (
-                <Chat
-                    key={chat.key}
-                    readOnly={chat.readOnly}
-                    onEnter={(text) => handleEnter(text, index)}
-                    autoFocus={chat.autoFocus}
-                    initialText={chat.text}
-                />
-            ))}
+        <div className="container">
+            <div className="container-chatroom">
+                {chats.map((chat, index) => (
+                    <Chat
+                    key={chat.id}
+                        readOnly={chat.readOnly}
+                        onEnter={(text) => handleEnter(text, index)}
+                        autoFocus={chat.autoFocus}
+                        initialText={chat.text}
+                    />
+                ))}
+            </div>
         </div>
-    )
+    );
 }
 
 export default Chatroom;

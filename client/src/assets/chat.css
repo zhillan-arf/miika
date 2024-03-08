@@ -1,0 +1,13 @@
+.styled-chatbox {
+    display: block;
+    padding: 0.5em;
+    width: 100%;
+    border: none;
+    background-color: #2B2D31;
+    color: white;
+    font-size: 16;
+}
+
+.styled-chatbox::placeholder {
+    color: white
+}

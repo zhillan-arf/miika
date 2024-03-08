@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
+import "../assets/chat.css";
 
-const Chat = ({ onEnter, autoFocus, initialText }) => {
+const Chat = ({ readOnly, onEnter, autoFocus, initialText }) => {
     const [inputValue, setInputValue] = useState(initialText || '');
     const inputRef = useRef(null);
 
@@ -17,18 +18,19 @@ const Chat = ({ onEnter, autoFocus, initialText }) => {
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             onEnter(inputValue);
-            setInputValue('')
         }
-    };
+    }
 
     return (
         <input
             ref={inputRef}
+            className="styled-chatbox"
             type='text'
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            placeholder="Type here..."
+            placeholder='Type here...'
+            readOnly={readOnly}
         />
     );
 }
