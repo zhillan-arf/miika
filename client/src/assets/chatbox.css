@@ -1,0 +1,43 @@
+.chat-box {
+    margin-top: 2em;
+    margin-left: 5em;
+}
+
+.chat-profpic {
+    position: absolute;
+    left: 0px;
+}
+
+.chat-text {
+    display: block;
+    width: 88%;
+    border: none;
+    background-color: #2B2D31;
+    color: white;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    outline: none;
+    margin-top: 0.3em;
+    overflow-wrap: break-word;
+    cursor: text;
+}
+
+.chat-text::placeholder {
+    color: #969696
+}
+
+.identity-text {
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+}
+
+.identity-time {
+    color: #969696;
+}
+
+[contentEditable=true]:empty:before {
+    content: attr(data-placeholder);
+    color: #969696;
+    font-style: italic;
+}

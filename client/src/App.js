@@ -5,7 +5,8 @@ import AuthLocker from './components/AuthLocker';
 import Register from './components/Register';
 import Login from './components/Login';
 import Aigis from './components/Aigis';
-import Chatroom from './components/Chatroom';
+import ChatRoom from './components/ChatRoom';
+import Test from './components/Test';
 
 function App() {
     return (
@@ -16,7 +17,8 @@ function App() {
                     <Route path='/register' exact element={<Register/>}/>
                     <Route path='/login' exact element={<Login/>}/>
                     <Route path='/aigis' exact element={<AuthLocker><Aigis/></AuthLocker>}/>
-                    <Route path='/chatroom' exact element={<Chatroom/>}/>
+                    <Route path='/chatroom' exact element={<ChatRoom/>}/>
+                    <Route path='/test' exact element={<Test/>}/>
                     <Route path='*' element={<AuthLocker><Aigis/></AuthLocker>}/>
                 </Routes>
             </AuthProvider>
