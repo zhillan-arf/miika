@@ -9,6 +9,14 @@ html, body {
     min-height: 100vh;
     height: auto;
     overflow-y: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.room {
+    flex-grow: 1;
+    position: relative;
+    width: 100%;
 }
 
 .chat-feed {
@@ -16,11 +24,11 @@ html, body {
     min-height: 100vh;
     height: auto;
     font-size: 16px;
-    margin-top: 3.2em;
     box-sizing: border-box;
     flex-direction: column;
     background-color: #2B2D31;
     position: relative;
+    margin-top: 3.2em;
     margin-left: 5em;
 }
 

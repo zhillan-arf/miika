@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import ChatHeader from "./ChatHeader.js";
 import ChatBox from "./ChatBox.js";
+import Sidebar from "./Sidebar.js";
 import "../assets/chatroom.css";
 
 const ChatRoom = () => {
+    const parentRef = useRef(null);
     const getDisplayTime = () => {
         const date = new Date();
         const hours = date.getHours();
@@ -41,19 +43,24 @@ const ChatRoom = () => {
     }
     return (
         <div className="container">
-            <ChatHeader/>
-            <div className="chat-feed">
-                {chats.map((chat, index) => (
-                    <ChatBox
-                        key={chat.id}
-                        userName={chat.userName}
-                        displayTime={chat.displayTime}
-                        readOnly={chat.readOnly}
-                        autoFocus={chat.autoFocus}
-                        initialText={chat.text}
-                        onEnter={(text) => handleEnter(text, index)}
-                    />
-                ))}
+            <Sidebar masterName={masterName}>
+                1 - midsummer is app...
+            </Sidebar>
+            <div className="room" ref={parentRef}>
+                <ChatHeader parentRef={parentRef}/>
+                <div className="chat-feed">
+                    {chats.map((chat, index) => (
+                        <ChatBox
+                            key={chat.id}
+                            userName={chat.userName}
+                            displayTime={chat.displayTime}
+                            readOnly={chat.readOnly}
+                            autoFocus={chat.autoFocus}
+                            initialText={chat.text}
+                            onEnter={(text) => handleEnter(text, index)}
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );

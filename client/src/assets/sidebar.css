@@ -1,0 +1,40 @@
+.sidebar {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    height: auto;
+}
+
+.sidebar-bar {
+    display: flex;
+    flex-direction: column;
+    background-color: #313338;
+}
+
+.master-header {
+    display: flex;
+    font-size: 16;
+    font-weight: bold;
+    width: 12em;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    padding-left: 1em;
+    height: 3.2em;
+    align-items: center;
+    position: fixed;
+    top: 0px;
+    left: 3em;
+    background-color: #313338;
+}
+
+.sidebar-days {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    width: 12em;
+    color: #969696;
+    background-color: #313338;
+    padding-left: 1em;
+    padding-top: 3.2em;
+    display: flex;
+    flex-direction: column;
+}
