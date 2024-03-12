@@ -1,15 +1,21 @@
 import { model, Schema } from 'mongoose';
 
 const chatSchema = new Schema({
-  user_id: {
+  userID: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  vibe: String,
+  date: {
+    type: Date,
+    default: Date.now
+  },
   role: String,
-  chat: String,
+  vibe: String,
+  text: String,
+  autoFocus: Boolean,
+  readOnly: Boolean,
   mentioned_entities: [String]
-}, { timestamps: true });
+});
 
 const Chat = model('Chats', chatSchema);
 

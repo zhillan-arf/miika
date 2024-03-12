@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-const logkeeperSchema = new Schema({
+const secretarySchema = new Schema({
     name : String,
     gender : Boolean,
     profpic : Buffer,
@@ -8,6 +8,6 @@ const logkeeperSchema = new Schema({
     chat_examples : String
 });
 
-const Logkeeper = model('Logkeepers', logkeeperSchema)
+const Secretary = model('Secretaries', secretarySchema)
 
-export default Logkeeper;
+export default Secretary;

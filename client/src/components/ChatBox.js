@@ -1,7 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../assets/chatbox.css';
 
-const ChatBox = ({ displayTime, userName, readOnly, onEnter, autoFocus, initialText }) => {
+const ChatBox = ({ userName, date, readOnly, onEnter, autoFocus, initialText }) => {
+    const convertToDisplayTime = (date) => {
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        return `${hours}.${minutes < 10 ? '0' : ''}${minutes}`;
+    }
+    
+    const displayTime = useState(convertToDisplayTime(date));
     const [inputValue, setInputValue] = useState(initialText || '');
     const inputRef = useRef(null);
 
@@ -28,7 +35,8 @@ const ChatBox = ({ displayTime, userName, readOnly, onEnter, autoFocus, initialT
         }
     }
 
-    const profpicSrc = 'assets/images/master.png';
+    const masterProfpicSrc = 'assets/images/master.png';
+    const profpicSrc = masterProfpicSrc;
 
     return (
         <div className='chat-box'>

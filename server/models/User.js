@@ -14,9 +14,9 @@ const userSchema = new Schema({
   gender: Boolean,
   profile: String,
   personality: String,
-  logkeeper: {
+  logkeeperID: {
     type: Schema.Types.ObjectId,
-    ref: 'Logkeeper'
+    ref: 'Secretary'
   }
 });
 

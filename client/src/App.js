@@ -17,7 +17,7 @@ function App() {
                     <Route path='/register' exact element={<Register/>}/>
                     <Route path='/login' exact element={<Login/>}/>
                     <Route path='/aigis' exact element={<AuthLocker><Aigis/></AuthLocker>}/>
-                    <Route path='/chatroom' exact element={<ChatRoom/>}/>
+                    <Route path='/chatroom' exact element={<AuthLocker><ChatRoom/></AuthLocker>}/>
                     <Route path='/test' exact element={<Test/>}/>
                     <Route path='*' element={<AuthLocker><Aigis/></AuthLocker>}/>
                 </Routes>

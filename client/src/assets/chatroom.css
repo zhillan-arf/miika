@@ -8,7 +8,6 @@ html, body {
     width: 100vw;
     min-height: 100vh;
     height: auto;
-    overflow-y: auto;
     display: flex;
     flex-direction: row;
 }
@@ -17,6 +16,7 @@ html, body {
     flex-grow: 1;
     position: relative;
     width: 100%;
+    overflow-y: auto;
 }
 
 .chat-feed {
@@ -28,7 +28,7 @@ html, body {
     flex-direction: column;
     background-color: #2B2D31;
     position: relative;
-    margin-top: 3.2em;
+    margin-top: 2em;
     margin-left: 5em;
 }
 

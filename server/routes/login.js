@@ -8,21 +8,18 @@ const router = Router();
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 router.post('/login', async (req, res) => {
-    // Authenticate user
     const { email, password } = req.body;
     console.log( email );
     const user = await User.findOne({ email });
     if (user) {
         const isMatch = await compare(password, user.hash);
         console.log(isMatch);
-        // JWT
         if (isMatch) {
-            const accessToken = sign(
-                {username: user.username},
-                JWT_SECRET_KEY,
-                { expiresIn: '3h' }
-            )
-            res.cookie('token', accessToken, {
+            const tokenPayload = {
+                userID : user._id
+            }
+            const token = sign(tokenPayload, JWT_SECRET_KEY,{ expiresIn: '3h' });
+            res.cookie('token', token, {
                 httpOnly: true,
                 secure: false,
                 sameSite: 'strict',
