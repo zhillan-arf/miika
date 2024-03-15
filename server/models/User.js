@@ -10,7 +10,7 @@ const userSchema = new Schema({
     require: true
   },
   name: String,
-  profpic: Buffer,
+  profpic: String,  // b64
   gender: Boolean,
   profile: String,
   personality: String,

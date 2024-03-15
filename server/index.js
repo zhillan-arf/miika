@@ -1,4 +1,3 @@
-// Module imports
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
@@ -6,7 +5,6 @@ import mongoosePkg from 'mongoose';
 const { connect, connection } = mongoosePkg;
 import cors from 'cors';
 
-// Server app
 const app = express();
 
 // Middlewares
@@ -44,6 +42,10 @@ import loginRouter from './routes/login.js';
 app.use(loginRouter);
 import verifyRouter from './routes/verify.js';
 app.use(verifyRouter);
+import getChats from './retrievers/getChats.js';
+app.use(getChats);
+import insertChat from './retrievers/insertChat.js';
+app.use(insertChat);
 
 app.get('/', (req, res) => {
     res.send('Hello, world!');

@@ -1,8 +1,9 @@
 import { Router } from "express";
-import Chat from "../models/Chat";
-import User from "../models/User";
-import Secretary from "../models/Secretary";
-import { verify } from "jsonwebtoken";
+import Chat from "../models/Chat.js";
+import User from "../models/User.js";
+import Secretary from "../models/Secretary.js";
+import jwt from "jsonwebtoken";
+const { verify } = jwt;
 
 const router = Router();
 
@@ -19,7 +20,7 @@ router.get('/api/getchats', async (req, res) => {
             const master = await User.findById(userID);
             const secretary = await Secretary.findById(masterName.logkeeperID);
     
-            res.json({
+            res.status(200).json({
                 master: master,
                 secretary: secretary,
                 chats: mastersChats

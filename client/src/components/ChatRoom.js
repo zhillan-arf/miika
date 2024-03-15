@@ -10,63 +10,86 @@ const ChatRoom = () => {
     const parentRef = useRef(null);
     const [master, setMaster] = useState(null);
     const [secretary, setSecretary] = useState(null);
-    const [chats, setChats] = useState(null);
+    const [chats, setChats] = useState([]);
+
+    const getEmptyChat = (role) => {
+        return {
+            _id: `chat-${chats.length}`,
+            userID: master._id,
+            date: new Date(),
+            role: role,
+            userName: role === 'master'? master.name : secretary.name,
+            chatClass: '',
+            text: '',
+            autoFocus: true,
+            readOnly: false,
+            lastRecalled: new Date(),
+            timesRecalled: 1
+        }
+    }
 
     useEffect(() => {
-        const fetchChats = async () => {
+        const fetchData = async () => {
+            // const ws = new WebSocket('ws://localhost:3001');
             try {
                 const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getchats`, {
-                    method: 'POST',
+                    method: 'GET',
                     credentials: 'include'
                 });
                 const data = await response.json()
                 setMaster(data.master);
                 setSecretary(data.secretary);
-                setChats(data.chats);
+                setChats(...data.chat, getEmptyChat());
             } catch (error) {
                 console.log(`Error at fetching chats: ${error}`);
             }
         }
+        
+        fetchData();
     });
 
-    const masterName = master.name;
-    const masterProfpicBase64 = master.profpic.toString('base64');
-    const masterProfpicSrc = `data:image/png;base64,${masterProfpicBase64}`;
+    const masterProfpicSrc = `data:image/png;base64,${master.profpic}`;
+    const secretaryProfpicSrc = `data:image/png;base64,${secretary.profpic}`;
     
-    const secretaryName = secretary.name;
-    const secretaryProfpicBase64 = secretary.profpic.toString('base64');
-    const secretaryProfpicSrc = `data:image/png;base64,${secretaryProfpicBase64}`;
-
-    // Next: render data into chat array!
-
-    // const [chats, setChats] = useState([{
-    //     id: 'chat-0', 
-    //     userName: masterName,
-    //     date: new Date(),
-    //     text: '',
-    //     autoFocus: true, 
-    //     readOnly: false
-    // }]);
-    
-    const handleEnter = (newText, index) => {
+    const handleEnter = async (newText, index) => {
         const updatedChats = chats.map(chat => ({...chat, readOnly: true}));
         updatedChats[index].text = newText;
-        setDisplayTime(getDisplayTime());
         updatedChats[index].date = new Date();
-        updatedChats.push({
-            id: `chat-${chats.length}`, 
-            userName: masterName,
-            date: new Date(),
-            text: '', 
-            autoFocus: true, 
-            readOnly: false
-        });
-        setChats(updatedChats);
-        // async function to insert secretary response
+
+        try {
+            const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getclass`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedChats.slice(-10))
+            });
+            updatedChats[index].chatClass = response.chatClass;
+        } catch (err) {
+            console.log("Failed to get chat class");
+            return;
+        }
+        
+        try {
+            await fetch(`${REACT_APP_BACKEND_URI}/api/insertchats`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedChats[index])
+            });
+        } catch (err) {
+            console.log("Failed to insert data to server");
+            return;
+        }
+        
+        updatedChats.push(getEmptyChat());
+        setChats(updatedChats);     
     }
+
     return (
         <div className="container">
-            <Sidebar masterName={masterName} masterProfpicSrc={masterProfpicSrc}>
+            <Sidebar masterName={master.name} masterProfpicSrc={masterProfpicSrc}>
                 1 - midsummer is app...
             </Sidebar>
             <div className="room" ref={parentRef}>
@@ -74,13 +97,11 @@ const ChatRoom = () => {
                 <div className="chat-feed">
                     {chats.map((chat, index) => (
                         <ChatBox
-                            key={chat.id}
-                            userName={chat.userName}
-                            date={chat.date}
-                            readOnly={chat.readOnly}
-                            autoFocus={chat.autoFocus}
-                            initialText={chat.text}
+                            key={chat._id}
+                            chat={chat}
                             onEnter={(text) => handleEnter(text, index)}
+                            masterProfpicSrc={masterProfpicSrc}
+                            secretaryProfpicSrc={secretaryProfpicSrc}
                         />
                     ))}
                 </div>

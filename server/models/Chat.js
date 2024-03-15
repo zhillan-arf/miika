@@ -10,11 +10,13 @@ const chatSchema = new Schema({
     default: Date.now
   },
   role: String,
-  vibe: String,
+  chatClass: String,
   text: String,
   autoFocus: Boolean,
   readOnly: Boolean,
-  mentioned_entities: [String]
+  lastRecalled: Date,
+  timesRecalled: Number,
+  mentionedEntities: [String]
 });
 
 const Chat = model('Chats', chatSchema);

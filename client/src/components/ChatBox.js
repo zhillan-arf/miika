@@ -1,22 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../assets/chatbox.css';
 
-const ChatBox = ({ userName, date, readOnly, onEnter, autoFocus, initialText }) => {
+const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc }) => {
     const convertToDisplayTime = (date) => {
         const hours = date.getHours();
         const minutes = date.getMinutes();
         return `${hours}.${minutes < 10 ? '0' : ''}${minutes}`;
     }
     
-    const displayTime = useState(convertToDisplayTime(date));
-    const [inputValue, setInputValue] = useState(initialText || '');
+    const displayTime = useState(convertToDisplayTime(chat.date));
+    const [inputValue, setInputValue] = useState(chat.text || '');
     const inputRef = useRef(null);
 
     useEffect(() => {
-        if (autoFocus && inputRef.current) {
+        if (chat.autoFocus && inputRef.current) {
             inputRef.current.focus();
         }
-    }, [autoFocus]);
+    }, [chat.autoFocus]);
 
     const handleInputChange = (e) => {
         setInputValue(e.currentTarget.textContent);
@@ -35,19 +35,16 @@ const ChatBox = ({ userName, date, readOnly, onEnter, autoFocus, initialText }) 
         }
     }
 
-    const masterProfpicSrc = 'assets/images/master.png';
-    const profpicSrc = masterProfpicSrc;
-
     return (
         <div className='chat-box'>
-            <img className='chat-profpic' src={profpicSrc} alt='profpic'/>
+            <img className='chat-profpic' src={(chat.role === 'master') ? masterProfpicSrc : secretaryProfpicSrc} alt='profpic'/>
             <div className='chat-identity'>
-                <span className='identity-text'>{userName} <span className='identity-time'>at {displayTime}</span></span>
+                <span className='identity-text'>{chat.userName} <span className='identity-time'>at {displayTime}</span></span>
             </div>
             <div 
                 ref={inputRef}
                 className='chat-text' 
-                contentEditable={!readOnly}
+                contentEditable={!chat.readOnly}
                 onChange={handleInputChange}
                 onKeyDown={(e) => {
                     if (e.currentTarget.textContent !== '') handleKeyDown(e);
