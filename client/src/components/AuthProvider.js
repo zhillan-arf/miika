@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 export const AuthContext = createContext(null);
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = () => {
     const [isAuth, setIsAuth ] = useState(false);
 
     useEffect(() => {
@@ -13,19 +13,21 @@ export const AuthProvider = ({ children }) => {
                     method: 'GET',
                     credentials: 'include'
                 });
-                setIsAuth(response.ok);  // Based on response statuds
-            } catch (error) {
+                setIsAuth(response.ok);
+            } catch (err) {
                 setIsAuth(false);
             }
         };
         validateToken();
     }, []);
 
-    const value = { isAuth, setIsAuth };
+    const handleLogout = () => {
+        setIsAuth(false); // temp
+    }
+    const value = { isAuth, handleLogout };
+
     return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
+        <AuthContext.Provider value={value}/>
     );
 };
 

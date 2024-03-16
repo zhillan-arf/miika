@@ -5,7 +5,7 @@ import '../assets/login.css';
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
-const Login = () => {
+const Login = ({onRegister}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { setIsAuth } = useContext(AuthContext);
@@ -45,6 +45,7 @@ const Login = () => {
                 </label>
                 <button type='submit'>Continue</button>
             </form>
+            <button onClick={onRegister}>Register</button>
         </div>
     )
 }

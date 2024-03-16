@@ -4,7 +4,7 @@ import '../assets/register.css';
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
-const Register = () => {
+const Register = ({onBackToLogin}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -50,6 +50,7 @@ const Register = () => {
                 </label>
                 <button type='submit'>Continue</button>
             </form>
+            <button onClick={onBackToLogin}>Back to Login</button>
         </div>
     );
 }

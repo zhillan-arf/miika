@@ -1,27 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './components/AuthProvider';
-import AuthLocker from './components/AuthLocker';
+import { useAuth } from './components/AuthProvider';
 import Register from './components/Register';
 import Login from './components/Login';
 import Aigis from './components/Aigis';
 import ChatRoom from './components/ChatRoom';
-import Test from './components/Test';
 
-function App() {
+const App = () => {
+    const { isAuth, setIsAuth } = useAuth();
+    const SPA = () => <ChatRoom onLogout={() => {setIsAuth(false)}}/>;
+    const Gate = () => {
+        const [showRegister, setShowRegister] = useState(false);
+
+        if (showRegister) return <Register  onBackToLogin={() => {setShowRegister(false)}}/>;
+        return <Login onRegister={() => {setShowRegister(true)}}/>
+    }
+
     return (
         <Router>
-            <AuthProvider>
-                <Routes>
-                    <Route path='/' exact element={<AuthLocker><Aigis/></AuthLocker>}/>
-                    <Route path='/register' exact element={<Register/>}/>
-                    <Route path='/login' exact element={<Login/>}/>
-                    <Route path='/aigis' exact element={<AuthLocker><Aigis/></AuthLocker>}/>
-                    <Route path='/chatroom' exact element={<AuthLocker><ChatRoom/></AuthLocker>}/>
-                    <Route path='/test' exact element={<Test/>}/>
-                    <Route path='*' element={<AuthLocker><Aigis/></AuthLocker>}/>
-                </Routes>
-            </AuthProvider>
+            <Routes>
+                <Route path='/aigis' exact element={<Aigis/>}/>
+                <Route path='*' element={isAuth ? SPA : Gate}/>
+            </Routes>
         </Router>
     );
 }
