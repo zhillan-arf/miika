@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useAuth } from './components/AuthProvider';
+import { AuthProvider, useAuth } from './components/AuthProvider';
 import Register from './components/Register';
 import Login from './components/Login';
 import Aigis from './components/Aigis';
 import ChatRoom from './components/ChatRoom';
+import { ServerSocket } from './components/ServerSocket';
 
-const App = () => {
-    const { isAuth, setIsAuth } = useAuth();
-    const SPA = () => <ChatRoom onLogout={() => {setIsAuth(false)}}/>;
+
+const AuthedApp = () => {
+    const { isAuth, handleLogout } = useAuth();
+    const SPA = () => {
+        <ServerSocket>
+            <ChatRoom onLogout={() => {handleLogout}}/>
+        </ServerSocket>
+    }
     const Gate = () => {
         const [showRegister, setShowRegister] = useState(false);
 
@@ -23,6 +29,14 @@ const App = () => {
                 <Route path='*' element={isAuth ? SPA : Gate}/>
             </Routes>
         </Router>
+    );
+}
+
+const App = () => {
+    return (
+        <AuthProvider>
+            <AuthedApp/>
+        </AuthProvider>
     );
 }
 

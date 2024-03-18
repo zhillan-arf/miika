@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ChatHeader from "./ChatHeader.js";
 import ChatBox from "./ChatBox.js";
 import Sidebar from "./Sidebar.js";
+import { useSocket } from "./ServerSocket.js";
 import "../assets/chatroom.css";
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
@@ -29,8 +30,10 @@ const ChatRoom = () => {
     }
 
     useEffect(() => {
+        const socket = useSocket(REACT_APP_BACKEND_URI);
+        socket.on('serverEvent', handleServerEvent);
+
         const fetchData = async () => {
-            // const ws = new WebSocket('ws://localhost:3001');
             try {
                 const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getchats`, {
                     method: 'GET',
@@ -44,8 +47,12 @@ const ChatRoom = () => {
                 console.log(`Error at fetching chats: ${error}`);
             }
         }
-        
         fetchData();
+
+        return () => {
+            socket.off('serverEvent', handleServerEvent);
+            socket.disconnect();
+          };
     });
 
     const masterProfpicSrc = `data:image/png;base64,${master.profpic}`;
@@ -85,6 +92,10 @@ const ChatRoom = () => {
         
         updatedChats.push(getEmptyChat());
         setChats(updatedChats);     
+    }
+
+    const handleServerEvent = (newChats) => {
+        setChats(chats.concat(newChats));
     }
 
     return (

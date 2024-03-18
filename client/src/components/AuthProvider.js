@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 export const AuthContext = createContext(null);
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
-export const AuthProvider = () => {
+export const AuthProvider = ({ children }) => {
     const [isAuth, setIsAuth ] = useState(false);
 
     useEffect(() => {
@@ -27,7 +27,9 @@ export const AuthProvider = () => {
     const value = { isAuth, handleLogout };
 
     return (
-        <AuthContext.Provider value={value}/>
+        <AuthContext.Provider value={value}>
+            {children}
+        </AuthContext.Provider>
     );
 };
 
