@@ -4,8 +4,12 @@ import express from 'express';
 import mongoosePkg from 'mongoose';
 const { connect, connection } = mongoosePkg;
 import cors from 'cors';
+import http from 'http';
+import { Server } from 'socket.io';
 
 const app = express();
+const httpServer = http.createServer(app);
+const io = new Server(httpServer);
 
 // Middlewares
 const CLIENT_URI = process.env.CLIENT_URI;
@@ -35,22 +39,27 @@ db.once('open', () => {
     console.log('Database connected successfully');
   });
 
-// Routes
 import registerRouter from './routes/register.js';
 app.use(registerRouter);
 import loginRouter from './routes/login.js';
 app.use(loginRouter);
 import verifyRouter from './routes/verify.js';
 app.use(verifyRouter);
-import getChats from './retrievers/getChats.js';
-app.use(getChats);
-import insertChat from './retrievers/insertChat.js';
-app.use(insertChat);
+
+import getChatsRouter from './orchestration/retrievers/getChats.js';
+app.use(getChatsRouter);
+import insertChatRouter from './orchestration/retrievers/insertChat.js';
+app.use(insertChatRouter);
+
+import getClassRouter from './orchestration/chains/getClass.js';
+app.use(getClassRouter);
 
 app.get('/', (req, res) => {
-    res.send('Hello, world!');
+    res.send('MIIKA server connected.');
 });
 
 // Start server
 const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => {console.log(`Server running on port ${PORT}`);});
+httpServer.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

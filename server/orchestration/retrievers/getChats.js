@@ -1,7 +1,7 @@
 import { Router } from "express";
-import Chat from "../models/Chat.js";
-import User from "../models/User.js";
-import Secretary from "../models/Secretary.js";
+import Chat from "../../models/Chat.js";
+import User from "../../models/User.js";
+import Secretary from "../../models/Secretary.js";
 import jwt from "jsonwebtoken";
 const { verify } = jwt;
 

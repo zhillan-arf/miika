@@ -12,7 +12,7 @@ const AuthedApp = () => {
     const { isAuth, handleLogout } = useAuth();
     const SPA = () => {
         <ServerSocket>
-            <ChatRoom onLogout={() => {handleLogout}}/>
+            <ChatRoom onLogout={() => {handleLogout()}}/>
         </ServerSocket>
     }
     const Gate = () => {
