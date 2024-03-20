@@ -14,7 +14,7 @@ const userSchema = new Schema({
   gender: Boolean,
   profile: String,
   personality: String,
-  logkeeperID: {
+  secretaryID: {
     type: Schema.Types.ObjectId,
     ref: 'Secretary'
   }

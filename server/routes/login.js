@@ -9,7 +9,7 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    console.log( email );
+    console.log(email);
     const user = await User.findOne({ email });
     if (user) {
         const isMatch = await compare(password, user.hash);

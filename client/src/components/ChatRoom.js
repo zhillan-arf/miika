@@ -9,9 +9,11 @@ const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
 const ChatRoom = () => {
     const parentRef = useRef(null);
+    const [socket, setSocket] = useState(null);
     const [master, setMaster] = useState(null);
     const [secretary, setSecretary] = useState(null);
     const [chats, setChats] = useState([]);
+    const [isResponded, setIsResponded] = useState(true);
 
     const getEmptyChat = (role) => {
         return {
@@ -30,8 +32,9 @@ const ChatRoom = () => {
     }
 
     useEffect(() => {
-        const socket = useSocket(REACT_APP_BACKEND_URI);
-        socket.on('serverEvent', handleServerEvent);
+        const socketInstance = useSocket(REACT_APP_BACKEND_URI);
+        setSocket(socketInstance);
+        socket.on('chatsFromSecretary', handleChatsFromSecretary);
 
         const fetchData = async () => {
             try {
@@ -50,7 +53,6 @@ const ChatRoom = () => {
         fetchData();
 
         return () => {
-            socket.off('serverEvent', handleServerEvent);
             socket.disconnect();
           };
     });
@@ -89,13 +91,15 @@ const ChatRoom = () => {
             console.log("Failed to insert data to server");
             return;
         }
-        
+
         updatedChats.push(getEmptyChat());
-        setChats(updatedChats);     
+        setChats(updatedChats);    
+        if (socket) socket.emit('requestResponse', user);
     }
 
-    const handleServerEvent = (newChats) => {
+    const handleResponse = (newChats) => {
         setChats(chats.concat(newChats));
+        setIsResponded(true);
     }
 
     return (

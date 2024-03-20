@@ -1,18 +1,16 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import { Server } from 'socket.io';
 import express from 'express';
-import mongoosePkg from 'mongoose';
-const { connect, connection } = mongoosePkg;
 import cors from 'cors';
 import http from 'http';
-import { Server } from 'socket.io';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer);
 
 // Middlewares
-const CLIENT_URI = process.env.CLIENT_URI;
+const CLIENT_URI = process.env.CLIENT_URI;  // temp
 const corsOption = { 
   origin: CLIENT_URI,
   credentials: true
@@ -27,18 +25,25 @@ app.use((req, res, next) => {
 });
 
 // MongoDB connection
+import mongoosePkg from 'mongoose';
+const { connect, connection } = mongoosePkg;
 const MONGO_USER = process.env.MONGO_USER;
 const MONGO_PASSWORD = encodeURIComponent(process.env.MONGO_PASSWORD);
 const MONGO_PATH = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1:27017/miika`;
-connect(MONGO_PATH);
-const db = connection;
-db.on('error', (error) => {
-  console.error('Connection error:', error);
-});
-db.once('open', () => {
-    console.log('Database connected successfully');
-  });
+// connect(MONGO_PATH);
+// const db = connection;
+// db.on('error', (error) => {
+//   console.error('Connection error:', error);
+// });
+// db.once('open', () => {
+//     console.log('Database connected successfully');
+//   });
 
+// Socket Events
+import socketEvents from './middlewares/socketEvents.js';
+socketEvents(io);
+
+// Routes
 import registerRouter from './routes/register.js';
 app.use(registerRouter);
 import loginRouter from './routes/login.js';
