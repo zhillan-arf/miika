@@ -30,14 +30,14 @@ const { connect, connection } = mongoosePkg;
 const MONGO_USER = process.env.MONGO_USER;
 const MONGO_PASSWORD = encodeURIComponent(process.env.MONGO_PASSWORD);
 const MONGO_PATH = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1:27017/miika`;
-// connect(MONGO_PATH);
-// const db = connection;
-// db.on('error', (error) => {
-//   console.error('Connection error:', error);
-// });
-// db.once('open', () => {
-//     console.log('Database connected successfully');
-//   });
+connect(MONGO_PATH);
+const db = connection;
+db.on('error', (error) => {
+  console.error('Connection error:', error);
+});
+db.once('open', () => {
+    console.log('Database connected successfully');
+  });
 
 // Socket Events
 import socketEvents from './middlewares/socketEvents.js';

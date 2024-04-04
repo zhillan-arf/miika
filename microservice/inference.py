@@ -57,7 +57,7 @@ def infer():
                                 clean_up_tokenization_space=True
     )
 
-    return jsonify({"response": response})
+    return jsonify({"response": response}), 200
 
 PORT = 3001
 if __name__ == '__main__':

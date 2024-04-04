@@ -5,7 +5,8 @@ const secretarySchema = new Schema({
     gender: Boolean,
     profpic: Buffer,
     profile: String,
-    chat_examples: String
+    chat_examples: String,
+    protocol: String
 });
 
 const Secretary = model('Secretaries', secretarySchema)
