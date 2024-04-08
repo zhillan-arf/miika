@@ -13,7 +13,6 @@ const ChatRoom = () => {
     const [master, setMaster] = useState(null);
     const [secretary, setSecretary] = useState(null);
     const [chats, setChats] = useState([]);
-    const [isResponded, setIsResponded] = useState(true);
 
     const getEmptyChat = (role) => {
         return {
@@ -32,9 +31,9 @@ const ChatRoom = () => {
     }
 
     useEffect(() => {
-        const socketInstance = useSocket(REACT_APP_BACKEND_URI);
+        const socketInstance = useSocket();
         setSocket(socketInstance);
-        socket.on('chatsFromSecretary', handleChatsFromSecretary);
+        socket.on('receiveResponse', handleResponse);
 
         const fetchData = async () => {
             try {
@@ -46,8 +45,8 @@ const ChatRoom = () => {
                 setMaster(data.master);
                 setSecretary(data.secretary);
                 setChats(...data.chat, getEmptyChat());
-            } catch (error) {
-                console.log(`Error at fetching chats: ${error}`);
+            } catch (err) {
+                console.log(`Error at fetching chats: ${err}`);
             }
         }
         fetchData();
@@ -69,7 +68,7 @@ const ChatRoom = () => {
             const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getclass`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(updatedChats.slice(-10))
             });
@@ -99,7 +98,6 @@ const ChatRoom = () => {
 
     const handleResponse = (newChats) => {
         setChats(chats.concat(newChats));
-        setIsResponded(true);
     }
 
     return (

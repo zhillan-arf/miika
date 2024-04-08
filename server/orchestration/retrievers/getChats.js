@@ -16,7 +16,7 @@ router.get('/api/getchats', async (req, res) => {
         const userID = decoded.userID;
         
         try {
-            const mastersChats = await Chat.find({userID: userID});
+            const mastersChats = await Chat.find({userID: userID}, {mentionedEntities: 0});
             const master = await User.findById(userID);
             const secretary = await Secretary.findById(masterName.logkeeperID);
     

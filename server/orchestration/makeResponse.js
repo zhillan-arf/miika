@@ -1,3 +1,6 @@
+import getMentionedEntities from './retrievers/getMentioedEntities.js';
+import getRecentSummary from './retrievers/getRecentSummary.js';
+import getRelevantMemories from './retrievers/getRelevantMemories.js';
 import Secretary from '../models/Secretary.js';
 import Chat from '../models/Chat.js';
 import { readFileSync } from 'fs';
@@ -39,14 +42,6 @@ const formatRecentChats = (recentChats, userName, secretaryName) => {
     return formattedRecentChats.trim();
 }
 
-const getRelevantMemories = (recentChats) => {
-    return `This is the first time they're interacting.`;  //temp
-}
-
-const getRecentSummary = (chats) => {
-    return `various things`;  //temp
-}
-
 const fillSystemTemplate = (systemTemplate, variables) => {
     Object.keys(variables).forEach(key => {
         const regex = new RegExp(`{{${key}}}`, 'g');
@@ -64,48 +59,76 @@ const makeSystemPrompt = async (user) => {
         const recentChats = getRecentChats(chats);  // except last chat
         const variables = {
             secretaryName: secretary.name,
-            userName: user.name,
+            chatExamples: secretary.chatExamples,
+            secretaryLore: secretary.lore,
             pronoun1: (secretary.gender === 'm') ? 'he' : 'she',
             pronoun3: (secretary.gender === 'm') ? 'him' : 'her',
             secretaryProtocol: secretary.protocol,
-            formattedRecentChats: formatRecentChats(recentChats),
-            relevantMemories: getRelevantMemories(recentChats),
-            recentSummary: getRecentSummary(chats)
+            userName: user.name,
+            userProfile: user.profile,
+            recentSummary: getRecentSummary(recentChats),
+            relevantMemories: getRelevantMemories(recentChats, user),
+            formattedRecentChats: formatRecentChats(recentChats)
         }
         return fillSystemTemplate(systemTemplate, variables);
     } catch (err) {
-        return "Error: database failure";
+        return `ERROR Making Prompt: ${err}`;
     }
 }
 
 // Assistant
-const makeInference = async (systemPrompt, lastChat) => {
-    prompt = `<|im_start|>system
-    ${systemPrompt}
-    <|im_start|>user
-    ${lastChat.text}
-    <|im_start|>assistant`;
-    inferred = null;
+const parseNewChats = (inferred, user) => {
+    const texts = inferred.split('\n');
+    const newChats = texts.map(text => ({
+        _id: null,
+        userID: user._id,
+        date: new Date(),
+        role: 'secretary',
+        chatClass: null,
+        text: text,
+        autoFocus: false,
+        readOnly: true,
+        lastRecalled: new Date(),
+        timesRecalled: 1,
+        mentionedEntities: getMentionedEntities(inferred)
+    }));
+}
 
-    fetch(MICROSERVICE_URI)
-        .then(response => {
-            if (response.ok) return response.json();
-            throw new Error('LLM server failure');
-        })
-        .then(data => {inferred = data.response;})
-        .catch(err => console.log('Error: LLM server'));
+const makeInference = async (systemPrompt, lastChat) => {
+    const prompt = `<|im_start|>system\n${systemPrompt}\n<|im_start|>user\n${lastChat.text}\n<|im_start|>assistant`;
+
+    try {
+        const response = fetch(`${MICROSERVICE_URI}/api/infer`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({prompt: prompt})
+        });
+
+        if (response.ok) {
+            return parseNewChats(response.json().inferred);
+        } else throw new Error('LLM server failure');
+
+    } catch (err) {
+        console.log(`ERROR: ${err}`)
+    }
 }
 
 // Main
 const makeResponse = async (secretary) => {
-    const randDelay = Math.floor(Math.random() * 6) + 1;
-    await delay(randDelay);
+    try {
+        const randDelay = Math.floor(Math.random() * 6) + 1;
+        await delay(randDelay);
 
-    const systemPrompt = makeSystemPrompt(user);
-    const userPrompt = lastChat.text;
-    const inference = makeInference(systemPrompt, userPrompt);
-
-    handleResponse(systemPrompt, userPrompt, inference);
+        const systemPrompt = makeSystemPrompt(user);
+        const userPrompt = lastChat.text;
+        const inferredChats = makeInference(systemPrompt, userPrompt);
+        await Chat.insertMany(inferredChats);
+        return inferredChats;
+    } catch (err) {
+        console.log("Error making response");
+    }
 }
 
 export default makeResponse;

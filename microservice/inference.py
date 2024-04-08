@@ -35,7 +35,11 @@ model = AutoModelForCausalLM.from_pretrained(
     attn_implementation="flash_attention_2"
 )
 
-@app.route("/", methods=["POST"])
+@app.route("/", methods=["GET"])
+def main():
+    return jsonify("Hello, world!"), 200
+
+@app.route("/api/infer", methods=["POST"])
 def infer():
     input = request.data.decode("utf-8")
     if not input:
@@ -52,12 +56,12 @@ def infer():
         do_sample=True, 
         eos_token_id=tokenizer.eos_token_id
     )
-    response = tokenizer.decode(generated_ids[0][input_ids.shape[-1]:], 
+    inferred = tokenizer.decode(generated_ids[0][input_ids.shape[-1]:], 
                                 skip_special_tokens=True, 
                                 clean_up_tokenization_space=True
     )
 
-    return jsonify({"response": response}), 200
+    return jsonify({"inferred": inferred}), 200
 
 PORT = 3001
 if __name__ == '__main__':

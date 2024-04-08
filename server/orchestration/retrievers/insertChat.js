@@ -9,6 +9,7 @@ router.post('api/insertchat', async (req, res) => {
     // All chats goes to one bucket
     const token = req.cookies.token;
     const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+    const chat = new Chat(req.body);
 
     try {
         const decoded = verify(token, JWT_SECRET_KEY);
@@ -22,8 +23,6 @@ router.post('api/insertchat', async (req, res) => {
     } catch (err) {
         res.status(401).send('Invalid token.');
     }
-
-    const chat = new Chat(req.body);
 });
 
 export default router;
