@@ -24,6 +24,10 @@
     cursor: text;
 }
 
+.chat-text-bold {
+    font-weight: bold;
+}
+
 .chat-text::placeholder {
     color: #969696
 }

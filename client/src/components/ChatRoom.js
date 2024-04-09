@@ -13,8 +13,10 @@ const ChatRoom = () => {
     const [master, setMaster] = useState(null);
     const [secretary, setSecretary] = useState(null);
     const [chats, setChats] = useState([]);
+    const [receivingResponse, setReceivingResponse] = useState(false);
+    const [queueingResponse, setQueueingResponse] = useState(false);
 
-    const getEmptyChat = (role) => {
+    const getNewChat = (role='master', autoFocus=true, readOnly=false, text='') => {
         return {
             _id: `chat-${chats.length}`,
             userID: master._id,
@@ -22,12 +24,17 @@ const ChatRoom = () => {
             role: role,
             userName: role === 'master'? master.name : secretary.name,
             chatClass: '',
-            text: '',
-            autoFocus: true,
-            readOnly: false,
+            text: text,
+            autoFocus: autoFocus,
+            readOnly: readOnly,
             lastRecalled: new Date(),
             timesRecalled: 1
         }
+    }
+
+    const requestResponse = () => {
+        setReceivingResponse(true);
+        socket.emit('requestResponse', user);
     }
 
     useEffect(() => {
@@ -44,7 +51,7 @@ const ChatRoom = () => {
                 const data = await response.json()
                 setMaster(data.master);
                 setSecretary(data.secretary);
-                setChats(...data.chat, getEmptyChat());
+                setChats(...data.chat, getNewChat());
             } catch (err) {
                 console.log(`Error at fetching chats: ${err}`);
             }
@@ -91,13 +98,21 @@ const ChatRoom = () => {
             return;
         }
 
-        updatedChats.push(getEmptyChat());
-        setChats(updatedChats);    
-        if (socket) socket.emit('requestResponse', user);
+        updatedChats.push(getNewChat());
+        setChats(updatedChats);
+
+        if (socket && !receivingResponse) {
+            setReceivingResponse(true);
+            socket.emit('requestResponse', user);
+        } else setQueueingResponse(true);
     }
 
     const handleResponse = (newChats) => {
         setChats(chats.concat(newChats));
+        if (queueingResponse) {
+            setQueueingResponse(false);
+            requestResponse();
+        } else setReceivingResponse(false);
     }
 
     return (
@@ -108,13 +123,30 @@ const ChatRoom = () => {
             <div className="room" ref={parentRef}>
                 <ChatHeader parentRef={parentRef}/>
                 <div className="chat-feed">
-                    {chats.map((chat, index) => (
+                    {/* Previous transcripts */}
+                    {chats.slice(0, -1).map((chat, index) => (
                         <ChatBox
                             key={chat._id}
                             chat={chat}
                             onEnter={(text) => handleEnter(text, index)}
                             masterProfpicSrc={masterProfpicSrc}
                             secretaryProfpicSrc={secretaryProfpicSrc}
+                        />
+                    ))}
+                    {/* Secretary info */}
+                    {receivingResponse && <ChatBox 
+                        key='isTyping'
+                        chat={getNewChat('secretary', 'false', true, `${secretary.name} is typing...`)}
+                        secretaryProfpicSrc={secretaryProfpicSrc}
+                        isTypingBox={true}
+                    />}
+                    {/* Current input box */}
+                    {chats.slice(-1).map((chat, index) => (
+                        <ChatBox
+                            key={chat._id}
+                            chat={chat}
+                            onEnter={(text) => handleEnter(text, index)}
+                            masterProfpicSrc={masterProfpicSrc}
                         />
                     ))}
                 </div>

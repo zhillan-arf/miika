@@ -4,8 +4,8 @@ const socketEvents = (io) => {
     io.on('connection', (socket) => {
         socket.on('responseRequest', async (user) => {
             const response = await makeResponse(user);
-            socket.emit('receiveResponse', response);
-        })
+            if (response) socket.emit('receiveResponse', response);
+        });
     });
 }
 

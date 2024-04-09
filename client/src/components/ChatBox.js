@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../assets/chatbox.css';
 
-const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc }) => {
+const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypingBox=false }) => {
     const convertToDisplayTime = (date) => {
         const hours = date.getHours();
         const minutes = date.getMinutes();
@@ -43,7 +43,7 @@ const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc }) => {
             </div>
             <div 
                 ref={inputRef}
-                className='chat-text' 
+                className={`chat-text ${isTypingBox? 'chat-text-bold' : ''}`}
                 contentEditable={!chat.readOnly}
                 onChange={handleInputChange}
                 onKeyDown={(e) => {

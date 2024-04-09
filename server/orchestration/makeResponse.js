@@ -1,4 +1,4 @@
-import getMentionedEntities from './retrievers/getMentioedEntities.js';
+import getMentionedEntities from './retrievers/getMentionedEntities.js';
 import getRecentSummary from './retrievers/getRecentSummary.js';
 import getRelevantMemories from './retrievers/getRelevantMemories.js';
 import Secretary from '../models/Secretary.js';
@@ -118,7 +118,7 @@ const makeInference = async (systemPrompt, lastChat) => {
 // Main
 const makeResponse = async (secretary) => {
     try {
-        const randDelay = Math.floor(Math.random() * 6) + 1;
+        const randDelay = Math.floor(Math.random() * 4) + 1;
         await delay(randDelay);
 
         const systemPrompt = makeSystemPrompt(user);

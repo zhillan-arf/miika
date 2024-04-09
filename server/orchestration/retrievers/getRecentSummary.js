@@ -1,5 +1,5 @@
 const getRecentSummary = (recentChats) => {
-    return null;  // temp
+    return `various things`;  //temp
 }
 
 export default getRecentSummary;
