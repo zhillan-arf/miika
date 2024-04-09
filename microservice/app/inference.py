@@ -1,4 +1,3 @@
-from microservice.run import app
 from flask import request, jsonify
 from app import app
 import os, torch

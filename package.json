@@ -1,41 +1,30 @@
 {
-  "name": "miika",
-  "version": "1.0.0",
-  "description": "Tell me about it.",
-  "type": "module",
-  "main": "./server/index.js",
-  "scripts": {
-    "start": "node ./server/index.js",
-    "server": "nodemon ./server/index.js",
-    "client": "npm start --prefix client",
-    "microservice": "cd microservice && python3 app.py",
-    "both": "concurrently \"npm run server\" \"npm run client\"",
-    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run microservice\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/zhillan-arf/miika.git"
-  },
-  "author": "miiki_mikki",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/zhillan-arf/miika/issues"
-  },
-  "homepage": "https://github.com/zhillan-arf/miika#readme",
-  "dependencies": {
-    "axios": "^1.6.7",
-    "bcrypt": "^5.1.1",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.2.0",
-    "react-router-dom": "^6.22.1",
-    "socket.io": "^4.7.5"
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.2",
-    "cross-env": "^7.0.3"
+    "name": "miika",
+    "version": "1.0.0",
+    "description": "Tell me about it.",
+    "scripts": {
+      "server-dev": "cd server && npm run dev",
+      "client-dev": "cd client && npm run dev",
+      "microservice-dev": "cd microservice && python3 run.py",
+      "both-dev": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
+      "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\" \"npm run microservice-dev\"",
+      "server-install": "cd server && npm install",
+      "client-install": "cd client && npm install",
+      "microservice-install": "cd microservice && ./menv/Scripts/pip install -r requirements.txt",
+      "install-dep": "npm install && npm run server-install && npm run client-install && npm run microservice-install"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/zhillan-arf/miika.git"
+    },
+    "author": "miiki_mikki",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/zhillan-arf/miika/issues"
+    },
+    "homepage": "https://github.com/zhillan-arf/miika#readme",
+    "devDependencies": {
+      "concurrently": "^8.2.2"
+    }
   }
-}
+  

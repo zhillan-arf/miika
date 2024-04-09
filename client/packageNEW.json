@@ -1,7 +1,6 @@
 {
     "name": "client",
-    "version": "0.1.0",
-    "private": true,
+    "version": "1.0.0",
     "scripts": {
       "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider PORT=3003 react-scripts start",
       "build": "react-scripts build",
