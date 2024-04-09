@@ -1,15 +1,16 @@
 {
   "name": "miika",
   "version": "1.0.0",
-  "description": "The place to tell your worries.",
+  "description": "Tell me about it.",
   "type": "module",
   "main": "./server/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./server/index.js",
     "server": "nodemon ./server/index.js",
     "client": "npm start --prefix client",
-    "both": "concurrently \"npm run server\" \"npm run client\""
+    "microservice": "cd microservice && python3 app.py",
+    "both": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run microservice\""
   },
   "repository": {
     "type": "git",

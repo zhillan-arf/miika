@@ -1,20 +1,12 @@
-# !!!CALAMITY-LEVEL WARNING!!!
-# YOU NEED A GPU RAM OF MINIMUM 6GB TO RUN THIS PROGRAM
-# YOU ALSO NEED TO SET UP THE CUDA FOR THE GPU FIRST
-# DO NOT RUN THIS PROGRAM IF YOU DON'T
+from microservice.run import app
+from flask import request, jsonify
+from app import app
+import os, torch
 
-# LLM Inference Microservice 
-
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
-import os
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 this_path = os.path.dirname(os.path.realpath(__file__))
 models_cache = os.path.join(this_path, 'llm_models')  # Name of directory
 
-import torch
 torch.cuda.empty_cache()
 
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
@@ -22,7 +14,7 @@ hf_model_id = "NousResearch/Nous-Hermes-2-Mistral-7B-DPO"
 tokenizer = AutoTokenizer.from_pretrained(hf_model_id, cache_dir=models_cache)
 
 bits_and_bytes_config = BitsAndBytesConfig(
-    compute_dtype='float16',  #float16 = 4 bit quantization
+    compute_dtype='float16',  # 4 bit quantization
     activation_dtype='float16',
     bnb_4bit_compute_dtype='float16'
 ) 
@@ -34,10 +26,6 @@ model = AutoModelForCausalLM.from_pretrained(
     quantization_config=bits_and_bytes_config,
     attn_implementation="flash_attention_2"
 )
-
-@app.route("/", methods=["GET"])
-def main():
-    return jsonify("Hello, world!"), 200
 
 @app.route("/api/infer", methods=["POST"])
 def infer():
@@ -62,7 +50,3 @@ def infer():
     )
 
     return jsonify({"inferred": inferred}), 200
-
-PORT = 3001
-if __name__ == '__main__':
-    app.run(debug=True, port=PORT)
