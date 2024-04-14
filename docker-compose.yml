@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  server:
+    build: ./server
+    ports:
+      - "3002:3002"
+    environment:
+      - MONGO_USER=user
+      - MONGO_PASSWORD=password
+      - PORT=3002
+    depends_on:
+      - mongo
+
+  client:
+    build: ./client
+    ports:
+      - "3003:3003"
+
+  microservice:
+    build: ./microservice
+    ports:
+      - "3001:3001"
+
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    ports:
+      - "27017:27017"
