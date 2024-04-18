@@ -10,7 +10,7 @@
       "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\" \"npm run microservice-dev\"",
       "server-install": "cd server && npm install",
       "client-install": "cd client && npm install",
-      "microservice-install": "cd microservice && .\\menv\\Scripts\\pip install --no-cache-dir -r requirements.txt",
+      "microservice-install": "cd microservice && ./menv/bin/pip install --no-cache-dir -r requirements.txt",
       "install-dev": "npm install && npm run server-install && npm run client-install && npm run microservice-install"
     },
     "repository": {

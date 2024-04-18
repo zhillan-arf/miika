@@ -3,7 +3,8 @@ import getRecentSummary from './retrievers/getRecentSummary.js';
 import getRelevantMemories from './retrievers/getRelevantMemories.js';
 import Secretary from '../models/Secretary.js';
 import Chat from '../models/Chat.js';
-import { readFileSync } from 'fs';
+import { readFile } from 'fs';
+import path from 'path';
 
 const MICROSERVICE_URI = process.env.MICROSERVICE_URI;  // temp
 let lastChat = null;
@@ -54,8 +55,8 @@ const makeSystemPrompt = async (user) => {
     try {
         const secretary = await Secretary.findOne({ _id: user.secretaryID });
         const chats = await Chat.find({ _id: user._id }, {userID: 0, readOnly: 0});
-        const filePath = '../prompts/main/system.txt';
-        const systemTemplate = readFileSync(filePath,  'utf8');
+        const filePath = path.join(__dirname, '..prompts/main/system.txt');
+        const systemTemplate = await readFile(filePath, 'utf8');
         const recentChats = getRecentChats(chats);  // except last chat
         const variables = {
             secretaryName: secretary.name,

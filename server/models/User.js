@@ -13,7 +13,6 @@ const userSchema = new Schema({
   profpic: String,  // b64
   gender: Boolean,
   profile: String,
-  personality: String,
   secretaryID: {
     type: Schema.Types.ObjectId,
     ref: 'Secretary'

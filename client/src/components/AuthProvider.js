@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext();
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
 export const AuthProvider = ({ children }) => {
@@ -21,10 +21,15 @@ export const AuthProvider = ({ children }) => {
         validateToken();
     }, []);
 
+    const handleAfterLogin = () => {
+        setIsAuth(true);
+    }
+
     const handleLogout = () => {
         setIsAuth(false); // temp
     }
-    const value = { isAuth, handleLogout };
+    
+    const value = { isAuth, handleAfterLogin, handleLogout };
 
     return (
         <AuthContext.Provider value={value}>

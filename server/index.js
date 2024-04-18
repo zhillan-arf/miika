@@ -1,31 +1,43 @@
 import { Server } from 'socket.io';
+import mongoosePkg from 'mongoose';
 import express from 'express';
+import dotenv from 'dotenv';
 import cors from 'cors';
 import http from 'http';
-import dotenv from 'dotenv';
-dotenv.config();
 
+import socketEvents from './middlewares/socketEvents.js';
+import registerRouter from './routes/register.js';
+import loginRouter from './routes/login.js';
+import verifyRouter from './routes/verify.js';
+import getChatsRouter from './orchestration/retrievers/getChats.js';
+import insertChatRouter from './orchestration/retrievers/insertChat.js';
+import getClassRouter from './orchestration/chains/getClass.js';
+
+import initSecretaries from './middlewares/initSecretary.js';
+
+dotenv.config();
 const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer);
 
 // Middlewares
-const CLIENT_URI = process.env.CLIENT_URI;  // temp
+const CLIENT_URI = process.env.CLIENT_URI;
+const MICROSERVICE_URI = process.env.MICROSERVICE_URI;
+
 const corsOption = { 
-  origin: CLIENT_URI,
-  credentials: true
+  origin: [CLIENT_URI, MICROSERVICE_URI],
+  credentials: true,
+  methods: ['GET', 'POST']
 };
 app.use(cors(corsOption));
-app.use(express.json());
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', CLIENT_URI);
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 
-// MongoDB connection
-import mongoosePkg from 'mongoose';
+app.use(express.json());
+
 const { connect, connection } = mongoosePkg;
 const MONGO_USER = process.env.MONGO_USER;
 const MONGO_PASSWORD = encodeURIComponent(process.env.MONGO_PASSWORD);
@@ -37,30 +49,21 @@ db.on('error', (error) => {
 });
 db.once('open', () => {
     console.log('Database connected successfully');
-  });
+});
 
-// Socket Events
-import socketEvents from './middlewares/socketEvents.js';
+initSecretaries();
 socketEvents(io);
 
 // Routes
-import registerRouter from './routes/register.js';
 app.use(registerRouter);
-import loginRouter from './routes/login.js';
 app.use(loginRouter);
-import verifyRouter from './routes/verify.js';
 app.use(verifyRouter);
-
-import getChatsRouter from './orchestration/retrievers/getChats.js';
 app.use(getChatsRouter);
-import insertChatRouter from './orchestration/retrievers/insertChat.js';
 app.use(insertChatRouter);
-
-import getClassRouter from './orchestration/chains/getClass.js';
 app.use(getClassRouter);
 
 app.get('/', (req, res) => {
-    res.send('MIIKA server connected.');
+    res.send('MIIKA engine 2 connected.');
 });
 
 // Start server
@@ -68,3 +71,5 @@ const PORT = process.env.PORT || 3002;
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+export default app;

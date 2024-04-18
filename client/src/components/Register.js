@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import '../assets/register.css';
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
@@ -8,7 +7,6 @@ const Register = ({onBackToLogin}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const navigate = useNavigate();
 
     const handleNewUser = async(e) => {
         e.preventDefault();
@@ -24,11 +22,11 @@ const Register = ({onBackToLogin}) => {
                 },
                 body: JSON.stringify({ email, password })
             });
+            
             if (response.ok) {
-                navigate('/aigis');
-            } else {
-                alert(response.status);
-            }
+                onBackToLogin();
+            } else alert(response.status);
+
         } catch (error) {
             alert("500 Internal Error!")
         }

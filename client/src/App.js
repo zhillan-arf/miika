@@ -5,28 +5,25 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Aigis from './components/Aigis';
 import ChatRoom from './components/ChatRoom';
-import { ServerSocket } from './components/ServerSocket';
 
 
 const AuthedApp = () => {
     const { isAuth, handleLogout } = useAuth();
+    const [showRegister, setShowRegister] = useState(false);
     const SPA = () => {
-        <ServerSocket>
-            <ChatRoom onLogout={() => {handleLogout()}}/>
-        </ServerSocket>
+        return (<ChatRoom onLogout={() => {handleLogout()}}/>);
     }
     const Gate = () => {
-        const [showRegister, setShowRegister] = useState(false);
-
-        if (showRegister) return <Register  onBackToLogin={() => {setShowRegister(false)}}/>;
-        return <Login onRegister={() => {setShowRegister(true)}}/>
+        if (showRegister) {
+            return (<Register onBackToLogin={() => {setShowRegister(false)}}/>);
+        } else return (<Login onRegister={() => {setShowRegister(true)}}/>);
     }
 
     return (
         <Router>
             <Routes>
                 <Route path='/aigis' exact element={<Aigis/>}/>
-                <Route path='*' element={isAuth ? SPA : Gate}/>
+                <Route path='*' element={isAuth ? SPA() : Gate()}/>
             </Routes>
         </Router>
     );

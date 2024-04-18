@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 
 const entitySchema = new Schema({
     userID : {
-        type: Schema.Type.ObjectID,
+        type: Schema.Types.ObjectId,
         ref: 'User'
     },
     entityName: String,

@@ -1,20 +1,28 @@
 import { Router } from 'express';
 import User from '../models/User.js';
 import { hash }  from 'bcrypt';
+import { getDefaultProfpic, getTempSecretaryID } from '../middlewares/getDefaults.js';
 
 const router = Router();
 const saltRounds = 10;
 
-function isValidEmail(email) {
+const isValidEmail = (email) => {
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
-  }
+}
 
 router.post('/register', async (req, res) => {
     if (isValidEmail(req.body.email)) {
         try {
             const hashedPassword = await hash(req.body.password, saltRounds);
-            const user = new User({email:req.body.email, hash:hashedPassword});
+            const user = new User({
+                email: req.body.email, 
+                hash: hashedPassword,
+                name: req.body.email,  // temp
+                profpic: await getDefaultProfpic('m'),  // temp
+                gender: true,  // temp
+                secretaryID: getTempSecretaryID('mistley')  // temp
+            });
             const registeredUser = await user.save();
             const userResponse = {
                 _id: registeredUser._id,
@@ -22,8 +30,9 @@ router.post('/register', async (req, res) => {
             };
             console.log(userResponse);
             res.status(201).json(userResponse);
-        } catch (error) {
-            res.status(500).send(error);
+        } catch (err) {
+            console.log(`register error ${err}`);  // debug
+            res.status(500).send(err);
         }
     } else {
         res.status(400).send('Not an email!')

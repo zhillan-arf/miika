@@ -2,17 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import ChatHeader from "./ChatHeader.js";
 import ChatBox from "./ChatBox.js";
 import Sidebar from "./Sidebar.js";
-import { useSocket } from "./ServerSocket.js";
+import socket from "../middlewares/Socket.js";
 import "../assets/chatroom.css";
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
-const ChatRoom = () => {
+const ChatRoom = ({ onLogout }) => {
     const parentRef = useRef(null);
-    const [socket, setSocket] = useState(null);
+    const [chats, setChats] = useState([]);
     const [master, setMaster] = useState(null);
     const [secretary, setSecretary] = useState(null);
-    const [chats, setChats] = useState([]);
     const [receivingResponse, setReceivingResponse] = useState(false);
     const [queueingResponse, setQueueingResponse] = useState(false);
 
@@ -32,15 +31,10 @@ const ChatRoom = () => {
         }
     }
 
-    const requestResponse = () => {
-        setReceivingResponse(true);
-        socket.emit('requestResponse', user);
-    }
-
     useEffect(() => {
-        const socketInstance = useSocket();
-        setSocket(socketInstance);
-        socket.on('receiveResponse', handleResponse);
+        socket.on('receiveResponse', (data) => {
+            handleResponse(data);
+        });
 
         const fetchData = async () => {
             try {
@@ -59,52 +53,14 @@ const ChatRoom = () => {
         fetchData();
 
         return () => {
+            socket.off('receiveResponse');
             socket.disconnect();
           };
     });
 
-    const masterProfpicSrc = `data:image/png;base64,${master.profpic}`;
-    const secretaryProfpicSrc = `data:image/png;base64,${secretary.profpic}`;
-    
-    const handleEnter = async (newText, index) => {
-        const updatedChats = chats.map(chat => ({...chat, readOnly: true}));
-        updatedChats[index].text = newText;
-        updatedChats[index].date = new Date();
-
-        try {
-            const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getclass`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedChats.slice(-10))
-            });
-            updatedChats[index].chatClass = response.chatClass;
-        } catch (err) {
-            console.log("Failed to get chat class");
-            return;
-        }
-        
-        try {
-            await fetch(`${REACT_APP_BACKEND_URI}/api/insertchats`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updatedChats[index])
-            });
-        } catch (err) {
-            console.log("Failed to insert data to server");
-            return;
-        }
-
-        updatedChats.push(getNewChat());
-        setChats(updatedChats);
-
-        if (socket && !receivingResponse) {
-            setReceivingResponse(true);
-            socket.emit('requestResponse', user);
-        } else setQueueingResponse(true);
+    const requestResponse = () => {
+        setReceivingResponse(true);
+        socket.emit('requestResponse', master);
     }
 
     const handleResponse = (newChats) => {
@@ -114,6 +70,52 @@ const ChatRoom = () => {
             requestResponse();
         } else setReceivingResponse(false);
     }
+
+    const getChatClass = async (chats) => {
+        try {
+            const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getclass`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(chats)
+            });
+            return response.chatClass;
+        } catch (err) {
+            console.log(`Failed to get chat class: ${err}`);
+        }
+    }
+
+    const insertChat = async (chat) => {
+        try {
+            await fetch(`${REACT_APP_BACKEND_URI}/api/insertchat`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(chat)
+            });
+        } catch (err) {
+            console.log(`Failed to insert data to server: ${err}`);
+        }
+    }
+
+    const handleEnter = async (newText, index) => {
+        const updatedChats = chats.map(chat => ({...chat, readOnly: true}));
+        updatedChats[index].text = newText;
+        updatedChats[index].date = new Date();
+        updatedChats[index].chatClass = getChatClass(updatedChats.slice(-10));
+        insertChat(updatedChats[index]);
+        
+        updatedChats.push(getNewChat());
+        setChats(updatedChats);
+
+        if (!receivingResponse) {
+            setReceivingResponse(true);
+            socket.emit('requestResponse', master);
+        } else setQueueingResponse(true);
+    }
+
+    const masterProfpicSrc = `data:image/png;base64,${master.profpic}`;
+    const secretaryProfpicSrc = `data:image/png;base64,${secretary.profpic}`;
 
     return (
         <div className="container">

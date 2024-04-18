@@ -1,6 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from './AuthProvider'
+import React, { useState } from 'react';
+import { useAuth } from './AuthProvider'
 import '../assets/login.css';
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
@@ -8,11 +7,11 @@ const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 const Login = ({onRegister}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { setIsAuth } = useContext(AuthContext);
-    const navigate = useNavigate();
+    const { handleAfterLogin } = useAuth();
 
     const handleLogin = async(e) => {
         e.preventDefault();
+        console.log("debug login 1");
         try {
             const response = await fetch(`${REACT_APP_BACKEND_URI}/login`, {
                 method: 'POST',
@@ -21,15 +20,15 @@ const Login = ({onRegister}) => {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify({email, password})
-            })
+            });
+            console.log("debug login 2");
             if (response.ok) {
-                setIsAuth(true); 
-                navigate('/aigis');
+                handleAfterLogin(); 
             } else {
                 alert(response.status);
             }
-        } catch (error) {
-            alert("500 internal error!");
+        } catch (err) {
+            alert(`500 internal error!: ${err}`);
         }
     };
     return (
