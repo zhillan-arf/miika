@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
                 name: req.body.email,  // temp
                 profpic: await getDefaultProfpic('m'),  // temp
                 gender: true,  // temp
-                secretaryID: getTempSecretaryID('mistley')  // temp
+                secretaryID: await getTempSecretaryID('mistley')  // temp
             });
             const registeredUser = await user.save();
             const userResponse = {

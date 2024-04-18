@@ -11,7 +11,6 @@ const Login = ({onRegister}) => {
 
     const handleLogin = async(e) => {
         e.preventDefault();
-        console.log("debug login 1");
         try {
             const response = await fetch(`${REACT_APP_BACKEND_URI}/login`, {
                 method: 'POST',
@@ -21,12 +20,7 @@ const Login = ({onRegister}) => {
                 },
                 body: JSON.stringify({email, password})
             });
-            console.log("debug login 2");
-            if (response.ok) {
-                handleAfterLogin(); 
-            } else {
-                alert(response.status);
-            }
+            if (response.ok) handleAfterLogin(); 
         } catch (err) {
             alert(`500 internal error!: ${err}`);
         }

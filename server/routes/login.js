@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
             res.status(401).send('Wrong credentials!');
         }
     } else {
-        res.status(404).send('Wrong credentials');
+        res.status(401).send('Not registered!');
     }
 });
 
