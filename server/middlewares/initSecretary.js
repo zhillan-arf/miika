@@ -16,9 +16,8 @@ const initSecretary = async (secretaryName, secretaryPath) => {
             protocol: await readFile(path.resolve(secretaryPath, 'protocol.txt'))
         });
         const newSecretary = await secretary.save();
-        return newSecretary;
     } catch (err) {
-        console.log(`get secretary ini err ${err}`);
+        console.log(`get secretary init err: ${err}`);
     }
 }
 
@@ -26,11 +25,14 @@ const initSecretaries = async () => {
     const secretariesPath = path.resolve('prompts/secretaries');
     const secretaryNames = await readdir(secretariesPath);
     for (const secretaryName of secretaryNames) {
-        const secretaryPath = path.resolve(secretariesPath, secretaryName);
-        const aspects = await readdir(secretaryPath);
-        if (JSON.stringify(sAspects.sort()) === JSON.stringify(aspects.sort())) {
-            initSecretary(secretaryName, secretaryPath);
-        } else throw Error(`Missing files at ${secretaryName}`);
+        const secretary = await Secretary.findOne({name: secretaryName});
+        if (!secretary) {
+            const secretaryPath = path.resolve(secretariesPath, secretaryName);
+            const aspects = await readdir(secretaryPath);
+            if (JSON.stringify(sAspects.sort()) === JSON.stringify(aspects.sort())) {
+                initSecretary(secretaryName, secretaryPath);
+            } else throw Error(`Missing files at ${secretaryName}`);
+        }
     }
 }
 

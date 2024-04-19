@@ -10,10 +10,11 @@ const router = Router();
 router.get('/api/getchats', async (req, res) => {
     const token = req.cookies.token;
     const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
-    
+    console.log('getchats API is called');  // debug
     try {
         const decoded = verify(token, JWT_SECRET_KEY);
         const userID = decoded.userID;
+        console.log(`getChats js: ${userID}`);  // debug
         
         try {
             const mastersChats = await Chat.find({userID: userID}, {mentionedEntities: 0});

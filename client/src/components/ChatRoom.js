@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import ChatHeader from "./ChatHeader.js";
 import ChatBox from "./ChatBox.js";
 import Sidebar from "./Sidebar.js";
-import socket from "../middlewares/Socket.js";
+import io from 'socket.io-client';
 import "../assets/chatroom.css";
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
@@ -11,6 +11,7 @@ const ChatRoom = ({ onLogout }) => {
     const parentRef = useRef(null);
     const [chats, setChats] = useState([]);
     const [master, setMaster] = useState(null);
+    const [socket, setSocket] = useState(io(REACT_APP_BACKEND_URI, {'transports': ['websocket']}));
     const [secretary, setSecretary] = useState(null);
     const [receivingResponse, setReceivingResponse] = useState(false);
     const [queueingResponse, setQueueingResponse] = useState(false);
@@ -31,45 +32,34 @@ const ChatRoom = ({ onLogout }) => {
         }
     }
 
-    useEffect(() => {
-        socket.on('receiveResponse', (data) => {
-            handleResponse(data);
-        });
-
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getchats`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                const data = await response.json()
-                setMaster(data.master);
-                setSecretary(data.secretary);
-                setChats(...data.chat, getNewChat());
-            } catch (err) {
-                console.log(`Error at fetching chats: ${err}`);
-            }
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getchats`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+            const data = await response.json()
+            setMaster(data.master);
+            setSecretary(data.secretary);
+            setChats(...data.chat, getNewChat());
+        } catch (err) {
+            console.log(`Error at fetching chats: ${err}`);
         }
-        fetchData();
+    }
+    fetchData();
 
-        return () => {
-            socket.off('receiveResponse');
-            socket.disconnect();
-          };
-    });
-
-    const requestResponse = () => {
+    const requestResponse = useCallback(() => {
         setReceivingResponse(true);
         socket.emit('requestResponse', master);
-    }
+    }, [socket, master]);
 
-    const handleResponse = (newChats) => {
+    const handleResponse = useCallback((newChats) => {
         setChats(chats.concat(newChats));
         if (queueingResponse) {
             setQueueingResponse(false);
             requestResponse();
         } else setReceivingResponse(false);
-    }
+    }, [chats, queueingResponse, requestResponse]);
 
     const getChatClass = async (chats) => {
         try {
@@ -98,6 +88,23 @@ const ChatRoom = ({ onLogout }) => {
         }
     }
 
+    useEffect(() => {
+        const newSocket = io(REACT_APP_BACKEND_URI, {
+            'transports': ['websocket']
+        });
+
+        newSocket.on('receiveResponse', (data) => {
+            handleResponse(data);
+        });
+
+        setSocket(newSocket);
+
+        return () => {
+            newSocket.off('receiveResponse');
+            newSocket.disconnect();
+          };
+    }, [handleResponse]);
+
     const handleEnter = async (newText, index) => {
         const updatedChats = chats.map(chat => ({...chat, readOnly: true}));
         updatedChats[index].text = newText;
@@ -114,12 +121,15 @@ const ChatRoom = ({ onLogout }) => {
         } else setQueueingResponse(true);
     }
 
-    const masterProfpicSrc = `data:image/png;base64,${master.profpic}`;
-    const secretaryProfpicSrc = `data:image/png;base64,${secretary.profpic}`;
+    const getProfpicSrc = (type) => {
+        if (type === 'master') return `data:image/png;base64,${master.profpic}`;
+        else if (type === 'secretary') return `data:image/png;base64,${secretary.profpic}`;
+    }
 
     return (
         <div className="container">
-            <Sidebar masterName={master.name} masterProfpicSrc={masterProfpicSrc}>
+            {console.log("chatroom returning page")}
+            <Sidebar masterName={master.name} masterProfpicSrc={getProfpicSrc('master')}>
                 1 - midsummer is app...
             </Sidebar>
             <div className="room" ref={parentRef}>
@@ -131,15 +141,15 @@ const ChatRoom = ({ onLogout }) => {
                             key={chat._id}
                             chat={chat}
                             onEnter={(text) => handleEnter(text, index)}
-                            masterProfpicSrc={masterProfpicSrc}
-                            secretaryProfpicSrc={secretaryProfpicSrc}
+                            masterProfpicSrc={getProfpicSrc('master')}
+                            secretaryProfpicSrc={getProfpicSrc('secretary')}
                         />
                     ))}
                     {/* Secretary info */}
                     {receivingResponse && <ChatBox 
                         key='isTyping'
                         chat={getNewChat('secretary', 'false', true, `${secretary.name} is typing...`)}
-                        secretaryProfpicSrc={secretaryProfpicSrc}
+                        secretaryProfpicSrc={getProfpicSrc('secretary')}
                         isTypingBox={true}
                     />}
                     {/* Current input box */}
@@ -148,7 +158,7 @@ const ChatRoom = ({ onLogout }) => {
                             key={chat._id}
                             chat={chat}
                             onEnter={(text) => handleEnter(text, index)}
-                            masterProfpicSrc={masterProfpicSrc}
+                            masterProfpicSrc={getProfpicSrc('master')}
                         />
                     ))}
                 </div>
