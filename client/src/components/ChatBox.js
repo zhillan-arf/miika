@@ -8,7 +8,7 @@ const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypin
         return `${hours}.${minutes < 10 ? '0' : ''}${minutes}`;
     }
     
-    const displayTime = useState(convertToDisplayTime(chat.date));
+    const displayTime = convertToDisplayTime(chat.date);
     const [inputValue, setInputValue] = useState(chat.text || '');
     const inputRef = useRef(null);
 
@@ -39,7 +39,9 @@ const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypin
         <div className='chat-box'>
             <img className='chat-profpic' src={(chat.role === 'master') ? masterProfpicSrc : secretaryProfpicSrc} alt='profpic'/>
             <div className='chat-identity'>
-                <span className='identity-text'>{chat.userName} <span className='identity-time'>at {displayTime}</span></span>
+                <span className='identity-text'>{chat.userName} 
+                    <span className='identity-time'> at {displayTime}</span>
+                </span>
             </div>
             <div 
                 ref={inputRef}

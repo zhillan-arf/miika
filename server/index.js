@@ -4,6 +4,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import http from 'http';
+import cookieParser from 'cookie-parser';
 
 import socketEvents from './middlewares/socketEvents.js';
 import registerRouter from './routes/register.js';
@@ -24,18 +25,18 @@ const io = new Server(httpServer);
 const CLIENT_URI = process.env.CLIENT_URI;
 const MICROSERVICE_URI = process.env.MICROSERVICE_URI;
 
-const corsOption = { 
+app.use(cors({
   origin: [CLIENT_URI, MICROSERVICE_URI],
   credentials: true,
   methods: ['GET', 'POST']
-};
-app.use(cors(corsOption));
+}));
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 
+app.use(cookieParser());
 app.use(express.json());
 
 const { connect, connection } = mongoosePkg;

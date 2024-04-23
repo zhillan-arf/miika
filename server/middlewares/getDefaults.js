@@ -9,5 +9,6 @@ export const getDefaultProfpic = async (gender) => {
 }
 
 export const getTempSecretaryID = async (sName) => {
+    console.log(`getdefaults secid ${Secretary.findOne({name: sName}, '_id')}`);  // debug
     return await Secretary.findOne({name: sName}, '_id');
 }

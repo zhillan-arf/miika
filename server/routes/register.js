@@ -24,6 +24,7 @@ router.post('/register', async (req, res) => {
                 secretaryID: await getTempSecretaryID('mistley')  // temp
             });
             const registeredUser = await user.save();
+            console.log(`register new secid: ${registeredUser.secretaryID}`);  // debug
             const userResponse = {
                 _id: registeredUser._id,
                 username: registeredUser.email,

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ChatHeader from "./ChatHeader.js";
 import ChatBox from "./ChatBox.js";
 import Sidebar from "./Sidebar.js";
@@ -7,59 +7,47 @@ import "../assets/chatroom.css";
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
+const getNewChat = (length, master, secretary, role='master', autoFocus=true, readOnly=false, text='') => {
+    return {
+        _id: `chat-${length}`,
+        userID: master._id,
+        date: new Date(),
+        role: role,
+        userName: role === 'master'? master.name : secretary.name,
+        chatClass: '',
+        text: text,
+        autoFocus: autoFocus,
+        readOnly: readOnly,
+        lastRecalled: new Date(),
+        timesRecalled: 1
+    }
+}
+
+const fetchData = async () => {
+    try {
+        const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getchats`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+        const data = await response.json();
+        const master = data.master;
+        const secretary = data.secretary;
+        const chats = [...data.chats, getNewChat(data.chats.length, master, secretary)];
+        return {master, secretary, chats};
+    } catch (err) {
+        console.log(`Error at fetching chats: ${err}`);
+    }
+}
+
 const ChatRoom = ({ onLogout }) => {
     const parentRef = useRef(null);
-    const [chats, setChats] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [master, setMaster] = useState(null);
-    const [socket, setSocket] = useState(io(REACT_APP_BACKEND_URI, {'transports': ['websocket']}));
     const [secretary, setSecretary] = useState(null);
+    const [chats, setChats] = useState(null);
+    const [socket, setSocket] = useState(null);
     const [receivingResponse, setReceivingResponse] = useState(false);
     const [queueingResponse, setQueueingResponse] = useState(false);
-
-    const getNewChat = (role='master', autoFocus=true, readOnly=false, text='') => {
-        return {
-            _id: `chat-${chats.length}`,
-            userID: master._id,
-            date: new Date(),
-            role: role,
-            userName: role === 'master'? master.name : secretary.name,
-            chatClass: '',
-            text: text,
-            autoFocus: autoFocus,
-            readOnly: readOnly,
-            lastRecalled: new Date(),
-            timesRecalled: 1
-        }
-    }
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getchats`, {
-                method: 'GET',
-                credentials: 'include'
-            });
-            const data = await response.json()
-            setMaster(data.master);
-            setSecretary(data.secretary);
-            setChats(...data.chat, getNewChat());
-        } catch (err) {
-            console.log(`Error at fetching chats: ${err}`);
-        }
-    }
-    fetchData();
-
-    const requestResponse = useCallback(() => {
-        setReceivingResponse(true);
-        socket.emit('requestResponse', master);
-    }, [socket, master]);
-
-    const handleResponse = useCallback((newChats) => {
-        setChats(chats.concat(newChats));
-        if (queueingResponse) {
-            setQueueingResponse(false);
-            requestResponse();
-        } else setReceivingResponse(false);
-    }, [chats, queueingResponse, requestResponse]);
 
     const getChatClass = async (chats) => {
         try {
@@ -88,22 +76,38 @@ const ChatRoom = ({ onLogout }) => {
         }
     }
 
+    const fetchSetData = async () => {
+        const data = await fetchData();
+        setMaster(data.master);
+        setSecretary(data.secretary);
+        setChats(data.chats);
+        setLoading(false);
+    }
+
+    useEffect(() => {fetchSetData()}, []);
+
     useEffect(() => {
-        const newSocket = io(REACT_APP_BACKEND_URI, {
-            'transports': ['websocket']
-        });
+        if (!socket) {
+            const newSocket = io(REACT_APP_BACKEND_URI, {
+                'transports': ['websocket']
+            });
+            setSocket(newSocket);
+        }
+    },[socket]);
 
-        newSocket.on('receiveResponse', (data) => {
-            handleResponse(data);
-        });
-
-        setSocket(newSocket);
-
-        return () => {
-            newSocket.off('receiveResponse');
-            newSocket.disconnect();
-          };
-    }, [handleResponse]);
+    useEffect(() => {
+        if (socket) {
+            socket.on('receiveResponse', (newChats) => {
+                setChats(chats.concat(newChats));  // user permitted to input more before receive response
+                if (queueingResponse) {
+                    setQueueingResponse(false);
+                    socket.emit('requestResponse', master);
+                } else {
+                    setReceivingResponse(false);
+                }
+            });
+        }
+    }, [socket, queueingResponse, chats, master]);
 
     const handleEnter = async (newText, index) => {
         const updatedChats = chats.map(chat => ({...chat, readOnly: true}));
@@ -112,7 +116,7 @@ const ChatRoom = ({ onLogout }) => {
         updatedChats[index].chatClass = getChatClass(updatedChats.slice(-10));
         insertChat(updatedChats[index]);
         
-        updatedChats.push(getNewChat());
+        updatedChats.push(getNewChat(chats.length, master, secretary));
         setChats(updatedChats);
 
         if (!receivingResponse) {
@@ -126,9 +130,10 @@ const ChatRoom = ({ onLogout }) => {
         else if (type === 'secretary') return `data:image/png;base64,${secretary.profpic}`;
     }
 
-    return (
+    if (loading) {
+        return (<div className="loading">Loading...</div>);
+    } else return (
         <div className="container">
-            {console.log("chatroom returning page")}
             <Sidebar masterName={master.name} masterProfpicSrc={getProfpicSrc('master')}>
                 1 - midsummer is app...
             </Sidebar>
@@ -148,7 +153,7 @@ const ChatRoom = ({ onLogout }) => {
                     {/* Secretary info */}
                     {receivingResponse && <ChatBox 
                         key='isTyping'
-                        chat={getNewChat('secretary', 'false', true, `${secretary.name} is typing...`)}
+                        chat={getNewChat(chats.length, master, secretary, 'secretary', 'false', true, `${secretary.name} is typing...`)}
                         secretaryProfpicSrc={getProfpicSrc('secretary')}
                         isTypingBox={true}
                     />}

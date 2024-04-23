@@ -22,7 +22,7 @@ const Login = ({onRegister}) => {
             });
             if (response.ok) handleAfterLogin(); 
         } catch (err) {
-            alert(`500 internal error!: ${err}`);
+            console.log(`500 internal error!: ${err}`);
         }
     };
     return (

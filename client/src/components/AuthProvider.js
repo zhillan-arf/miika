@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
     const [isAuth, setIsAuth ] = useState(false);
 
     useEffect(() => {
-        const validateToken = async() => {
+        const verify = async () => {
             try {
                 const response = await fetch(`${REACT_APP_BACKEND_URI}/api/verify`, {
                     method: 'GET',
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
                 setIsAuth(false);
             }
         };
-        validateToken();
+        verify();
     }, []);
 
     const handleAfterLogin = () => {

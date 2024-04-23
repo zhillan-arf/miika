@@ -17,9 +17,7 @@ router.post('/login', async (req, res) => {
         const isMatch = await compare(password, user.hash);
         console.log(isMatch);
         if (isMatch) {
-            const tokenPayload = {
-                userID : user._id
-            }
+            const tokenPayload = { userID : user._id }
             const token = sign(tokenPayload, JWT_SECRET_KEY,{ expiresIn: '3h' });
             res.cookie('token', token, {
                 httpOnly: true,
@@ -27,8 +25,7 @@ router.post('/login', async (req, res) => {
                 sameSite: 'strict',
                 maxAge: 10800000  // 3h
             })
-            .status(200)
-            .send(`${user.email} is logged in.`);
+            .status(200).send("Token loaded");
         }
         else {
             res.status(401).send('Wrong credentials!');
