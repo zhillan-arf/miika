@@ -1,14 +1,13 @@
-from flask import request, jsonify
-from app import app
+from flask import Blueprint, request, jsonify
 import os, torch
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 this_path = os.path.dirname(os.path.realpath(__file__))
-models_cache = os.path.join(this_path, 'llm_models')  # Name of directory
+models_cache = os.path.join(this_path, '../llm_models')  # Name of directory
 
 torch.cuda.empty_cache()
 
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 hf_model_id = "NousResearch/Nous-Hermes-2-Mistral-7B-DPO"
 tokenizer = AutoTokenizer.from_pretrained(hf_model_id, cache_dir=models_cache)
 
@@ -26,7 +25,9 @@ model = AutoModelForCausalLM.from_pretrained(
     attn_implementation="flash_attention_2"
 )
 
-@app.route("/api/infer", methods=["POST"])
+infer_bp = Blueprint('inference', __name__)
+
+@infer_bp.route("/api/infer", methods=["POST"])
 def infer():
     input = request.data.decode("utf-8")
     if not input:
