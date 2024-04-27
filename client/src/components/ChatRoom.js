@@ -9,12 +9,11 @@ const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
 const getNewChat = (length, master, secretary, role='master', autoFocus=true, readOnly=false, text='') => {
     return {
-        _id: `chat-${length}`,
+        _id: `temp_chat-${length}`,
         userID: master._id,
         date: new Date(),
         role: role,
         userName: role === 'master'? master.name : secretary.name,
-        chatClass: '',
         text: text,
         autoFocus: autoFocus,
         readOnly: readOnly,
@@ -44,33 +43,34 @@ const ChatRoom = ({ onLogout }) => {
     const [loading, setLoading] = useState(true);
     const [master, setMaster] = useState(null);
     const [secretary, setSecretary] = useState(null);
-    const [chats, setChats] = useState(null);
+    const [chats, setChats] = useState([]);
     const [socket, setSocket] = useState(null);
     const [receivingResponse, setReceivingResponse] = useState(false);
     const [queueingResponse, setQueueingResponse] = useState(false);
 
-    const getChatClass = async (chats) => {
-        try {
-            const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getclass`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(chats)
-            });
-            return response.chatClass;
-        } catch (err) {
-            console.log(`Failed to get chat class: ${err}`);
-        }
+    const dateToStr = (date) => {
+        if (date instanceof Date) {
+            return date.toISOString();
+        } else return date;
     }
-
+    
     const insertChat = async (chat) => {
         try {
-            await fetch(`${REACT_APP_BACKEND_URI}/api/insertchat`, {
+            delete chat._id;
+            chat.date = dateToStr(chat.date);
+            chat.lastRecalled = dateToStr(chat.date);
+
+            const response = await fetch(`${REACT_APP_BACKEND_URI}/api/insertchat`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(chat)
             });
+            const newChat = await response.json();
+            newChat.date = new Date(newChat.date);
+            return newChat;
         } catch (err) {
             console.log(`Failed to insert data to server: ${err}`);
         }
@@ -95,10 +95,21 @@ const ChatRoom = ({ onLogout }) => {
         }
     },[socket]);
 
+    const strToDate = (dateStr) => {
+        if (typeof dateStr === 'string') {
+            return new Date(dateStr);
+        } else return dateStr;
+    }
+
     useEffect(() => {
         if (socket) {
             socket.on('receiveResponse', (newChats) => {
-                setChats(chats.concat(newChats));  // user permitted to input more before receive response
+                console.log('I am naughty and I am caught!');
+                newChats.forEach((newChat) => {
+                    newChat.date = strToDate(newChat.date);
+                    newChat.lastRecalled = strToDate(newChat.lastRecalled);
+                });
+                // setChats(chats.concat(newChats));  // user permitted to input more before receive response
                 if (queueingResponse) {
                     setQueueingResponse(false);
                     socket.emit('requestResponse', master);
@@ -112,9 +123,15 @@ const ChatRoom = ({ onLogout }) => {
     const handleEnter = async (newText, index) => {
         const updatedChats = chats.map(chat => ({...chat, readOnly: true}));
         updatedChats[index].text = newText;
+        console.log(`entered text: ${newText}`);
         updatedChats[index].date = new Date();
-        updatedChats[index].chatClass = getChatClass(updatedChats.slice(-10));
-        insertChat(updatedChats[index]);
+        updatedChats[index].lastRecalled = new Date();
+
+        const newChat = await insertChat(updatedChats[index]);
+
+        updatedChats[index]._id = newChat._id;
+        updatedChats[index].date = strToDate(newChat.date);
+        updatedChats[index].lastRecalled = strToDate(newChat.lastRecalled);
         
         updatedChats.push(getNewChat(chats.length, master, secretary));
         setChats(updatedChats);
@@ -130,6 +147,10 @@ const ChatRoom = ({ onLogout }) => {
         else if (type === 'secretary') return `data:image/png;base64,${secretary.profpic}`;
     }
 
+    const getIsTyping = () => {
+        return getNewChat(chats.length, master, secretary, 'secretary', 'false', true, `${secretary.name} is typing...`)
+    }
+
     if (loading) {
         return (<div className="loading">Loading...</div>);
     } else return (
@@ -141,7 +162,7 @@ const ChatRoom = ({ onLogout }) => {
                 <ChatHeader parentRef={parentRef}/>
                 <div className="chat-feed">
                     {/* Previous transcripts */}
-                    {chats.slice(0, -1).map((chat, index) => (
+                    {chats.map((chat, index) => (
                         <ChatBox
                             key={chat._id}
                             chat={chat}
@@ -150,22 +171,13 @@ const ChatRoom = ({ onLogout }) => {
                             secretaryProfpicSrc={getProfpicSrc('secretary')}
                         />
                     ))}
-                    {/* Secretary info */}
+                    {/* Secretary is typing */}
                     {receivingResponse && <ChatBox 
                         key='isTyping'
-                        chat={getNewChat(chats.length, master, secretary, 'secretary', 'false', true, `${secretary.name} is typing...`)}
+                        chat={getIsTyping()}
                         secretaryProfpicSrc={getProfpicSrc('secretary')}
                         isTypingBox={true}
                     />}
-                    {/* Current input box */}
-                    {chats.slice(-1).map((chat, index) => (
-                        <ChatBox
-                            key={chat._id}
-                            chat={chat}
-                            onEnter={(text) => handleEnter(text, index)}
-                            masterProfpicSrc={getProfpicSrc('master')}
-                        />
-                    ))}
                 </div>
             </div>
         </div>

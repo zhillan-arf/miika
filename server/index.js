@@ -1,7 +1,9 @@
+import { config } from 'dotenv';
+config();
+
 import { Server } from 'socket.io';
 import mongoosePkg from 'mongoose';
 import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import http from 'http';
 import cookieParser from 'cookie-parser';
@@ -12,18 +14,16 @@ import loginRouter from './routes/login.js';
 import verifyRouter from './routes/verify.js';
 import getChatsRouter from './orchestration/retrievers/getChats.js';
 import insertChatRouter from './orchestration/retrievers/insertChat.js';
-import getClassRouter from './orchestration/chains/getClass.js';
 
 import initSecretaries from './middlewares/initSecretary.js';
 
-dotenv.config();
 const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer);
 
 // Middlewares
 const CLIENT_URI = process.env.CLIENT_URI;
-const MICROSERVICE_URI = process.env.MICROSERVICE_URI;
+export const MICROSERVICE_URI = process.env.MICROSERVICE_URI;
 
 app.use(cors({
   origin: [CLIENT_URI, MICROSERVICE_URI],
@@ -61,7 +61,6 @@ app.use(loginRouter);
 app.use(verifyRouter);
 app.use(getChatsRouter);
 app.use(insertChatRouter);
-app.use(getClassRouter);
 
 app.get('/', (req, res) => {
     res.send('MIIKA engine 2 connected.');

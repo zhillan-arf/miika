@@ -1,19 +1,11 @@
-import jwt from "jsonwebtoken";
-const { verify } = jwt;
 import { Router } from 'express';
+import verifyToken from '../middlewares/verifyToken.js';
 
 const router = Router();
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+router.use(verifyToken);
 
-router.get('/api/verify', (req, res) => {
-    const token = req.cookies ? req.cookies['token'] : null;
-
-    if (!token) return res.status(401).send("No token provided!");
-    
-    verify(token, JWT_SECRET_KEY, (err, decoded) => {
-        if (err) return res.status(401).send('Failed to authenticate token');
-        return res.status(200).send('Token authenticated successfully');
-    })
+router.get('/api/verify', verifyToken, (req, res) => {
+    return res.status(200).send('Token authenticated successfully');
 })
 
 export default router;

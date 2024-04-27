@@ -8,7 +8,7 @@ const getOrdinalSuffix = (day) => {
     }
 }
 
-const getFormatDate = () => {
+export const getFormatDate = () => {
     const date = new Date();
     const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
     const month = date.toLocaleDateString('en-US', { month: 'long' });
@@ -19,5 +19,3 @@ const getFormatDate = () => {
     const formattedDate = `${dayOfWeek}, ${day}${ordinalSuffix} of ${month} ${year}`;
     return formattedDate;
 }
-
-export default getFormatDate;

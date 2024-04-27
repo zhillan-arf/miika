@@ -1,9 +1,9 @@
 import React, {useState, useRef, useEffect} from 'react';
 import "../assets/chatheader.css";
-import getDate from "../middlewares/getFormatDate.js";
+import { getFormatDate } from "../middlewares/getFormatDate.js";
 
 const ChatHeader = ({ parentRef }) => {
-    const displayDate = getDate();
+    const displayDate = getFormatDate();
     const selfRef = useRef(null);
     const [selfWidth, setSelfWidth] = useState(0);
 

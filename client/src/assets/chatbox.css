@@ -24,8 +24,8 @@
     cursor: text;
 }
 
-.chat-text-bold {
-    font-weight: bold;
+.chat-text-italic {
+    font-style: italic;
 }
 
 .chat-text::placeholder {

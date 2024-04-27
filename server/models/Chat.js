@@ -10,7 +10,6 @@ const chatSchema = new Schema({
     default: Date.now
   },
   role: String,
-  chatClass: String,
   text: String,
   autoFocus: Boolean,
   readOnly: Boolean,

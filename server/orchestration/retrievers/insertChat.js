@@ -1,27 +1,27 @@
 import { Router } from "express";
 import Chat from "../../models/Chat.js";
-import jwt from "jsonwebtoken";
-const { verify } = jwt;
+import verifyToken from "../../middlewares/verifyToken.js";
 
 const router = Router();
+router.use(verifyToken);
 
-router.post('api/insertchat', async (req, res) => {
-    // All chats goes to one bucket
-    const token = req.cookies.token;
-    const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
-    const chat = new Chat(req.body);
+const strToDate = (dateStr) => {
+    if (typeof dateStr === 'string') {
+        return new Date(dateStr);
+    } else return dateStr;
+}
 
+router.post('/api/insertchat', async (req, res) => {
     try {
-        const decoded = verify(token, JWT_SECRET_KEY);
-        try {
-            const newChat = await chat.save();
-            res.status(201).json(newChat);
-        } catch (error) {
-            res.status(400).json({error: 'Internal server error'});
-        }
+        let chat = req.body;
+        chat.date = strToDate(chat.date);
+        chat.lastRecalled = strToDate(chat.lastRecalled);
 
+        const newChat = await Chat.create(chat);
+        res.status(201).json(newChat);
+        
     } catch (err) {
-        res.status(401).send('Invalid token.');
+        res.status(400).json({error: `Internal server error: ${err}`});
     }
 });
 

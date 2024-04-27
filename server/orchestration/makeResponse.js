@@ -1,3 +1,6 @@
+import { config } from 'dotenv';
+config();
+
 import getMentionedEntities from './retrievers/getMentionedEntities.js';
 import getRecentSummary from './retrievers/getRecentSummary.js';
 import getRelevantMemories from './retrievers/getRelevantMemories.js';
@@ -6,27 +9,20 @@ import Chat from '../models/Chat.js';
 import { readFile } from 'fs';
 import path from 'path';
 
-const MICROSERVICE_URI = process.env.MICROSERVICE_URI;  // temp
-let lastChat = null;
+const MICROSERVICE_URI = process.env.MICROSERVICE_URI;
 
-const delay = (duration) => {
-    return new Promise(resolve => setTimeout(resolve, duration));
-}
-
-// System
-const getRecentChats = (chats) => {
+const getRecentChats = async (chats) => {
     const tokenCap = 2000;
     let i = chats.length - 1;
     let currentLength = 0;
     
     for (i; i >= 0; i--) {
-        textLength = chats[i].text.length;
+        const textLength = chats[i].text.length;
         if (currentLength + textLength >= tokenCap) break;
         currentLength += textLength;
     }
 
-    const recentChats = chats.slice(i, chats.length - 1);
-    lastChat = chats[chats.length - 1];
+    const recentChats = chats.slice(i, chats.length);
     return recentChats;
 }
 
@@ -48,16 +44,14 @@ const fillSystemTemplate = (systemTemplate, variables) => {
         const regex = new RegExp(`{{${key}}}`, 'g');
         systemTemplate = systemTemplate.replace(regex, variables[key]);
     });
+    
     return systemTemplate;
 }
 
-const makeSystemPrompt = async (user) => {
+const makeSystemPrompt = async (user, secretary, recentChats) => {
     try {
-        const secretary = await Secretary.findOne({ _id: user.secretaryID });
-        const chats = await Chat.find({ _id: user._id }, {userID: 0, readOnly: 0});
-        const filePath = path.join(__dirname, '..prompts/main/system.txt');
+        const filePath = path.resolve('prompts/main/system.txt');
         const systemTemplate = await readFile(filePath, 'utf8');
-        const recentChats = getRecentChats(chats);  // except last chat
         const variables = {
             secretaryName: secretary.name,
             chatExamples: secretary.chatExamples,
@@ -69,23 +63,22 @@ const makeSystemPrompt = async (user) => {
             userProfile: user.profile,
             recentSummary: getRecentSummary(recentChats),
             relevantMemories: getRelevantMemories(recentChats, user),
-            formattedRecentChats: formatRecentChats(recentChats)
+            formattedRecentChats: formatRecentChats(recentChats.slice(0, recentChats.length - 1))
         }
+
         return fillSystemTemplate(systemTemplate, variables);
+
     } catch (err) {
         return `ERROR Making Prompt: ${err}`;
     }
 }
 
-// Assistant
 const parseNewChats = (inferred, user) => {
     const texts = inferred.split('\n');
     const newChats = texts.map(text => ({
-        _id: null,
         userID: user._id,
         date: new Date(),
         role: 'secretary',
-        chatClass: null,
         text: text,
         autoFocus: false,
         readOnly: true,
@@ -93,10 +86,13 @@ const parseNewChats = (inferred, user) => {
         timesRecalled: 1,
         mentionedEntities: getMentionedEntities(inferred)
     }));
+
+    return newChats;
 }
 
-const makeInference = async (systemPrompt, lastChat) => {
-    const prompt = `<|im_start|>system\n${systemPrompt}\n<|im_start|>user\n${lastChat.text}\n<|im_start|>assistant`;
+const makeInference = async (systemPrompt, userPrompt) => {
+    const prompt = `<|im_start|>system\n${systemPrompt}\n<|im_start|>user\n${userPrompt}\n<|im_start|>assistant`;
+    console.log(prompt);  // debug
 
     try {
         const response = fetch(`${MICROSERVICE_URI}/api/infer`, {
@@ -112,23 +108,28 @@ const makeInference = async (systemPrompt, lastChat) => {
         } else throw new Error('LLM server failure');
 
     } catch (err) {
-        console.log(`ERROR: ${err}`)
+        console.log(`${err}`)
     }
 }
 
 // Main
-const makeResponse = async (secretary) => {
+const makeResponse = async (user) => {
     try {
-        const randDelay = Math.floor(Math.random() * 4) + 1;
-        await delay(randDelay);
+        const secretary = await Secretary.findOne({ _id: user.secretaryID });
+        const chats = await Chat.find({ _id: user._id }, {userID: 0, readOnly: 0});
+        const recentChats = await getRecentChats(chats);
+        const lastChat = recentChats.slice(0, recentChats.length - 1);
+        console.log(lastChat.text);
 
-        const systemPrompt = makeSystemPrompt(user);
+        const systemPrompt = await makeSystemPrompt(user, secretary, recentChats);
         const userPrompt = lastChat.text;
-        const inferredChats = makeInference(systemPrompt, userPrompt);
-        await Chat.insertMany(inferredChats);
-        return inferredChats;
+        const inferredChats = await makeInference(systemPrompt, userPrompt);
+
+        const newChats = await Chat.insertMany(inferredChats);
+        const scopedNewChats = await Chat.find({ _id: { $in: newChats.map(chat => chat._id) } }).select('-mentionedEntities');
+        return scopedNewChats;
     } catch (err) {
-        console.log("Error making response");
+        console.log(`Error making response: ${err}`);
     }
 }
 
