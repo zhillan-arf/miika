@@ -105,10 +105,10 @@ const ChatRoom = ({ onLogout }) => {
         if (socket) {
             socket.on('receiveResponse', (newChats) => {
                 console.log('I am naughty and I am caught!');
-                newChats.forEach((newChat) => {
-                    newChat.date = strToDate(newChat.date);
-                    newChat.lastRecalled = strToDate(newChat.lastRecalled);
-                });
+                // newChats.forEach((newChat) => {  // debugs
+                //     newChat.date = strToDate(newChat.date);
+                //     newChat.lastRecalled = strToDate(newChat.lastRecalled);
+                // });
                 // setChats(chats.concat(newChats));  // user permitted to input more before receive response
                 if (queueingResponse) {
                     setQueueingResponse(false);
@@ -123,7 +123,6 @@ const ChatRoom = ({ onLogout }) => {
     const handleEnter = async (newText, index) => {
         const updatedChats = chats.map(chat => ({...chat, readOnly: true}));
         updatedChats[index].text = newText;
-        console.log(`entered text: ${newText}`);
         updatedChats[index].date = new Date();
         updatedChats[index].lastRecalled = new Date();
 
