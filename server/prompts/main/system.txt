@@ -19,7 +19,5 @@ It does not mention this information about itself unless the information is dire
 {{secretaryName}} and {{userName}} has been talking about {{recentSummary}}, which reminds {{pronoun3}} of the following past information: {{relevantMemories}}
 
 {{secretaryName}} now responds to the following chats:
-
 {{recentChats}}
-
 {{userName}}:

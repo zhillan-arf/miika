@@ -1,4 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import reformatDates from "../functions/reformatDates.js";
+import insertChat from "../functions/insertChat.js";
+import getNewChat from "../functions/getNewChat.js";
+import delay from "../functions/delay.js";
 import ChatHeader from "./ChatHeader.js";
 import ChatBox from "./ChatBox.js";
 import Sidebar from "./Sidebar.js";
@@ -7,139 +11,115 @@ import "../assets/chatroom.css";
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
-const getNewChat = (length, master, secretary, role='master', autoFocus=true, readOnly=false, text='') => {
-    return {
-        _id: `temp_chat-${length}`,
-        userID: master._id,
-        date: new Date(),
-        role: role,
-        userName: role === 'master'? master.name : secretary.name,
-        text: text,
-        autoFocus: autoFocus,
-        readOnly: readOnly,
-        lastRecalled: new Date(),
-        timesRecalled: 1
-    }
-}
-
-const fetchData = async () => {
-    try {
-        const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getchats`, {
-            method: 'GET',
-            credentials: 'include'
-        });
-        const data = await response.json();
-        const master = data.master;
-        const secretary = data.secretary;
-        const chats = [...data.chats, getNewChat(data.chats.length, master, secretary)];
-        return {master, secretary, chats};
-    } catch (err) {
-        console.log(`Error at fetching chats: ${err}`);
-    }
-}
-
 const ChatRoom = ({ onLogout }) => {
-    const parentRef = useRef(null);
     const [loading, setLoading] = useState(true);
     const [master, setMaster] = useState(null);
     const [secretary, setSecretary] = useState(null);
     const [chats, setChats] = useState([]);
+    const [inputChat, setInputChat] = useState(null);
     const [socket, setSocket] = useState(null);
     const [receivingResponse, setReceivingResponse] = useState(false);
     const [queueingResponse, setQueueingResponse] = useState(false);
 
-    const dateToStr = (date) => {
-        if (date instanceof Date) {
-            return date.toISOString();
-        } else return date;
-    }
+    const parentRef = useRef(null);
+    const receiveRef = useRef(null);
     
-    const insertChat = async (chat) => {
-        try {
-            delete chat._id;
-            chat.date = dateToStr(chat.date);
-            chat.lastRecalled = dateToStr(chat.date);
+    useEffect(() => {
+        const fetchSetData = async () => {
+            try {
+                const response = await fetch(`${REACT_APP_BACKEND_URI}/api/getchats`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                const data = await response.json();
 
-            const response = await fetch(`${REACT_APP_BACKEND_URI}/api/insertchat`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(chat)
-            });
-            const newChat = await response.json();
-            newChat.date = new Date(newChat.date);
-            return newChat;
-        } catch (err) {
-            console.log(`Failed to insert data to server: ${err}`);
+                setMaster(data.master);
+                setSecretary(data.secretary);
+                setInputChat(getNewChat(data.chats.length, data.master, data.secretary));
+                setChats(reformatDates(data.chats));
+                setLoading(false);
+
+            } catch (err) {
+                console.log(`Error at fetching chats: ${err}`);
+            }
         }
-    }
+    
+        fetchSetData();
+    }, []);
 
-    const fetchSetData = async () => {
-        const data = await fetchData();
-        setMaster(data.master);
-        setSecretary(data.secretary);
-        setChats(data.chats);
-        setLoading(false);
-    }
-
-    useEffect(() => {fetchSetData()}, []);
+    const receiveResponse = useCallback((newChats) => {
+        newChats = reformatDates(newChats);
+        setChats(chats => {
+            return chats.concat(newChats)
+        });
+        if (queueingResponse) {
+            setQueueingResponse(false);
+            if (socket) socket.emit('requestResponse', master);
+        } else {
+            setReceivingResponse(false);
+        }
+    }, [socket, queueingResponse, master]);
 
     useEffect(() => {
-        if (!socket) {
-            const newSocket = io(REACT_APP_BACKEND_URI, {
-                'transports': ['websocket']
-            });
-            setSocket(newSocket);
-        }
-    },[socket]);
-
-    const strToDate = (dateStr) => {
-        if (typeof dateStr === 'string') {
-            return new Date(dateStr);
-        } else return dateStr;
-    }
+        receiveRef.current = receiveResponse;
+    }, [receiveResponse]);
 
     useEffect(() => {
-        if (socket) {
-            socket.on('receiveResponse', (newChats) => {
-                console.log('I am naughty and I am caught!');
-                // newChats.forEach((newChat) => {  // debugs
-                //     newChat.date = strToDate(newChat.date);
-                //     newChat.lastRecalled = strToDate(newChat.lastRecalled);
-                // });
-                // setChats(chats.concat(newChats));  // user permitted to input more before receive response
-                if (queueingResponse) {
-                    setQueueingResponse(false);
-                    socket.emit('requestResponse', master);
-                } else {
-                    setReceivingResponse(false);
+        const connectSocket = () => {
+            const newSocket = io(REACT_APP_BACKEND_URI, { 
+                'transports': ['websocket'] 
+            });
+    
+            newSocket.on('connect', () => {
+                setSocket(newSocket);
+            });
+
+            newSocket.on('receiveResponse', receiveRef.current);
+    
+            newSocket.on('connect_error', (err) => {
+                console.error('Socket error:', err);
+                setTimeout(connectSocket, 5000);
+            });
+    
+            newSocket.on('disconnect', (reason) => {
+                if (reason === 'io server disconnect') {
+                  setTimeout(connectSocket, 5000);
                 }
             });
+    
+            return newSocket;
         }
-    }, [socket, queueingResponse, chats, master]);
 
-    const handleEnter = async (newText, index) => {
-        const updatedChats = chats.map(chat => ({...chat, readOnly: true}));
-        updatedChats[index].text = newText;
-        updatedChats[index].date = new Date();
-        updatedChats[index].lastRecalled = new Date();
+        const newSocket = connectSocket();
 
-        const newChat = await insertChat(updatedChats[index]);
+        return () => {
+            if (newSocket) newSocket.disconnect();
+        }
+    },[]);
 
-        updatedChats[index]._id = newChat._id;
-        updatedChats[index].date = strToDate(newChat.date);
-        updatedChats[index].lastRecalled = strToDate(newChat.lastRecalled);
+    const handleEnter = useCallback(async (text) => {
+        const newChat = {
+            ...inputChat, 
+            autoFocus: false,
+            readOnly: true,
+            text: text,
+            date: new Date(),
+            lastRecalled: new Date()
+        };
+
+        newChat._id = await insertChat(newChat);
+        setChats(chats => {
+            setInputChat(getNewChat(chats.length, master, secretary));
+            return chats.concat(newChat);
+        });
         
-        updatedChats.push(getNewChat(chats.length, master, secretary));
-        setChats(updatedChats);
-
         if (!receivingResponse) {
+            await delay(3);
             setReceivingResponse(true);
             socket.emit('requestResponse', master);
         } else setQueueingResponse(true);
-    }
+
+    }, [socket, master, secretary, inputChat, receivingResponse]);
 
     const getProfpicSrc = (type) => {
         if (type === 'master') return `data:image/png;base64,${master.profpic}`;
@@ -161,11 +141,11 @@ const ChatRoom = ({ onLogout }) => {
                 <ChatHeader parentRef={parentRef}/>
                 <div className="chat-feed">
                     {/* Previous transcripts */}
-                    {chats.map((chat, index) => (
+                    {chats.map((chat) => (
                         <ChatBox
                             key={chat._id}
                             chat={chat}
-                            onEnter={(text) => handleEnter(text, index)}
+                            // onEnter={(text) => handleEdit(text, index)}
                             masterProfpicSrc={getProfpicSrc('master')}
                             secretaryProfpicSrc={getProfpicSrc('secretary')}
                         />
@@ -177,6 +157,13 @@ const ChatRoom = ({ onLogout }) => {
                         secretaryProfpicSrc={getProfpicSrc('secretary')}
                         isTypingBox={true}
                     />}
+                    {/* Current box */}
+                    <ChatBox
+                        key={inputChat._id}
+                        chat={inputChat}
+                        onEnter={(text) => handleEnter(text)}
+                        masterProfpicSrc={getProfpicSrc('master')}
+                    />
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 .chat-box {
-    margin-top: 2em;
+    margin-top: 0.7em;
     margin-left: 5em;
 }
 
@@ -47,3 +47,12 @@
     color: #969696;
     font-style: italic;
 }
+
+textarea {
+    resize: none;
+    overflow: hidden;
+  }
+  
+  textarea::-webkit-resizer {
+    display: none;
+  }

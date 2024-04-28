@@ -8,12 +8,12 @@ const getDisplayTime = (date) => {
 }
 
 const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypingBox=false }) => {
-    const [boxText, setBoxText] = useState(chat.text || '');
-    const inputRef = useRef(null);
+    const [text, setText] = useState(chat.text || '');
+    const textareaRef = useRef(null);
 
     useEffect(() => {
-        if (chat.autoFocus && inputRef.current) {
-            inputRef.current.focus();
+        if (chat.autoFocus && textareaRef.current) {
+            textareaRef.current.focus();
         }
     }, [chat.autoFocus]);
 
@@ -23,34 +23,34 @@ const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypin
     }
 
     const handleKeyDown = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
+        if (e.key === 'Enter' && !e.shiftKey && text !== '') {
             e.preventDefault();
             autoResizeTextarea(e);
-            setBoxText(e.currentTarget.textContent);
-            onEnter(e.currentTarget.textContent);
+            setText(e.target.value);
+            onEnter(text);
         }
     }
+
+    const handleChange = (e) => {
+        setText(e.target.value);
+        autoResizeTextarea(e);
+    };
 
     return (
         <div className='chat-box'>
             <img className='chat-profpic' src={(chat.role === 'master') ? masterProfpicSrc : secretaryProfpicSrc} alt='profpic'/>
             <div className='chat-identity'>
-                <span className='identity-text'>{chat.userName} 
-                    <span className='identity-time'> at {getDisplayTime(chat.date)}</span>  {/* debug*/}
-                </span>
+                <span className='identity-text'>{chat.userName}<span className='identity-time'> at {getDisplayTime(chat.date)}</span></span>
             </div>
-            <div 
-                ref={inputRef}
-                className={`chat-text ${isTypingBox? 'chat-text-italic' : ''}`}
-                contentEditable={!chat.readOnly}
-                onKeyDown={(e) => {
-                    if (e.currentTarget.textContent !== '') handleKeyDown(e);
-                }}
-                data-placeholder="Type here..."
-                suppressContentEditableWarning={true}
-            > 
-                {boxText}
-            </div>
+            <textarea
+                ref={textareaRef}
+                className={`chat-text ${isTypingBox ? 'chat-text-italic' : ''}`}
+                value={text}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                placeholder="Type here..."
+                readOnly={chat.readOnly}
+            />
         </div>
     );
 }

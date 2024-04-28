@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import "../assets/chatheader.css";
-import { getFormatDate } from "../middlewares/getFormatDate.js";
+import { getFormatDate } from "../functions/getFormatDate.js";
 
 const ChatHeader = ({ parentRef }) => {
     const displayDate = getFormatDate();
