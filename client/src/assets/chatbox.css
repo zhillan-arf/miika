@@ -6,6 +6,7 @@
 .chat-profpic {
     position: absolute;
     left: 0px;
+    margin-top: 5px;
     width: 40px;
     height: 40px;
 }

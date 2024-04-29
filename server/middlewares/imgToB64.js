@@ -8,6 +8,7 @@ const imgToB64 = async (imgPath) => {
                 input: Buffer.from('<svg><circle cx="20" cy="20" r="20" /></svg>'),
                 blend: 'dest-in'
             }])
+            .png()
             .toBuffer();
             
         return buffer.toString('base64');

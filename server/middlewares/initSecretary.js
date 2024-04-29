@@ -15,7 +15,8 @@ const initSecretary = async (secretaryName, secretaryPath) => {
             chatExamples: await readFile(path.resolve(secretaryPath, 'chatExamples.txt')),
             protocol: await readFile(path.resolve(secretaryPath, 'protocol.txt'))
         });
-        const newSecretary = await secretary.save();
+        
+        await secretary.save();
     } catch (err) {
         console.log(`get secretary init err: ${err}`);
     }

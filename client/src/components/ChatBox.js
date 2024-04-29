@@ -12,10 +12,14 @@ const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypin
     const textareaRef = useRef(null);
 
     useEffect(() => {
-        if (chat.autoFocus && textareaRef.current) {
+        setText(chat.text || '');
+    }, [chat]);
+
+    useEffect(() => {
+        if (chat.autoFocus && textareaRef.current && !isTypingBox) {
             textareaRef.current.focus();
         }
-    }, [chat.autoFocus]);
+    }, [chat, chat.autoFocus, isTypingBox]);
 
     const autoResizeTextarea = (e) => {
         e.target.style.height = 'auto';
@@ -27,7 +31,7 @@ const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypin
             e.preventDefault();
             autoResizeTextarea(e);
             setText(e.target.value);
-            onEnter(text);
+            if (!isTypingBox) onEnter(text);
         }
     }
 

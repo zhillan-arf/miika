@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import reformatDates from "../functions/reformatDates.js";
 import insertChat from "../functions/insertChat.js";
 import getNewChat from "../functions/getNewChat.js";
-import delay from "../functions/delay.js";
 import ChatHeader from "./ChatHeader.js";
 import ChatBox from "./ChatBox.js";
 import Sidebar from "./Sidebar.js";
@@ -18,8 +17,9 @@ const ChatRoom = ({ onLogout }) => {
     const [chats, setChats] = useState([]);
     const [inputChat, setInputChat] = useState(null);
     const [socket, setSocket] = useState(null);
-    const [receivingResponse, setReceivingResponse] = useState(false);
-    const [queueingResponse, setQueueingResponse] = useState(false);
+    const [waitingResponse, setWaitingResponse] = useState(false);
+    const [secTyping, setSecTyping] = useState(false);
+    const [queueing, setQueueing] = useState(false);
 
     const parentRef = useRef(null);
     const receiveRef = useRef(null);
@@ -52,50 +52,57 @@ const ChatRoom = ({ onLogout }) => {
         setChats(chats => {
             return chats.concat(newChats)
         });
-        if (queueingResponse) {
-            setQueueingResponse(false);
+        if (queueing) {
+            setQueueing(false);
             if (socket) socket.emit('requestResponse', master);
-        } else {
-            setReceivingResponse(false);
         }
-    }, [socket, queueingResponse, master]);
+    }, [socket, queueing, master]);
 
     useEffect(() => {
         receiveRef.current = receiveResponse;
     }, [receiveResponse]);
 
+    const connectSocket = useCallback(() => {
+        const newSocket = io(REACT_APP_BACKEND_URI, { 
+            'transports': ['websocket'] 
+        });
+        console.log('fired');  //debug
+
+        newSocket.on('connect', () => {
+            setSocket(newSocket);
+        });
+
+        newSocket.on('waitingResponse', (bool) => {
+            setWaitingResponse(bool);
+        });
+
+        newSocket.on('nowTyping', (bool) => {
+            setSecTyping(bool);
+        })
+
+        newSocket.on('receiveResponse', receiveRef.current);
+
+        newSocket.on('connect_error', (err) => {
+            console.error('Socket error:', err);
+            setTimeout(connectSocket, 5000);
+        });
+
+        newSocket.on('disconnect', (reason) => {
+            if (reason === 'io server disconnect') {
+              setTimeout(connectSocket, 5000);
+            }
+        });
+
+        return newSocket;
+    }, []);
+
     useEffect(() => {
-        const connectSocket = () => {
-            const newSocket = io(REACT_APP_BACKEND_URI, { 
-                'transports': ['websocket'] 
-            });
-    
-            newSocket.on('connect', () => {
-                setSocket(newSocket);
-            });
-
-            newSocket.on('receiveResponse', receiveRef.current);
-    
-            newSocket.on('connect_error', (err) => {
-                console.error('Socket error:', err);
-                setTimeout(connectSocket, 5000);
-            });
-    
-            newSocket.on('disconnect', (reason) => {
-                if (reason === 'io server disconnect') {
-                  setTimeout(connectSocket, 5000);
-                }
-            });
-    
-            return newSocket;
-        }
-
         const newSocket = connectSocket();
 
         return () => {
             if (newSocket) newSocket.disconnect();
         }
-    },[]);
+    },[connectSocket]);
 
     const handleEnter = useCallback(async (text) => {
         const newChat = {
@@ -112,14 +119,12 @@ const ChatRoom = ({ onLogout }) => {
             setInputChat(getNewChat(chats.length, master, secretary));
             return chats.concat(newChat);
         });
-        
-        if (!receivingResponse) {
-            await delay(3);
-            setReceivingResponse(true);
-            socket.emit('requestResponse', master);
-        } else setQueueingResponse(true);
 
-    }, [socket, master, secretary, inputChat, receivingResponse]);
+        if (!waitingResponse) {
+            socket.emit('requestResponse', master);
+        } else setQueueing(true);
+
+    }, [socket, master, secretary, inputChat, waitingResponse]);
 
     const getProfpicSrc = (type) => {
         if (type === 'master') return `data:image/png;base64,${master.profpic}`;
@@ -151,7 +156,7 @@ const ChatRoom = ({ onLogout }) => {
                         />
                     ))}
                     {/* Secretary is typing */}
-                    {receivingResponse && <ChatBox 
+                    {secTyping && <ChatBox 
                         key='isTyping'
                         chat={getIsTyping()}
                         secretaryProfpicSrc={getProfpicSrc('secretary')}
