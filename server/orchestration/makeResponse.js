@@ -1,4 +1,3 @@
-import delay from './chains/delay.js';
 import getRecentChats from './chains/getRecentChats.js';
 import makeSystemPrompt from './chains/makeSystemPrompt.js';
 import makeInference from './retrievers/makeInference.js';
@@ -6,7 +5,6 @@ import Secretary from '../models/Secretary.js';
 import Chat from '../models/Chat.js';
 
 const makeResponse = async (user) => {
-    await delay(3);
     try {
         const secretary = await Secretary.findOne({ _id: user.secretaryID });
         const chats = await Chat.find({ userID: user._id }, {userID: 0, readOnly: 0});

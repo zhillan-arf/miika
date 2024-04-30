@@ -7,19 +7,20 @@ const getDisplayTime = (date) => {
     return `${hours}.${minutes < 10 ? '0' : ''}${minutes}`;
 }
 
-const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypingBox=false }) => {
+const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypingBox=false, refocus }) => {
     const [text, setText] = useState(chat.text || '');
-    const textareaRef = useRef(null);
+    const textRef = useRef(null);
 
     useEffect(() => {
         setText(chat.text || '');
     }, [chat]);
 
     useEffect(() => {
-        if (chat.autoFocus && textareaRef.current && !isTypingBox) {
-            textareaRef.current.focus();
+        if (chat.autoFocus && textRef.current && !isTypingBox) {
+            textRef.current.focus();
+            textRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-    }, [chat, chat.autoFocus, isTypingBox]);
+    }, [chat, chat.autoFocus, isTypingBox, refocus]);
 
     const autoResizeTextarea = (e) => {
         e.target.style.height = 'auto';
@@ -47,7 +48,8 @@ const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypin
                 <span className='identity-text'>{chat.userName}<span className='identity-time'> at {getDisplayTime(chat.date)}</span></span>
             </div>
             <textarea
-                ref={textareaRef}
+                ref={textRef}
+                id='chat-text'
                 className={`chat-text ${isTypingBox ? 'chat-text-italic' : ''}`}
                 value={text}
                 onChange={handleChange}

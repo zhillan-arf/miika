@@ -20,10 +20,12 @@ const ChatRoom = ({ onLogout }) => {
     const [waitingResponse, setWaitingResponse] = useState(false);
     const [secTyping, setSecTyping] = useState(false);
     const [queueing, setQueueing] = useState(false);
+    const [refocus, setRefocus] = useState(0);
 
     const parentRef = useRef(null);
     const receiveRef = useRef(null);
-    
+    const prevSecTypingRef = useRef(secTyping);
+
     useEffect(() => {
         const fetchSetData = async () => {
             try {
@@ -47,60 +49,66 @@ const ChatRoom = ({ onLogout }) => {
         fetchSetData();
     }, []);
 
-    const receiveResponse = useCallback((newChats) => {
-        newChats = reformatDates(newChats);
+    const receiveResponse = useCallback((newChat) => {
         setChats(chats => {
-            return chats.concat(newChats)
+            return chats.concat(reformatDates(newChat))
         });
-        if (queueing) {
+
+        if (queueing & !waitingResponse) {
             setQueueing(false);
             if (socket) socket.emit('requestResponse', master);
         }
-    }, [socket, queueing, master]);
+    }, [socket, queueing, master, waitingResponse]);
 
     useEffect(() => {
         receiveRef.current = receiveResponse;
     }, [receiveResponse]);
 
+    useEffect(() => {
+        if (prevSecTypingRef.current !== secTyping) {
+          prevSecTypingRef.current = secTyping;
+          setRefocus((prevRefocus) => !prevRefocus);
+        }
+    }, [secTyping, refocus]);
+
     const connectSocket = useCallback(() => {
-        const newSocket = io(REACT_APP_BACKEND_URI, { 
-            'transports': ['websocket'] 
-        });
-        console.log('fired');  //debug
+        if (!socket || !socket.connected) {
+            const newSocket = io(REACT_APP_BACKEND_URI, { 
+                'transports': ['websocket'] 
+            });
+    
+            newSocket.on('connect', () => {
+                setSocket(newSocket);
+            });
+    
+            newSocket.on('waitingResponse', (bool) => {
+                setWaitingResponse(bool);
+            });
+    
+            newSocket.on('nowTyping', setSecTyping);
 
-        newSocket.on('connect', () => {
-            setSocket(newSocket);
-        });
-
-        newSocket.on('waitingResponse', (bool) => {
-            setWaitingResponse(bool);
-        });
-
-        newSocket.on('nowTyping', (bool) => {
-            setSecTyping(bool);
-        })
-
-        newSocket.on('receiveResponse', receiveRef.current);
-
-        newSocket.on('connect_error', (err) => {
-            console.error('Socket error:', err);
-            setTimeout(connectSocket, 5000);
-        });
-
-        newSocket.on('disconnect', (reason) => {
-            if (reason === 'io server disconnect') {
-              setTimeout(connectSocket, 5000);
-            }
-        });
-
-        return newSocket;
-    }, []);
+            newSocket.on('receiveResponse', receiveRef.current);
+    
+            newSocket.on('connect_error', (err) => {
+                console.error('Socket error:', err);
+                setTimeout(connectSocket, 5000);
+            });
+    
+            newSocket.on('disconnect', (reason) => {
+                if (reason === 'io server disconnect') {
+                  setTimeout(connectSocket, 5000);
+                }
+            });
+    
+            return newSocket;
+        }
+    }, [socket]);
 
     useEffect(() => {
         const newSocket = connectSocket();
 
         return () => {
-            if (newSocket) newSocket.disconnect();
+            if (newSocket && newSocket.connected) newSocket.disconnect();
         }
     },[connectSocket]);
 
@@ -124,7 +132,9 @@ const ChatRoom = ({ onLogout }) => {
             socket.emit('requestResponse', master);
         } else setQueueing(true);
 
-    }, [socket, master, secretary, inputChat, waitingResponse]);
+        setRefocus(refocus + 1);
+
+    }, [socket, master, secretary, inputChat, waitingResponse, refocus]);
 
     const getProfpicSrc = (type) => {
         if (type === 'master') return `data:image/png;base64,${master.profpic}`;
@@ -168,6 +178,7 @@ const ChatRoom = ({ onLogout }) => {
                         chat={inputChat}
                         onEnter={(text) => handleEnter(text)}
                         masterProfpicSrc={getProfpicSrc('master')}
+                        refocus={refocus}
                     />
                 </div>
             </div>
