@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useAuth } from './AuthProvider'
+import React, { useState, useContext } from 'react';
+import { AuthContext }  from './AuthProvider.js';
 import '../assets/login.css';
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
@@ -7,7 +7,7 @@ const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 const Login = ({onRegister}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { handleAfterLogin } = useAuth();
+    const setAuth = useContext(AuthContext);
 
     const handleLogin = async(e) => {
         e.preventDefault();
@@ -20,11 +20,12 @@ const Login = ({onRegister}) => {
                 },
                 body: JSON.stringify({email, password})
             });
-            if (response.ok) handleAfterLogin(); 
+            setAuth(response.ok); 
         } catch (err) {
-            console.log(`500 internal error!: ${err}`);
+            setAuth(false);
         }
-    };
+    }
+
     return (
         <div>
             <form onSubmit={handleLogin}>

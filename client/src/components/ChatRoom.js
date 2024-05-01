@@ -10,7 +10,7 @@ import "../assets/chatroom.css";
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
-const ChatRoom = ({ onLogout }) => {
+const ChatRoom = () => {
     const [loading, setLoading] = useState(true);
     const [master, setMaster] = useState(null);
     const [secretary, setSecretary] = useState(null);
