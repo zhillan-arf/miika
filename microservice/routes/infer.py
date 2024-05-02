@@ -3,10 +3,10 @@ import os, torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
-this_path = os.path.dirname(os.path.realpath(__file__))
-models_cache = os.path.join(this_path, '../llm_models')  # Name of directory
 
 torch.cuda.empty_cache()
+
+models_cache = os.environ.get('LLM_MODELS_DIR', '../llm_models')
 
 hf_model_id = "NousResearch/Nous-Hermes-2-Mistral-7B-DPO"
 tokenizer = AutoTokenizer.from_pretrained(hf_model_id, cache_dir=models_cache)

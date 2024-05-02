@@ -3,4 +3,5 @@ microservice/llm_models/.locks
 microservice/llm_models/models--NousResearch--Nous-Hermes-2-Mistral-7B-DPO
 node_modules/
 .env
+miika.env
 key_generator.py

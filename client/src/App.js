@@ -28,6 +28,9 @@ const App = () => {
         verify();
     }, []);
 
+    // Remove the token from a cookie
+    // document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
     const SPA = () => {
         return (
             <AuthContext.Provider value={setAuth}>

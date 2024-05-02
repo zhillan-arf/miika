@@ -3,29 +3,44 @@ version: '3.8'
 services:
   server:
     build: ./server
+    env_file:
+      - ./server/.env
+      - ./.env
     ports:
-      - "3002:3002"
-    environment:
-      - MONGO_USER=user
-      - MONGO_PASSWORD=password
-      - PORT=3002
+      - "${PORT_SERVER}:${PORT_SERVER}"
     depends_on:
       - mongo
 
   client:
     build: ./client
+    env_file:
+      - ./client/.env.development
+      - ./.env
     ports:
-      - "3003:3003"
+      - "${PORT_CLIENT}:${PORT_CLIENT}"
 
   microservice:
-    build: ./microservice
+    build:
+      context: ./microservice
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+      - ./microservice/.env
+    volumes:
+      - ./llm_models:/app/llm_models
     ports:
-      - "3001:3001"
+      - "${PORT_MICROSERVICE}:${PORT_MICROSERVICE}"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
   mongo:
     image: mongo:latest
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=user
-      - MONGO_INITDB_ROOT_PASSWORD=password
+    env_file:
+      - ./.env
     ports:
       - "27017:27017"

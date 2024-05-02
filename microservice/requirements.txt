@@ -16,7 +16,6 @@ dockerpty==0.4.1
 docopt==0.6.2
 einops==0.7.0
 filelock==3.13.4
-flash-attn==2.5.7
 Flask==3.0.3
 fsspec==2024.3.1
 huggingface-hub==0.22.2
