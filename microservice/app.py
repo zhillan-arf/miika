@@ -11,5 +11,5 @@ app.register_blueprint(infer_bp)
 PORT = 3001
 PORT = os.environ.get("PORT", 3001)
 if __name__ == '__main__':
-    app.run(debug=True, port=PORT)
+    app.run(port=PORT)
     print(f"Server running at {PORT}")

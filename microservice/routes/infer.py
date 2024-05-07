@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-import os, torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
+import os, torch, json
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 
@@ -14,17 +14,18 @@ def get_cache_path():
     return cache_path
 
 cache_path = get_cache_path()
-# hf_model_id = 'NousResearch/Nous-Hermes-2-Mistral-7B-DPO'
 hf_model_id = "NousResearch/Hermes-2-Pro-Llama-3-8B"
 quant = 'float16'  # 4 bit q
 
 tokenizer = AutoTokenizer.from_pretrained(hf_model_id, cache_dir=cache_path)
 
+bitsAndBytesConfig = BitsAndBytesConfig(load_in_8bit = True)
+
 model = AutoModelForCausalLM.from_pretrained(
     hf_model_id, 
     cache_dir=cache_path, 
     device_map='cuda',
-    load_in_8bit=True,
+    quantization_config = bitsAndBytesConfig,
     attn_implementation="flash_attention_2",
 )
 
@@ -32,8 +33,11 @@ infer_bp = Blueprint('inference', __name__)
 
 @infer_bp.route("/api/infer", methods=["POST"])
 def infer():
-    prompt = request.get_json().get('prompt')
-    print("test")
+    json_data = request.get_json()
+    if isinstance(json_data, str):
+        json_data = json.loads(json_data)
+    prompt = json_data.get('prompt')
+    # prompt = request.get_json().get('prompt')
     print(f"Prompt: {prompt}")
     if not prompt:
         return jsonify({"error": "No input provided"}), 400
