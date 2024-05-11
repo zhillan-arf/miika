@@ -2,7 +2,7 @@ import json
 import requests
 
 # Read the file
-with open('prompts_chatml.txt', 'r') as file:
+with open('prompts.txt', 'r') as file:
     prompt = file.read()
     data = json.dumps({ 'prompt': prompt })
 

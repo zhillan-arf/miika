@@ -1,10 +1,11 @@
 from flask import Blueprint, request, jsonify
-import os, torch, json
+import os, torch, json, importlib
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 
-torch.cuda.empty_cache()
+print(torch.__version__)  # debug
+print(torch.cuda.is_available())  # debug
 
 def get_cache_path():
     fallback = 'llm_models'
@@ -15,11 +16,12 @@ def get_cache_path():
 
 cache_path = get_cache_path()
 hf_model_id = "NousResearch/Hermes-2-Pro-Llama-3-8B"
-quant = 'float16'  # 4 bit q
 
 tokenizer = AutoTokenizer.from_pretrained(hf_model_id, cache_dir=cache_path)
 
-bitsAndBytesConfig = BitsAndBytesConfig(load_in_8bit = True)
+bitsAndBytesConfig = BitsAndBytesConfig(
+    load_in_8bit = True
+)
 
 model = AutoModelForCausalLM.from_pretrained(
     hf_model_id, 

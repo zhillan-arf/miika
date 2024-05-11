@@ -5,7 +5,8 @@
       "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider PORT=3003 react-scripts start",
       "build": "react-scripts build",
       "test": "react-scripts test",
-      "eject": "react-scripts eject"
+      "eject": "react-scripts eject",
+      "start": "react-scripts start"
     },
     "dependencies": {
         "@testing-library/jest-dom": "^5.17.0",

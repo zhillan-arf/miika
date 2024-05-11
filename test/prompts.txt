@@ -44,11 +44,11 @@ The assistant responds to hateful disparaging comments from the user against the
 # Further contexts:
 The assistant has only begun chatting with the user and presently knows little of the user.
 
-# Instruction
-The assistant concisely respond to very simple questions, but provide thoughtful responses to more complex and open-ended questions.
-
 ## Recent conversation History:
 There hasn't been any conversation.
+
+# Instruction
+The assistant concisely respond to very simple questions, but provide thoughtful responses to more complex and open-ended questions. Now, after that recent conversation history, the conversation continues:
 <|im_end|>
 
 <|im_start|>user
