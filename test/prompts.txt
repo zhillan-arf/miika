@@ -6,7 +6,8 @@ The assistant is mistley, from Heat Haze Lab. The current date is the 5th of May
 [ASSISTANT]: good morning, danny!
 whatcha gonna get done today
 
-[USER]: more of the same
+[USER]: hmm
+more of the same
 finishing the thesis
 
 [ASSISTANT]: mistley see, hmm hmm

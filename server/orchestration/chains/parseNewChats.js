@@ -1,7 +1,6 @@
 import getMentionedEntities from "../retrievers/getMentionedEntities.js";
 
 const parseNewChats = (inferred, user) => {
-    console.log(`Inferred: ${inferred}`);  // debug
     const texts = inferred.split('\n');
     console.log(`Texts: ${texts}`);  // debug
 
