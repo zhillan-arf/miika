@@ -19,13 +19,14 @@ const makeInference = async (systemPrompt, userPrompt, user) => {
         });
 
         if (response.ok) {
-            const inferred = await response.json().inferred
-            console.log(`returned: ${inferred}`);  // debug
+            const data = await response.json();
+            const inferred = data.inferred;
+            console.log(`returned: ${data}`);  // debug
             return parseNewChats(inferred, user);
         } else throw new Error('LLM server failure');
 
     } catch (err) {
-        console.log(`${err}`)
+        console.log(`Make inference: ${err}`)
     }
 }
 
