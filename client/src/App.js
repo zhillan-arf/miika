@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import { AuthProvider, useAuth } from './components/AuthProvider';
-import { AuthContext }  from './components/AuthProvider.js';
+import { AuthContext }  from './hooks/AuthProvider.js';
 import Register from './components/Register';
 import Login from './components/Login';
 import Aigis from './components/Aigis';
 import ChatRoom from './components/ChatRoom';
+import { DataProvider } from './hooks/DataProvider.js';
+import { SocketProvider } from './hooks/SocketProvider.js';
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
@@ -28,13 +29,14 @@ const App = () => {
         verify();
     }, []);
 
-    // Remove the token from a cookie
-    // document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-
     const SPA = () => {
         return (
             <AuthContext.Provider value={setAuth}>
-                <ChatRoom/>
+                <DataProvider>
+                    <SocketProvider>
+                        <ChatRoom/>
+                    </SocketProvider>
+                </DataProvider>
             </AuthContext.Provider>
         );
     }

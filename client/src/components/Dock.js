@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AuthContext } from "./AuthProvider";
+import { AuthContext } from "../hooks/AuthProvider";
 import '../assets/dock.css'
 import { FaCalendarAlt, FaAddressBook, FaSignOutAlt, FaClipboardList } from 'react-icons/fa';
 

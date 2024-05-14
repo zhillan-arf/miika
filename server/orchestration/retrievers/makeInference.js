@@ -9,7 +9,7 @@ const makeInference = async (systemPrompt, userPrompt, user) => {
     const prompt = `<|im_start|>system\n${systemPrompt}\n<|im_start|>user\n${userPrompt}\n<|im_start|>assistant`;
 
     try {
-        const inferred = "debug message 1\ndebug message 2";  // debug
+        const inferred = "debug message 1\ndebug message 2\ndebug message 3";  // debug
         return parseNewChats(inferred, user);  // debug
 
         // console.log(`URI: ${MICROSERVICE_URI}`);  // debug

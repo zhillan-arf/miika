@@ -12,30 +12,11 @@ html, body {
     flex-direction: row;
 }
 
-.loading {
-    font-size: 16px;
-    font-family: 'Open Sans', sans-serif;
-    color: white;
-}
-
 .room {
     flex-grow: 1;
     position: relative;
     width: 100%;
     overflow-y: auto;
-}
-
-.chat-feed {
-    display: flex;
-    min-height: 100vh;
-    height: auto;
-    font-size: 16px;
-    box-sizing: border-box;
-    flex-direction: column;
-    background-color: #2B2D31;
-    position: relative;
-    margin-top: 3em;
-    margin-left: 5em;
 }
 
 @media (min-width: 875px) {

@@ -23,13 +23,22 @@ const io = new Server(httpServer);
 
 // Middlewares
 const CLIENT_URI = process.env.CLIENT_URI;
+const REMOTE_URI = process.env.REMOTE_URI;
 export const MICROSERVICE_URI = process.env.MICROSERVICE_URI;
 
+const allowedOrigins = [REMOTE_URI, CLIENT_URI, MICROSERVICE_URI];
+
+app.use((req, res, next) => {  // debug
+  console.log('Incoming request from origin:', req.headers.origin);
+  next();
+});
+
 app.use(cors({
-  origin: [CLIENT_URI, MICROSERVICE_URI],
+  origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST']
 }));
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');

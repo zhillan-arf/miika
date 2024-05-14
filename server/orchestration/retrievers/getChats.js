@@ -3,7 +3,6 @@ import Chat from "../../models/Chat.js";
 import User from "../../models/User.js";
 import Secretary from "../../models/Secretary.js";
 import verifyToken from "../../middlewares/verifyToken.js";
-import jwt from "jsonwebtoken";
 
 const router = Router();
 router.use(verifyToken);

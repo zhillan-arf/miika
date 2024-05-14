@@ -24,7 +24,6 @@ router.post('/register', async (req, res) => {
                 secretaryID: await getTempSecretaryID('mistley')  // temp
             });
             const registeredUser = await user.save();
-            console.log(`register new secid: ${registeredUser.secretaryID}`);  // debug
             const userResponse = {
                 _id: registeredUser._id,
                 username: registeredUser.email,
@@ -32,7 +31,6 @@ router.post('/register', async (req, res) => {
             console.log(userResponse);
             res.status(201).json(userResponse);
         } catch (err) {
-            console.log(`register error ${err}`);  // debug
             res.status(500).send(err);
         }
     } else {

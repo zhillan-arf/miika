@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { AuthContext }  from './AuthProvider.js';
+import { AuthContext }  from '../hooks/AuthProvider.js';
 import '../assets/login.css';
 
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
