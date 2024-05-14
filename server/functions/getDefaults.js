@@ -4,7 +4,7 @@ import path from 'path';
 
 export const getDefaultProfpic = async (gender) => {
     const img = gender == 'm' ? 'defaultBoy.jpg' : 'defaultGirl.jpg';
-    const imgPath = path.resolve('middlewares', img);
+    const imgPath = path.resolve('functions', img);
     return await imgToB64(imgPath);
 }
 

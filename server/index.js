@@ -8,14 +8,14 @@ import cors from 'cors';
 import http from 'http';
 import cookieParser from 'cookie-parser';
 
-import socketEvents from './middlewares/socketEvents.js';
+import socketEvents from './functions/socketEvents.js';
 import registerRouter from './routes/register.js';
 import loginRouter from './routes/login.js';
 import verifyRouter from './routes/verify.js';
 import getChatsRouter from './orchestration/retrievers/getChats.js';
 import insertChatRouter from './orchestration/retrievers/insertChat.js';
 
-import initSecretaries from './middlewares/initSecretary.js';
+import initSecretaries from './functions/initSecretary.js';
 
 const app = express();
 const httpServer = http.createServer(app);

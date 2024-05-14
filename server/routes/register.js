@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import User from '../models/User.js';
 import { hash }  from 'bcrypt';
-import { getDefaultProfpic, getTempSecretaryID } from '../middlewares/getDefaults.js';
+import { getDefaultProfpic, getTempSecretaryID } from '../functions/getDefaults.js';
 
 const router = Router();
 const saltRounds = 10;

@@ -48,11 +48,8 @@ const ChatRoom = () => {
 
     useEffect(() => {
         if (socket && socket.connected)  {
-
             socket.on('waitingResponse', setWaitingResponse);
-
             socket.on('nowTyping', setSecTyping);
-
             socket.on('receiveResponse', receiveRef.current);
 
             return () => {
@@ -64,9 +61,7 @@ const ChatRoom = () => {
     }, [socket]);
 
     const handleEnter = useCallback(async (text) => {
-
         const newChat = { ...inputChat, autoFocus: false, readOnly: true, text: text, date: new Date(), lastRecalled: new Date() };
-
         newChat._id = await insertChat(newChat);
 
         setChats(chats => {

@@ -2,7 +2,7 @@ import { Router } from "express";
 import Chat from "../../models/Chat.js";
 import User from "../../models/User.js";
 import Secretary from "../../models/Secretary.js";
-import verifyToken from "../../middlewares/verifyToken.js";
+import verifyToken from "../../functions/verifyToken.js";
 
 const router = Router();
 router.use(verifyToken);
