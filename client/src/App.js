@@ -13,6 +13,7 @@ const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 const App = () => {
     const [auth, setAuth] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
+    const [offline, setOffline] = useState(true);
 
     useEffect(() => {
         const verify = async () => {

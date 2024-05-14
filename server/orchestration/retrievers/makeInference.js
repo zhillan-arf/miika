@@ -12,7 +12,6 @@ const makeInference = async (systemPrompt, userPrompt, user) => {
         const inferred = "debug message 1\ndebug message 2\ndebug message 3";  // debug
         return parseNewChats(inferred, user);  // debug
 
-        // console.log(`URI: ${MICROSERVICE_URI}`);  // debug
         // const response = await fetch(`${MICROSERVICE_URI}/api/infer`, {
         //     method: 'POST',
         //     headers: {

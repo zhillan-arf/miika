@@ -4,9 +4,6 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 
-print(torch.__version__)  # debug
-print(torch.cuda.is_available())  # debug
-
 def get_cache_path():
     fallback = 'llm_models'
     cache_path = os.environ.get('LLM_MODELS_DIR', fallback)
