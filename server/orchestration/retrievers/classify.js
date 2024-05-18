@@ -16,7 +16,7 @@ const classify = async (chats) => {
     const prompt = makeClassPrompt(chatsText);
 
     try {
-        const response = await fetch(`${MICROSERVICE_URI}/api/infer`, {
+        const response = await fetch(`${SERVICE_URI}/api/infer`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

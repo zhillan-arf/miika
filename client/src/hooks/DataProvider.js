@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import reformatDates from "../functions/reformatDates.js";
+import { reformatChats } from "../functions/reformatChats.js";
 import getNewChat from "../functions/getNewChat.js";
 
 export const DataContext = createContext();
@@ -25,8 +25,8 @@ export const DataProvider = ({ children }) => {
                 
                 setMaster(data.master);
                 setSecretary(data.secretary);
+                setChats(reformatChats(data.chats));
                 setInputChat(getNewChat(data.chats.length, data.master, data.secretary));
-                setChats(reformatDates(data.chats));
                 setLoading(false);
 
             } catch (err) {

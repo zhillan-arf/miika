@@ -5,13 +5,13 @@
     "scripts": {
       "server-dev": "cd server && npm run dev",
       "client-dev": "cd client && npm run dev",
-      "microservice-dev": "cd microservice && ./menv/bin/activate && python3 app.py",
+      "service-dev": "cd service && ./menv/bin/activate && python3 app.py",
       "both-dev": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
-      "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\" \"npm run microservice-dev\"",
+      "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\" \"npm run service-dev\"",
       "server-install": "cd server && npm install",
       "client-install": "cd client && npm install",
-      "microservice-install": "cd microservice && ./menv/bin/pip install -r requirements.txt",
-      "install-dev": "npm install && npm run server-install && npm run client-install && npm run microservice-install"
+      "service-install": "cd service && ./menv/bin/pip install -r requirements.txt",
+      "install-dev": "npm install && npm run server-install && npm run client-install && npm run service-install"
     },
     "repository": {
       "type": "git",

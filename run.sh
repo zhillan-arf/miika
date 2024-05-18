@@ -1,3 +1,3 @@
 #!/bin/bash
-source microservice/menv/bin/activate
+source service/menv/bin/activate
 npm run dev

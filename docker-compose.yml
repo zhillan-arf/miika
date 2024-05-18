@@ -19,17 +19,17 @@ services:
     ports:
       - "${PORT_CLIENT}:${PORT_CLIENT}"
 
-  microservice:
+  service:
     build:
-      context: ./microservice
+      context: ./service
       dockerfile: Dockerfile
     env_file:
       - ./.env
-      - ./microservice/.env
+      - ./service/.env
     volumes:
       - ./llm_models:/app/llm_models
     ports:
-      - "${PORT_MICROSERVICE}:${PORT_MICROSERVICE}"
+      - "${PORT_SERVICE}:${PORT_SERVICE}"
     deploy:
       resources:
         reservations:

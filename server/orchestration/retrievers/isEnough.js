@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises';
 import { resolve } from 'path';
 import fillTemplate from "../chains/fillTemplate";
 
-const MICROSERVICE_URI = process.env.MICROSERVICE_URI;
+const SERVICE_URI = process.env.SERVICE_URI;
 
 const makeEnoughPrompt = async (chatsText) => {
     const filePath = resolve('prompts/retriever/isEnough.txt');
@@ -20,7 +20,7 @@ const isEnough = async (chats) => {
     const prompt = makeEnoughPrompt(chatsText);
 
     try {
-        const response = await fetch(`${MICROSERVICE_URI}/api/infer`, {
+        const response = await fetch(`${SERVICE_URI}/api/infer`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

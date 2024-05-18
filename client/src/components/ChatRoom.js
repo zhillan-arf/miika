@@ -8,7 +8,7 @@ import Sidebar from './Sidebar';
 import getProfpicSrc from '../functions/getProfpicSrc';
 import ChatFeed from './ChatFeed';
 import ChatHeader from './ChatHeader';
-import reformatDates from '../functions/reformatDates';
+import { reformatChat } from '../functions/reformatChats';
 import "../assets/chatroom.css";
 
 const ChatRoom = () => {
@@ -26,7 +26,7 @@ const ChatRoom = () => {
 
     const receiveResponse = useCallback((newChat) => {
         setChats(chats => {
-            return chats.concat(reformatDates(newChat))
+            return chats.concat(reformatChat(newChat))
         });
 
         if (queueing & !waitingResponse) {
@@ -70,7 +70,7 @@ const ChatRoom = () => {
         });
 
         if (!waitingResponse) {
-            socket.emit('requestResponse', master);
+            socket.emit('requestResponse', master, secretary);
         } else setQueueing(true);
 
         setRefocus(refocus + 1);

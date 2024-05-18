@@ -3,7 +3,7 @@ config();
 
 import parseNewChats from '../chains/parseNewChats.js';
 
-const MICROSERVICE_URI = process.env.MICROSERVICE_URI;
+const SERVICE_URI = process.env.SERVICE_URI;
 
 const makeInference = async (systemPrompt, userPrompt, user) => {
     const prompt = `<|im_start|>system\n${systemPrompt}\n<|im_start|>user\n${userPrompt}\n<|im_start|>assistant`;
@@ -12,7 +12,7 @@ const makeInference = async (systemPrompt, userPrompt, user) => {
         const inferred = "debug message 1\ndebug message 2\ndebug message 3";  // debug
         return parseNewChats(inferred, user);  // debug
 
-        // const response = await fetch(`${MICROSERVICE_URI}/api/infer`, {
+        // const response = await fetch(`${SERVICE_URI}/api/infer`, {
         //     method: 'POST',
         //     headers: {
         //         'Content-Type': 'application/json'
