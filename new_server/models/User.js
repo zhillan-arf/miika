@@ -8,7 +8,7 @@ const userSchema = new Schema({
   gender: { enum: ["m", "f"] },
   profpic: String,  // b64
   profile: String,
-  intent: String
+  secretaryIntent: String
 });
 
 const User = model('User', userSchema, 'users');

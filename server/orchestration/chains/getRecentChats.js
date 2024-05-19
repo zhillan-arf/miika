@@ -1,5 +1,3 @@
-import { get } from "mongoose";
-
 const getRecentChats = async (chats) => {
     const tokenCap = 2000;
     let i = chats.length - 1;
