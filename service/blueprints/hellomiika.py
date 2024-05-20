@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 import torch
 
-helloworld_bp = Blueprint('helloworld', __name__)
+helloworld_bp = Blueprint('hellomiika', __name__)
 
 @helloworld_bp.route("/api/hellomiika", methods=["GET"])
 def hellomiika():

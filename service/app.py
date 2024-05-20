@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
-from routes.helloworld import helloworld_bp
-from routes.infer import infer_bp
+from blueprints.helloworld import helloworld_bp
+from blueprints.infer import infer_bp
 import os
 
 app = Flask(__name__)

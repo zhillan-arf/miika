@@ -5,12 +5,11 @@ import toText from "../functions/toText";
 const retrieveGuides = async (guides, hypoInfos) => {
     const embeddings = guides.map(episode => episode.embedding);
     const infosEmbedding = await embed(hypoInfos);
-    const threshold = 0.75;
+    const minCosSim = 0.75;  // temp
     
-    const indexes = await cossim(embeddings, infosEmbedding, threshold);
-    const newGuides = await guides.filter((elmt, idx) => indexes.includes(idx));
+    const contextGuides = await cossim(guides, embeddings, infosEmbedding, minCosSim);
     
-    return toText(newGuides);
+    return toText(contextGuides);
 }
 
 export default retrieveGuides;

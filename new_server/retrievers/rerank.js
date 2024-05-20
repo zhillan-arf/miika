@@ -1,14 +1,14 @@
 const SERVICE_URI = process.env.SERVICE_URI;
 
-const cossim = async (docs, embeddings, queryEmbedding, minCosSim) => {
+const rerank = async (query, docs, minLogit) => {
     try {
-        const response = await fetch(`${SERVICE_URI}/api/cossim`, {
+        const response = await fetch(`${SERVICE_URI}/api/rerank`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                embeddings: embeddings,
-                queryEmbedding: queryEmbedding,
-                minCosSim: minCosSim
+                query: query,
+                docs: docs,
+                minLogit: minLogit
             })
         });
 
@@ -20,9 +20,9 @@ const cossim = async (docs, embeddings, queryEmbedding, minCosSim) => {
         return docs.filter((elmt, idx) => indexes.includes(idx));
         
     } catch (err) {
-        console.log(`ERROR cossim: ${err}`);
+        console.log(`ERROR rerank: ${err}`);
         throw err;
     }
 }
 
-export default cossim;
+export default rerank;

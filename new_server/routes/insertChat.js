@@ -8,13 +8,15 @@ router.use(verifyToken);
 router.post('/api/insertchat', async (req, res) => {
     try {
         let chat = req.body;
-        chat.date = Date(chat.date);
+        chat.date = Date.now();
+        chat.lastRetrieved = Date.now();
+        chat.timesRetrieved = 1;
 
         const newChat = await Chat.create(chat);
         res.status(201).json(newChat);
         
     } catch (err) {
-        res.status(400).json({error: `Internal server error: ${err}`});
+        res.status(400).json({error: `ERROR insertChat: ${err}`});
     }
 });
 

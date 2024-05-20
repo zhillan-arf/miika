@@ -6,6 +6,8 @@ const episodeSchema = new Schema({
   date: { type: Date, default: Date.now },
   role: String,
   text: String,
+  lastRetrieved: Date,
+  timesRetrieved: Number,
   embedding: [Number]
 });
 
