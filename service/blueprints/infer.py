@@ -1,16 +1,12 @@
 from flask import Blueprint, request, jsonify
+from resources.resources import tokenizer, model
 import os, torch, json
 
 infer_bp = Blueprint('infer', __name__)
 
 @infer_bp.route("/api/infer", methods=["POST"])
 def infer():
-    json_data = request.get_json()
-    if isinstance(json_data, str):
-        json_data = json.loads(json_data)
-    prompt = json_data.get('prompt')
-    # prompt = request.get_json().get('prompt')
-    print(f"Prompt: {prompt}")
+    prompt = request.get_json().get('prompt')
     if not prompt:
         return jsonify({"error": "No input provided"}), 400
 
