@@ -1,6 +1,6 @@
 const SERVICE_URI = process.env.SERVICE_URI;
 
-const cossim = async (docs, embeddings, queryEmbedding, minCosSim) => {
+const cossim = async (docs, embeddings, queryEmbedding, minCossim) => {
     try {
         const response = await fetch(`${SERVICE_URI}/api/cossim`, {
             method: 'POST',
@@ -8,7 +8,7 @@ const cossim = async (docs, embeddings, queryEmbedding, minCosSim) => {
             body: JSON.stringify({
                 embeddings: embeddings,
                 queryEmbedding: queryEmbedding,
-                minCosSim: minCosSim
+                minCossim: minCossim
             })
         });
 

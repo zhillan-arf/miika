@@ -1,12 +1,12 @@
 import Episode from '../models/Episode.js';
 import retrieveGuides from '../retrievers/retrieveGuides.js';
 import retrieveEpisodes from '../retrievers/retrieveEpisodes.js';
+import inferAct from '../inferences/inferAct.js';
 import inferInfos from '../inferences/inferInfos.js';
 import inferEntities from '../inferences/inferEntities.js';
 import inferResponses from '../inferences/inferResponses.js';
 
-const getRecentChats = (chats) => {
-    const tokenCap = 500;
+const getRecentChats = (chats, tokenCap) => {
     let i = chats.length - 1;
     let tokensLength = 0;
     
@@ -23,12 +23,18 @@ const makeResponse = async (user, secretary) => {
     try {
         const chats = await Episode.find({ userID: user._id, type:'chat' }, {userID: 0});
         const recentChats = await getRecentChats(chats);
+        const tokenCap = 500;
+
+        if (!inferAct(recentChats, tokenCap)) {
+            return null;
+        }
+
         const episodes = await Episode.find({ userID: user._id, type:'episode' }, {userID: 0});
         const guides = await Episode.find({ userID: user._id, type:'guide' }, {userID: 0});
         
         const hypoInfos = await inferInfos(recentChats, user.secIntent);
-        const contextGuides = await retrieveGuides(guides, hypoInfos);
-        const contextEpisodes = await retrieveEpisodes(episodes, hypoInfos);
+        const contextGuides = await retrieveGuides(guides, user.secIntent, hypoInfos);
+        const contextEpisodes = await retrieveEpisodes(episodes, user.secIntent, hypoInfos);
         const contextEntities = await inferEntities(recentChats, contextGuides, contextEpisodes);
 
         const newChats = await inferResponses(secretary.name, user.name, contextGuides, contextEpisodes, contextEntities, secIntent);

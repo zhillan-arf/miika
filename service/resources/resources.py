@@ -1,5 +1,6 @@
 import os, torch, json
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from sentence_transformers import SentenceTransformer
 
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 
@@ -11,7 +12,8 @@ def get_cache_path():
     return cache_path
 
 cache_path = get_cache_path()
-hf_model_id = "NousResearch/Hermes-2-Pro-Llama-3-8B"
+hf_model_id = 'NousResearch/Hermes-2-Pro-Llama-3-8B'
+hf_encoder_id = 'distilbert-base-nli-stsb-mean-tokens'
 
 tokenizer = AutoTokenizer.from_pretrained(hf_model_id, cache_dir=cache_path)
 
@@ -26,3 +28,5 @@ model = AutoModelForCausalLM.from_pretrained(
     quantization_config = bitsAndBytesConfig,
     attn_implementation="flash_attention_2",
 )
+
+encoder = SentenceTransformer(hf_encoder_id, cache_dir=cache_path)

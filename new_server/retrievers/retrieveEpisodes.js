@@ -4,19 +4,16 @@ import toText from "../functions/toText";
 import rerank from "./rerank";
 import curve from "./curve";
 
-const retrieveEpisodes = async (episodes, hypoInfos) => {
+const retrieveEpisodes = async (episodes, query, hypoInfos) => {
     const embeddings = episodes.map(eps => eps.embedding);
     const infosEmbedding = await embed(hypoInfos);
-    const minCosSim = 0.6;  // temp
+    const minCossim = 0.6;  // temp
     
-    const cossimEpisodes = await cossim(episodes, embeddings, infosEmbedding, minCosSim);
-
+    const cossimEpisodes = await cossim(episodes, embeddings, infosEmbedding, minCossim);
     const curvedEpisodes = await curve(cossimEpisodes);
-
-    const minLogit = 5;  // temp
-    const contextEpisodes = rerank(hypoInfos, curvedEpisodes, minLogit);
+    const rerankedEpisodes = rerank(query, curvedEpisodes);
     
-    return toText(contextEpisodes);
+    return toText(rerankedEpisodes);
 }
 
 export default retrieveEpisodes;

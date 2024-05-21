@@ -8,7 +8,8 @@ const curve = (episodes) => {
         selectors.push({idx: idx, R: R});
     });
 
-    selectors = selectors.sort((a, b) => b.R - a.R).slice(0, 3);
+    const N = 4;
+    selectors = selectors.sort((a, b) => b.R - a.R).slice(0, N);
     const indexes = selectors.map(item => item.idx);
     
     return episodes.filter((elmt, idx) => indexes.includes(idx));

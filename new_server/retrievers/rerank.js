@@ -1,23 +1,23 @@
+import makePrompt from "../functions/makePrompt";
+import infer from "../inferences/infer";
+
 const SERVICE_URI = process.env.SERVICE_URI;
 
-const rerank = async (query, docs, minLogit) => {
-    try {
-        const response = await fetch(`${SERVICE_URI}/api/rerank`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                query: query,
-                docs: docs,
-                minLogit: minLogit
-            })
-        });
+const indexesValid = (obj) => {
+    return Array.isArray(obj) && obj.every(item => typeof item === 'number');
+}
 
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
+const rerank = async (query, docs) => {
+    const contexts = { query: query, docs: docs }
+    const localPath = 'retrievers/rerank';
+    const rerankPrompt = await makePrompt(contexts, localPath);
+
+    try {
+        const indexes = await JSON.parse(infer(rerankPrompt));
+
+        if (indexesValid(indexes)) {
+            return docs.filter((elmt, idx) => indexes.includes(idx));
         }
-    
-        const indexes = await response.json();
-        return docs.filter((elmt, idx) => indexes.includes(idx));
         
     } catch (err) {
         console.log(`ERROR rerank: ${err}`);
