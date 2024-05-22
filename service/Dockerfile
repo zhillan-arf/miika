@@ -5,13 +5,7 @@ ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y python3 python3-pip git
-RUN pip3 install flask
-RUN pip3 install torch
-RUN pip3 install transformers
-RUN pip3 install accelerate
-RUN pip3 install -i https://pypi.org/simple/ bitsandbytes
-RUN pip3 install wheel
-RUN pip3 install flash-attn --no-build-isolation
+RUN pip3 install -r requirements.txt
 
 COPY . .
 EXPOSE 3001

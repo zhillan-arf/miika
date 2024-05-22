@@ -13,7 +13,6 @@ def get_cache_path():
 
 cache_path = get_cache_path()
 hf_model_id = 'NousResearch/Hermes-2-Pro-Llama-3-8B'
-hf_encoder_id = 'distilbert-base-nli-stsb-mean-tokens'
 
 tokenizer = AutoTokenizer.from_pretrained(hf_model_id, cache_dir=cache_path)
 
@@ -29,4 +28,5 @@ model = AutoModelForCausalLM.from_pretrained(
     attn_implementation="flash_attention_2",
 )
 
-encoder = SentenceTransformer(hf_encoder_id, cache_dir=cache_path)
+hf_encoder_id = 'distilbert-base-nli-stsb-mean-tokens'
+encoder = SentenceTransformer(hf_encoder_id)
