@@ -10,19 +10,9 @@ const summSave = async (user, chats, type) => {
     const summPrompt = await makePrompt(contexts, localPath);
 
     try {
-        const summaries = (await infer(summPrompt)).summaries;
+        const summaries = await infer(summPrompt);
         
-        const pairs = (await embed(summaries)).pairs;
-
-        const episodes = pairs.map((pair) => ({
-            userID: user._id,
-            type: type,
-            date: Date(),
-            text: pair.text,
-            lastRetrieved: Date(),
-            timesRetrieved: 1,
-            embedding: pair.embedding
-        }));
+        const episodes = embed(summaries);
 
         return Episode.create(episodes);
 

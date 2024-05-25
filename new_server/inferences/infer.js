@@ -10,6 +10,7 @@ const infer = async (prompt) => {
         
         if (response.ok) return await response.json().inferred;
         else throw Error(`Response not ok: ${response}`);
+        
     } catch (err) {
         console.log(`ERROR infer: ${err}`);
         throw err;

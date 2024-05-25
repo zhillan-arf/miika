@@ -7,7 +7,19 @@ const embed = async (texts) => {
         body: JSON.stringify({ texts: texts })
     });
 
-    return await response.json();
+    const pairs = (await response.json()).pairs;
+
+    const episodes = pairs.map((pair) => ({
+        userID: user._id,
+        type: type,
+        date: Date(),
+        text: pair.text,
+        lastRetrieved: Date(),
+        timesRetrieved: 1,
+        embedding: pair.embedding
+    }));
+
+    return episodes;
 }
 
 export default embed;

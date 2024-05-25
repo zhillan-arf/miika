@@ -12,7 +12,7 @@ const inferEntities = async (recentChats, contextGuides, contextEpisodes) => {
     
     let contextEntities = '';
     try {
-        const entityNames = await JSON.parse(infer(entitiesPrompt));
+        const entityNames = await infer(entitiesPrompt);
 
         for (const entityName in entityNames) {
             const entityDesc = await Entity.find({name: entityName});

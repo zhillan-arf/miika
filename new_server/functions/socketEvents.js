@@ -1,4 +1,4 @@
-import makeResponse from "./makeResponse.js";
+import makeResponse from "../self/makeResponse.js";
 import delay from "./delay.js";
 
 const socketEvents = (io) => {
