@@ -1,7 +1,7 @@
-import embed from "../embeds/embed";
-import cossim from "./cossim";
-import toText from "../functions/toText";
-import rerank from "./rerank";
+import embed from "../embeds/embed.js";
+import cossim from "./cossim.js";
+import toText from "../functions/toText.js";
+import rerank from "./rerank.js";
 
 const retrieveGuides = async (guides, query, hypoInfos) => {
     const embeddings = guides.map(episode => episode.embedding);

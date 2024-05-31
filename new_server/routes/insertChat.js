@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Chat from "../models/Chat.js";
+import Episode from "../models/Episode.js";
 import verifyToken from "../functions/verifyToken.js";
 
 const router = Router();
@@ -12,7 +12,7 @@ router.post('/api/insertchat', async (req, res) => {
         chat.lastRetrieved = Date.now();
         chat.timesRetrieved = 1;
 
-        const newChat = await Chat.create(chat);
+        const newChat = await Episode.create(chat);
         res.status(201).json(newChat);
         
     } catch (err) {

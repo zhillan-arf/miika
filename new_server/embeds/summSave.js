@@ -1,8 +1,8 @@
-import makePrompt from "../functions/makePrompt";
-import toText from "../functions/toText";
-import infer from "../inferences/infer";
-import Episode from "../models/Episode";
-import embed from "./embed";
+import makePrompt from "../functions/makePrompt.js";
+import toText from "../functions/toText.js";
+import infer from "../inferences/infer.js";
+import Episode from "../models/Episode.js";
+import embed from "./embed.js";
 
 const summSave = async (user, chats, type) => {
     const contexts = { chatTexts: toText(chats) }

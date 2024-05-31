@@ -1,5 +1,5 @@
-import makePrompt from "../functions/makePrompt";
-import infer from "../inferences/infer";
+import makePrompt from "../functions/makePrompt.js";
+import infer from "../inferences/infer.js";
 
 const SERVICE_URI = process.env.SERVICE_URI;
 

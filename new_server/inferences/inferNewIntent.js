@@ -1,5 +1,5 @@
-import makePrompt from "../functions/makePrompt";
-import infer from "./infer";
+import makePrompt from "../functions/makePrompt.js";
+import infer from "./infer.js";
 
 const inferNewIntent = async (contextMonologues, secIntent) => {
     const contexts = {

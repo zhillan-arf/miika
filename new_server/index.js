@@ -13,7 +13,7 @@ import registerRouter from './routes/register.js';
 import loginRouter from './routes/login.js';
 import verifyRouter from './routes/verify.js';
 import getChatsRouter from './routes/getChats.js';
-import insertChatRouter from './orchestration/retrievers/insertChat.js';
+import insertChatRouter from './routes/insertChat.js';
 
 import initSecretaries from './functions/initSecretary.js';
 

@@ -1,5 +1,4 @@
 import { Router } from "express";
-import Chat from "../models/Chat.js";
 import Episode from "../models/Episode.js";
 import User from "../models/User.js";
 import Secretary from "../models/Secretary.js";
@@ -11,7 +10,7 @@ router.use(verifyToken);
 router.get('/api/getchats', async (req, res) => {      
     try {
         const userID = req.userID;
-        const chats = await Chat.find({userID: userID, type:'chat'}, {mentionedEntities: 0}).lean();
+        const chats = await Episode.find({userID: userID, type:'chat'}, {mentionedEntities: 0}).lean();
         const master = await User.findOne({_id: userID}).lean();
         const secretary = await Secretary.findOne({_id: master.secretaryID}).lean();
 

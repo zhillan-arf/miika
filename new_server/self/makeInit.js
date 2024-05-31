@@ -6,7 +6,7 @@ import inferInitChats from "../inferences/inferInitChats.js";
 import Episode from "../models/Episode.js";
 import User from '../models/User.js'
 
-const initiate = async (user, secretary) => {
+const initiate = async (user) => {
     try {
         const dailys = await Episode.find({ userID: user._id, type:'daily' }, {userID: 0});
         const monologues = await Episode.find({ userID: user._id, type:'monologue' }, {userID: 0});

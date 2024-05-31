@@ -1,4 +1,4 @@
-import infer from "./infer";
+import infer from "./infer.js";
 
 const inferAct = async (recentChats) => {
     const contexts = { recentChats: recentChats }

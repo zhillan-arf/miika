@@ -1,5 +1,5 @@
-import makePrompt from "../functions/makePrompt";
-import infer from "./infer";
+import makePrompt from "../functions/makePrompt.js";
+import infer from "./infer.js";
 import Entity from '../models/Entity.js';
 
 const inferEntities = async (recentChats, contextGuides, contextEpisodes) => {
