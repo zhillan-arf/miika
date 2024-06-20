@@ -1,17 +1,18 @@
 from flask import Blueprint, request, jsonify
 from resources.resources import tokenizer, model
-import os, torch, json
+from torch import ones_like
 
 infer_bp = Blueprint('infer', __name__)
 
 @infer_bp.route("/api/infer", methods=["POST"])
 def infer():
-    prompt = request.get_json().get('prompt')
-    if not prompt:
+    data = request.get_json()
+    if 'prompt' not in data:
         return jsonify({"error": "No input provided"}), 400
+    prompt = data['prompt']
 
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to("cuda")
-    attn_mask = torch.ones_like(input_ids)
+    attn_mask = ones_like(input_ids)
 
     generated_ids = model.generate(
         input_ids, 

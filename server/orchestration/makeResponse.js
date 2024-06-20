@@ -20,7 +20,7 @@ const makeResponse = async (user) => {
 
         return scopedNewChats;
     } catch (err) {
-        console.log(`Error making response: ${err}`);
+        console.error(`Error making response: ${err}`);
     }
 }
 

@@ -8,6 +8,8 @@ const indexesValid = (obj) => {
 }
 
 const rerank = async (query, docs) => {
+    if (!queries || !docs) return null;
+
     const contexts = { query: query, docs: docs }
     const localPath = 'retrievers/rerank';
     const rerankPrompt = await makePrompt(contexts, localPath);
@@ -20,7 +22,7 @@ const rerank = async (query, docs) => {
         }
         
     } catch (err) {
-        console.log(`ERROR rerank: ${err}`);
+        console.error(`ERROR rerank: ${err}`);
         throw err;
     }
 }

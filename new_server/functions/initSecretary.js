@@ -14,7 +14,8 @@ const saveSecData = async (secName, secPath) => {
         await secretary.save();
         
     } catch (err) {
-        console.log(`get secretary init err: ${err}`);
+        console.error(`get secretary init err: ${err}`);
+        throw err;
     }
 }
 

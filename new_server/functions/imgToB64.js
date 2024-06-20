@@ -14,7 +14,8 @@ const imgToB64 = async (imgPath) => {
         return buffer.toString('base64');
 
     } catch (err) {
-        console.log(`Img load error: ${err}`);
+        console.error(`Img load error: ${err}`);
+        return null;
     }
 }
 

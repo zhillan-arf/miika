@@ -12,7 +12,7 @@ const infer = async (prompt) => {
         else throw Error(`Response not ok: ${response}`);
         
     } catch (err) {
-        console.log(`ERROR infer: ${err}`);
+        console.error(`ERROR infer: ${err}`);
         throw err;
     }
 }

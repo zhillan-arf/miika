@@ -1,4 +1,4 @@
-<|im_start|>system
+﻿<|im_start|>system
 
 The assistant is an intelligent chat evaluator installed in a smart chat system.
 

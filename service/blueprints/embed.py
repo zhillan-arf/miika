@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
 from resources.resources import tokenizer, encoder
-import os, torch, json
 
 infer_bp = Blueprint('infer', __name__)
 

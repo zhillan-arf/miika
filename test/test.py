@@ -1,17 +1,14 @@
 import json
 import requests
 
-# Read the file
-with open('prompts.txt', 'r') as file:
-    prompt = file.read()
-    data = json.dumps({ 'prompt': prompt })
+path = 'test.txt'
 
-# Send a POST request with the JSON data
+with open(path, 'r') as file:
+    prompt = file.read()
+    data = { 'prompt': prompt }
+
 url = 'http://localhost:3001/api/infer'
 headers = {'Content-Type': 'application/json'}
-
-print('Request:')
-print(prompt)
 
 response = requests.post(url, headers=headers, json=data)
 

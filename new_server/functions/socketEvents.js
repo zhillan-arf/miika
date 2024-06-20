@@ -5,9 +5,7 @@ const socketEvents = (io) => {
     io.on('connection', (socket) => {
         socket.on('requestResponse', async (user, secretary) => {
             socket.emit('waitingResponse', true);
-            await delay(1.5);
             socket.emit('nowTyping', true);
-            await delay(1.5)
 
             const newChats = await makeResponse(user, secretary);
 
@@ -20,8 +18,9 @@ const socketEvents = (io) => {
                     socket.emit('nowTyping', true);
                 }
             }
-            socket.emit('waitingResponse', false);
+            
             socket.emit('nowTyping', false);
+            socket.emit('waitingResponse', false);
         });
     });
 }

@@ -15,7 +15,7 @@ const insertChat = async (chat) => {
         return newChat._id;
 
     } catch (err) {
-        console.log(`Failed to insert data to server: ${err}`);
+        console.error(`Failed to insert data to server: ${err}`);
     }
 }
 

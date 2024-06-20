@@ -41,7 +41,7 @@ const initiate = async (user) => {
         return newChats;
 
     } catch (err) {
-        console.log(`ERROR initiate: ${err}`);
+        console.error(`ERROR initiate: ${err}`);
     }
 }
 

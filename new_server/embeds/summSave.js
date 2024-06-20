@@ -17,7 +17,8 @@ const summSave = async (user, chats, type) => {
         return Episode.create(episodes);
 
     } catch (err) {
-        console.log(err);
+        console.error(err);
+        return null;
     }
 }
 export default summSave;

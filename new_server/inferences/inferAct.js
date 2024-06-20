@@ -1,4 +1,5 @@
 import infer from "./infer.js";
+import makePrompt from "../functions/makePrompt.js";
 
 const inferAct = async (recentChats) => {
     const contexts = { recentChats: recentChats }
@@ -7,10 +8,11 @@ const inferAct = async (recentChats) => {
     
     let act = true;
     try {
-        const act = (await infer(actPrompt)).act;
+        const act = await JSON.parse(infer(actPrompt).act);
     
     } catch (err) {
-        console.log(err);
+        console.error(err);
+        return null;
     }
 
     return act;
