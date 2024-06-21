@@ -13,7 +13,7 @@ const infer = async (prompt) => {
         
     } catch (err) {
         console.error(`ERROR infer: ${err}`);
-        throw err;
+        return null;
     }
 }
 

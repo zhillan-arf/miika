@@ -1,11 +1,19 @@
 import json
 import requests
+import re
 
 path = 'test.txt'
 
 with open(path, 'r') as file:
     prompt = file.read()
-    data = { 'prompt': prompt }
+
+contexts = {}
+
+for key in contexts:
+    regex = re.compile(r'{{' + re.escape(key) + r'}}')
+    prompt = regex.sub(contexts[key], prompt)
+
+data = { 'prompt': prompt }
 
 url = 'http://localhost:3001/api/infer'
 headers = {'Content-Type': 'application/json'}

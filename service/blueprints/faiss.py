@@ -27,4 +27,4 @@ def embed():
         selected_docs = [docs[i] for i in I[0]]
         results.extend(selected_docs)
 
-    return jsonify(results)
+    return jsonify({"results": results}), 200

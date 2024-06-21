@@ -10,11 +10,12 @@ const faiss = async (queries, docs) => {
             body: JSON.stringify({queries: queries, docs: docs})
         });
 
-        return response.json()
+        if (response.ok) return await response.json().results;
+        else throw Error(`Response not ok: ${response}`);
 
     } catch (err) {
         console.error(`ERROR infer: ${err}`);
-        throw err;
+        return null;
     }
 }
 

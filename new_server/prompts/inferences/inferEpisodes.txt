@@ -1,4 +1,4 @@
-﻿<|im_start|>system
+<|im_start|>system
 
 The assistant generates hypothetical memory cues that might be relevant for its current conversation with {{userName}}. The intention of the assistant is this: "{{secIntent}}". To realize that intention, the assistant must remember relevant past memories, and the memory cues help with this remembering process.
 
