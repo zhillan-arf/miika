@@ -2,16 +2,28 @@ import json
 import requests
 import re
 
-path = 'test.txt'
-
-with open(path, 'r') as file:
+with open('prompt.txt', 'r') as file:
     prompt = file.read()
 
-contexts = {}
+with open('recentChats.txt', 'r') as file:
+    recentChats = file.read()
 
-for key in contexts:
+with open('secIntent.txt', 'r') as file:
+    secIntent = file.read()
+
+userName = "danny"
+
+contexts = {
+    'recentChats': recentChats,
+    'secIntent': secIntent,
+    'userName': userName
+}
+
+for key, value in contexts.items():
     regex = re.compile(r'{{' + re.escape(key) + r'}}')
-    prompt = regex.sub(contexts[key], prompt)
+    prompt = regex.sub(value, prompt)
+
+# print(prompt)
 
 data = { 'prompt': prompt }
 
@@ -25,3 +37,4 @@ if response.status_code == 200:
     print('Response:', response.json())
 else:
     print(f'Request failed with status code: {response.status_code}')
+
