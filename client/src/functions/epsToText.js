@@ -1,11 +1,12 @@
-const epsToText = (eps) => {
+const epsToText = (eps, userName, secName) => {
     if (!eps || eps.length === 0) return null;
 
     let formattedEps = '';
 
     eps.forEach(ep => {
-        const name = `[${ep.role.toUpperCase()}]`;
-        formattedEps += `${name}: ${ep.text}\n`;
+        let name = userName;
+        if (ep.rol === 'secretary') name = secName;
+        formattedEps += `${name}: ${ep.text}\n\n`;
     });
 
     return formattedEps.trim();

@@ -4,6 +4,8 @@ import rerank from '../retrievers/rerank.js'
 import infer from "./infer.js";
 
 const inferEpisodes = async (recentChats, episodes, secIntent) => {
+    if (!recentChats || recentChats.length === 0) return null;
+    
     const hypoContexts = {
         recentChats: recentChats,
         secIntent: secIntent

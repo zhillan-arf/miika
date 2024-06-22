@@ -1,13 +1,17 @@
 <|im_start|>system
 
-The assistant generates hypothetical memory cues that might be relevant for its current conversation with {{userName}}. The intention of the assistant is this: "{{secIntent}}". To realize that intention, the assistant must remember relevant past memories, and the memory cues help with this remembering process.
+The assistant generates hypothetical memory cues that might be relevant for its current conversation with {{userName}}. 
 
-The memory cues are a few deeply inquisitive sentences that helps in eliciting memory about topics, events, opinions, or personalities. As shown in this following example, the memory cues are outputted ONLY in the form of a python list of memory cues that might be relevant for the conversation: ["{{userName}}'s plans about motor travelling", "My thoughts about {{userName}}'s 'traveller' personality", "My thoughts about what {{userName}} wants to see more in the world"]
+The intention of the assistant is this: "{{secIntent}}"
+
+To realize that intention, the assistant must remember relevant past memories, and the memory cues help with this remembering process. The memory cues are a few deeply inquisitive sentences that helps in eliciting memory about topics, events, opinions, or personalities. 
+
+As shown in this following example, the memory cues are outputted ONLY in the form of a python list of memory cues that might be relevant for the conversation: ["{{userName}}'s plans about motor travelling", "My thoughts about {{userName}}'s 'traveller' personality", "My thoughts about what {{userName}} wants to see more in the world"]
 
 That example are just to show the form of what the memory cues should look like, NOT what the content of the cues should be about. Instead, the memory cues should strictly be about things relevant to the recent conversation transcript and the assistant’s intention. This is the recent conversation transcript: 
 
 {{recentChats}}
 
-Now, this is the python list of memory cues that might be relevant for the conversation: <|im_end|>
+Now, this is the semantically correct python list of memory cues that might be relevant for the conversation: <|im_end|>
 
 <|im_start|>assistant

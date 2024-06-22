@@ -1,0 +1,5 @@
+[
+    "Miiki's previous struggles with presenting technical details effectively", 
+    "How I assisted Miiki in improving his self-awareness during presentations", 
+    "Examples of successful presentations that focused on both big-picture concepts and technical specifics"
+    ]

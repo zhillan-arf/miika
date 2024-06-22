@@ -10,7 +10,7 @@ import epsToText from '../../client/src/functions/epsToText.js';
 const makeResponse = async (user, secretary) => {
     try {
         const chats = await Episode.find({ userID: user._id, type:'chat' }, {userID: 0});
-        const recentChats = await epsToText(getRecentEps(chats, tokenCap=500));
+        const recentChats = await epsToText(getRecentEps(chats, tokenCap=500), user.name, secretary.name);
         if (!inferAct(recentChats)) return null;
 
         const episodes = await Episode.find(
@@ -22,14 +22,14 @@ const makeResponse = async (user, secretary) => {
 
         const contextGuides = await inferGuides(recentChats, guides, user.secIntent); 
         const contextEpisodes = await inferEpisodes(recentChats, episodes, user.secIntent); 
-        const contextEntities = await inferEntities(recentChats, contextGuides, contextEpisodes); 
+        // const contextEntities = await inferEntities(recentChats, contextGuides, contextEpisodes); 
 
         const newChats = await inferResponses(
             secretary.name, 
             user.name, 
             contextGuides, 
             contextEpisodes, 
-            contextEntities, 
+            // contextEntities, 
             user.secIntent
         );
         await Episode.insertMany(newChats);

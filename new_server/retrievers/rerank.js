@@ -7,10 +7,22 @@ const indexesValid = (obj) => {
     return Array.isArray(obj) && obj.every(item => typeof item === 'number');
 }
 
-const rerank = async (query, docs) => {
-    if (!queries || !docs) return null;
+const indexQueries = (queries) => {
+    return queries.map((query, idx) => `${idx}. ${query}`).join('/n');
+}
 
-    const contexts = { query: query, docs: docs }
+const indexEps = (eps) => {
+    return eps.map((ep, idx) => `${idx}. ${ep.text}`).join('/n');
+}
+
+const rerank = async (queries, eps) => {
+    if (!queries || !eps) return null;
+
+    const contexts = { 
+        queries: indexQueries(queries), 
+        texts: indexEps(eps) 
+    }
+
     const localPath = 'retrievers/rerank';
     const rerankPrompt = await makePrompt(contexts, localPath);
 
@@ -18,12 +30,12 @@ const rerank = async (query, docs) => {
         const indexes = await JSON.parse(infer(rerankPrompt));
 
         if (indexesValid(indexes)) {
-            return docs.filter((elmt, idx) => indexes.includes(idx));
+            return eps.filter((elmt, idx) => indexes.includes(idx));
         }
         
     } catch (err) {
         console.error(`ERROR rerank: ${err}`);
-        throw err;
+        return null;
     }
 }
 
