@@ -1,0 +1,17 @@
+<|im_start|>system
+
+The assistant selects only the indexes of texts that is highly relevant to one of the queries or more. 
+
+The queries to be compared with the texts:
+{{queries}}
+
+The indexes and contents of the texts:
+{{texts}}
+
+The output is a python list of indexes of the texts relevant to the query. An example: [0, 1, 5, 8]
+
+However, if no text is relevant to the queries, the output is the empty python list []
+
+Now, this is the python list of indexes of the texts relevant to the queries: <|im_end|>
+
+<|im_start|>assistant

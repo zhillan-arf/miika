@@ -14,11 +14,14 @@ with open('texts.txt', 'r', encoding='utf-8-sig') as file:
 userName = "Miiki"
 
 def index_queries(queries):
-    return ''.join([f"{idx}. {query}\n" for idx, query in enumerate(queries)]).rstrip('\n')
+    return ''.join([f"{idx + 1}. {query}\n" for idx, query in enumerate(queries)]).rstrip('\n')
+
+def index_text(texts):
+    return ''.join([f"{idx}. {text}\n" for idx, text in enumerate(texts)]).rstrip('\n')
 
 contexts = {
     'queries': index_queries(json.loads(queries)),
-    'texts': index_queries(json.loads(texts)),
+    'texts': index_text(json.loads(texts)),
     'userName': userName
 }
 
@@ -28,16 +31,16 @@ for key, value in contexts.items():
 
 print(prompt)
 
-# data = { 'prompt': prompt }
+data = { 'prompt': prompt }
 
-# url = 'http://localhost:3001/api/infer'
-# headers = {'Content-Type': 'application/json'}
+url = 'http://localhost:3001/api/infer'
+headers = {'Content-Type': 'application/json'}
 
-# response = requests.post(url, headers=headers, json=data)
+response = requests.post(url, headers=headers, json=data)
 
-# # Check the response status code
-# if response.status_code == 200:
-#     print('Response:', response.json())
-# else:
-#     print(f'Request failed with status code: {response.status_code}')
+# Check the response status code
+if response.status_code == 200:
+    print('Response:', response.json())
+else:
+    print(f'Request failed with status code: {response.status_code}')
 
