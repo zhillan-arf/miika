@@ -1,11 +1,11 @@
 import Episode from '../models/Episode.js';
 import inferAct from '../inferences/inferAct.js';
-import inferEntities from '../inferences/inferEntities.js';
+// import inferEntities from '../inferences/inferEntities.js';
 import inferResponses from '../inferences/inferResponses.js';
 import inferGuides from '../inferences/inferGuides.js';
 import inferEpisodes from '../inferences/inferEpisodes.js';
 import getRecentEps from '../functions/getRecentEps.js';
-import epsToText from '../../client/src/functions/epsToText.js';
+import epsToText from '../functions/epsToText.js';
 
 const makeResponse = async (user, secretary) => {
     try {
@@ -26,11 +26,13 @@ const makeResponse = async (user, secretary) => {
 
         const newChats = await inferResponses(
             secretary.name, 
+            secretary.coreGuides,
             user.name, 
+            user.secIntent,
             contextGuides, 
             contextEpisodes, 
             // contextEntities, 
-            user.secIntent
+            recentChats
         );
         await Episode.insertMany(newChats);
 

@@ -9,6 +9,7 @@ const saveSecData = async (secName, secPath) => {
             name: secName,
             gender: await readFile(path.resolve(secPath, 'gender.txt')) == 'm',
             profpic: await imgToB64(path.resolve(secPath, 'profpic.jpg')),
+            coreGuides: await readFile(path.resolve(secPath, 'coreGuides.txt'))
         });
         
         await secretary.save();

@@ -5,24 +5,30 @@ import re
 with open('prompt.txt', 'r') as file:
     prompt = file.read()
 
-with open('queries.txt', 'r') as file:
-    queries = file.read()
+userName = "danny"
+secName = "mist"
 
-with open('texts.txt', 'r', encoding='utf-8-sig') as file:
-    texts = file.read()
+with open('contextGuides.txt', 'r') as file:
+    contextGuides = file.read()
 
-userName = "Miiki"
+with open('contextEpisodes.txt', 'r') as file:
+    contextEpisodes = file.read()
 
-def index_queries(queries):
-    return ''.join([f"{idx + 1}. {query}\n" for idx, query in enumerate(queries)]).rstrip('\n')
+with open('recentChats.txt', 'r') as file:
+    recentChats = file.read()
 
-def index_text(texts):
-    return ''.join([f"{idx}. {text}\n" for idx, text in enumerate(texts)]).rstrip('\n')
+# def index_queries(queries):
+#     return ''.join([f"{idx + 1}. {query}\n" for idx, query in enumerate(queries)]).rstrip('\n')
+
+# def index_text(texts):
+#     return ''.join([f"{idx}. {text}\n" for idx, text in enumerate(texts)]).rstrip('\n')
 
 contexts = {
-    'queries': index_queries(json.loads(queries)),
-    'texts': index_text(json.loads(texts)),
-    'userName': userName
+    'contextGuides': contextGuides,
+    'contextEpisodes': contextEpisodes,
+    'recentChats': recentChats,
+    'userName': userName,
+    'secName': secName
 }
 
 for key, value in contexts.items():

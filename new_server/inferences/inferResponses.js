@@ -1,10 +1,11 @@
 import makePrompt from "../functions/makePrompt.js";
 import infer from "./infer.js";
 
-const inferResponses = async (secName, userName, contextGuides, contextEpisodes, contextEntities, secIntent) => {
+const inferResponses = async (secName, coreGuides, userName, contextGuides, contextEpisodes, contextEntities, secIntent) => {
     const contexts = {
         secName: secName,
         date: Date(),
+        coreGuides: coreGuides,
         userName: userName,
         contextGuides: contextGuides,
         contextEpisodes: contextEpisodes,
