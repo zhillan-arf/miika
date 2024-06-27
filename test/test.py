@@ -1,7 +1,4 @@
-import json
-import requests
-import re
-import datetime
+import json, requests, re, datetime, time
 
 with open('prompt.txt', 'r') as file:
     prompt = file.read()
@@ -48,16 +45,20 @@ for key, value in contexts.items():
 
 print(prompt)
 
-# data = { 'prompt': prompt }
+data = { 'prompt': prompt }
 
-# url = 'http://localhost:3001/api/infer'
-# headers = {'Content-Type': 'application/json'}
+url = 'http://localhost:3001/api/infer'
+headers = {'Content-Type': 'application/json'}
 
-# response = requests.post(url, headers=headers, json=data)
+start_time = time.time()
 
-# # Check the response status code
-# if response.status_code == 200:
-#     print('Response:', response.json())
-# else:
-#     print(f'Request failed with status code: {response.status_code}')
+response = requests.post(url, headers=headers, json=data)
+
+# Check the response status code
+if response.status_code == 200:
+    end_time = time.time()
+    print('Response:', response.json())
+    print('Latency:' f'{end_time - start_time}')
+else:
+    print(f'Request failed with status code: {response.status_code}')
 

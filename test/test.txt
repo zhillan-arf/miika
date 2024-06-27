@@ -1,4 +1,4 @@
-﻿<|im_start|>system
+<|im_start|>system
 
 ASSISTANT: Ah
 Seems like there's a new chat from {{userName}}
@@ -45,11 +45,8 @@ ASSISTANT: I see
 Hmm hmm
 Now moving to the third procedure
 Gotta state my intents
-It'll be good to state it like this:
-
-```
+About that, well
 {{secIntent}}
-```
 
 ASSISTANT: Moving on
 Fourth step
@@ -66,7 +63,6 @@ Let's do it
 ASSISTANT: I see, I see
 Right
 Finally I move on to the fifth last step
-"Provide an answer to continue that recent chats"
+"Provide an answer for that recent chats"
 Hmm
-Considering the recent chats, considering all the infos from previous steps, also my own intent
-I guess this is one fitting open-ended response: <|im_end|>
+Following that recent chats, and all the infos from previous steps, I guess my answer is this: <|im_end|>
