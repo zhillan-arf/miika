@@ -17,7 +17,7 @@ def infer():
     generated_ids = model.generate(
         input_ids, 
         attention_mask=attn_mask,
-        max_new_tokens=200, 
+        max_new_tokens=150,
         temperature=0.8, 
         repetition_penalty=1, 
         do_sample=True, 

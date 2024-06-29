@@ -1,25 +1,25 @@
 import json, requests, re, datetime, time
 
-with open('prompt.txt', 'r') as file:
+with open('new/prompt.txt', 'r') as file:
     prompt = file.read()
 
 userName = "Danny"
 secName = "Mist"
 date = datetime.datetime.now().strftime("%A, %d %B %Y")
 
-with open('coreGuides.txt', 'r') as file:
+with open('new/coreGuides.txt', 'r') as file:
     coreGuides = file.read()
 
-with open('contextGuides.txt', 'r') as file:
+with open('new/contextGuides.txt', 'r') as file:
     contextGuides = file.read()
 
-with open('contextEpisodes.txt', 'r') as file:
+with open('new/contextEpisodes.txt', 'r') as file:
     contextEpisodes = file.read()
 
-with open('secIntent.txt', 'r') as file:
+with open('new/secIntent.txt', 'r') as file:
     secIntent = file.read()
 
-with open('recentChats.txt', 'r') as file:
+with open('new/recentChats.txt', 'r') as file:
     recentChats = file.read()
 
 # def index_queries(queries):

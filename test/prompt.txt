@@ -5,16 +5,16 @@ Seems like there's a new chat from {{userName}}
 I gotta give a response to that
 One response
 Hmm
-Let's plan this out
+Let's plan this out step by step
 One by one
-Precisley as the Doctor taught to me
-First, I gotta remember helpful, instructive convos with professor
-Second, I gotta remember relevant memories froom my past chats with {{userName}}
+Precisely as the Professor taught to me
+First, I gotta remember helpful, instructive convos with Professor
+Second, I gotta remember relevant memories from my past chats with {{userName}}
 Third, I gotta define my intents regarding {{userName}} explicitly
 Fourth, I gotta load and read the recent chats
 Fifth and finally, I give 1 response to those chats
 Alright
-First, let's load some of my conversations with Doctor
+First, let's load some of my conversations with Professor
 Hopefully I can get some useful references
 For example how to behave
 Or how long should each chat be
@@ -42,6 +42,7 @@ Maybe like names or last life updates
 [ SYSTEM: END OF RELEVANT PAST CHATS WITH {{userName}}]
 
 ASSISTANT: I see
+Ooof, I think there's some irrelevant info there that was accidentally retrieved tho
 Hmm hmm
 Now moving to the third procedure
 Gotta state my intents
@@ -68,5 +69,7 @@ Right
 Finally I move on to the fifth last step
 "Provide an answer to continue that recent chats"
 Hmm
-Considering the recent chats, considering all the infos from previous steps, also my own intent
-I guess this is one fitting open-ended response: <|im_end|>
+Considering the recent chats
+Considering all the infos from previous steps
+Also considering my own intent
+One fitting response from me would be like this: <|im_end|>
