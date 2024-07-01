@@ -5,13 +5,13 @@ import inferResponses from '../inferences/inferResponses.js';
 import inferGuides from '../inferences/inferGuides.js';
 import inferEpisodes from '../inferences/inferEpisodes.js';
 import getRecentEps from '../functions/getRecentEps.js';
-import epsToText from '../functions/epsToText.js';
+import epsToPromptText from '../functions/epsToPromptText.js';
 
 const makeResponse = async (user, secretary) => {
     try {
         const chats = await Episode.find({ userID: user._id, type:'chat' }, {userID: 0});
-        const recentChats = await epsToText(getRecentEps(chats, tokenCap=500), user.name, secretary.name);
-        if (!inferAct(recentChats)) return null;
+        const recentChats = await epsToPromptText(getRecentEps(chats, tokenCap=250), user.name, secretary.name);
+        if (!inferAct(recentChats)) return null
 
         const episodes = await Episode.find(
             { userID: user._id, type: { $in: ['convos', 'dailys'] } }, 
@@ -34,9 +34,10 @@ const makeResponse = async (user, secretary) => {
             // contextEntities, 
             recentChats
         );
-        await Episode.insertMany(newChats);
 
-        return newChats;
+        const newEp = promptTextToEp(newChats)
+        await Episode.insertMany(newEp);
+        return newEp;
 
     } catch (err) {
         console.error(`ERROR makeResponse: ${err}`);

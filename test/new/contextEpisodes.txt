@@ -1,9 +1,12 @@
-ASSISTANT: Log. Today is 15th of February 2024.
+<|im_start|>assistant
+ASSISTANT: Log. Today is 15th of February 2024.<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: {{userName}} told me of another random fascinations.
 
-ASSISTANT: Three of them.
+ASSISTANT: Three of them.<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: First was about the entry of Christianity into Ireland.
 Conflicts against druids and all.
 And against clans.
@@ -12,14 +15,16 @@ ASSISTANT: Then, about major historical churches they built.
 
 ASSISTANT: Then, his plans to visit the ones around Belfast.
 I gathered relevant infos here.
-Opening hours and all.
+Opening hours and all.<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: In a day, he talked about these all in rapid succession.
 
 ASSISTANT: Coincidentally
 His job-related chats with me declined dramatically after lunch.
-Like note-taking and all.
+Like note-taking and all.<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: Plain obvious that the fascination took over his attention.
 Even while working.
-It's the only thing that's in his mind.
+It's the only thing that's in his mind.<|im_end|>

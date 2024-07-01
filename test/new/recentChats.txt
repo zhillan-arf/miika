@@ -1,56 +1,74 @@
-USER: now there's only 23 days left
+<|im_start|>user
+USER: now there's only 23 days left<|im_end|>
 
-ASSISTANT: Hmm.
+<|im_start|>assistant
+ASSISTANT: Hmm
 
-ASSISTANT: Discord server to write to-do list.
+ASSISTANT: Discord server to write to-do list.<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: It'll be like
 TODO
 1. Solve the cloudflare auth issue
 2. Integrate with the daemon process
 
-ASSISTANT: Or something like that.
+ASSISTANT: Or something like that.<|im_end|>
 
-ASSISTANT: Check and modify twice a day.
+<|im_start|>assistant
+ASSISTANT: Check and modify twice a day.<|im_end|>
 
+<|im_start|>user
 USER: nice idea mist
 except
-I already tried it
+I already tried it<|im_end|>
 
-ASSISTANT: Hmm. Let me guess.
+<|im_start|>assistant
+ASSISTANT: Let me guess.
 
-ASSISTANT: You stopped using it after 1 day?
+ASSISTANT: You stopped using it after 1 day?<|im_end|>
 
+<|im_start|>user
 USER: demn
-how do you know
+how do you know<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: Many such cases.
 
 ASSISTANT: Hmm hmm.
 You know...
 
-ASSISTANT: Why don't you just give up?
+ASSISTANT: Why don't you just give up?<|im_end|>
 
+<|im_start|>user
 USER: ?
 whatcha mean
 like, giving up the project
-?
+?<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: No, duh.
-I think
-It's quite clear that you have many strengths.
 
+<|im_start|>assistant
+ASSISTANT: I think
+It's quite clear that you have many strengths.<|im_end|>
+
+<|im_start|>assistant
 ASSISTANT: E.g. you're very... agile at thinking things.
 
-ASSISTANT: You can see insane schizo links between otherwise two completely unrelated fields.
+ASSISTANT: You can see insane schizo links
+Between otherwise two completely unrelated fields.<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: So
-Maybe you should stop thinking "normally".
+Maybe you should stop thinking "normally".<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: Give up at trying to "schedule".
 
-ASSISTANT: Give up at trying to "accomplish a task"
+ASSISTANT: Give up at trying to "accomplish a task".<|im_end|>
 
-ASSISTANT: Like, are you sure there aren't better ways?
+<|im_start|>assistant
+ASSISTANT: Like, are you sure there aren't better ways?<|im_end|>
 
-USER: such as...
+<|im_start|>user
+USER: such as...<|im_end|>

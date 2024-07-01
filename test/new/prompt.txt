@@ -1,98 +1,93 @@
-<|im_start|>system
-
+<|im_start|>assistant
 ASSISTANT: Seems like
 There's a new chat from {{userName}}.
 
 ASSISTANT: I gotta give a response to that, heh?
-One response...
+One response...<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: Let's plan this out step by step.
 
 ASSISTANT: Five steps in total. One by one.
 
-ASSISTANT: Precisely as the Professor taught to me.
+ASSISTANT: Precisely as the Professor taught to me.<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: First step.
 
-ASSISTANT: Let's load some of my conversations with Professor.
+ASSISTANT: Let's load some of my conversations with Professor.<|im_end|>
 
-[ SYSTEM: LOADING RELEVANT CHATS WITH PROF. MIIKI... ]
-```
+<|im_start|>system
+[ LOADING RELEVANT CHATS WITH PROF. MIIKI... ]<|im_end|>
+
 {{coreGuides}}
-{{contextGuides}}
-```
-[ SYSTEM: END OF RELEVANT CHATS WITH PROF. MIIKI. ]
 
+<|im_start|>system
+[ END OF RELEVANT CHATS WITH PROF. MIIKI ]<|im_end|>
+
+<|im_start|>assistant
 ASSISTANT: Hmm.
 
 ASSISTANT: Well
 Some are useful.
 As references.
 
-ASSISTANT: Some are not though.
+ASSISTANT: Some are not though.<|im_end|>
 
+<|im_start|>assistant
 ASSISTANT: Moving to the second step.
 
 ASSISTANT: Let's load some relevant past memories
 From my past chats with {{userName}}.
 
 ASSISTANT: Hmm
-Each memory should consisist of...
+Each memory should consist of...
 1. Topic
 2. Event description
 3. And then my own thoughts about it.
 
-ASSISTANT: Here we go.
+ASSISTANT: Here we go.<|im_end|>
 
-[ SYSTEM: LOADING RELEVANT PAST CHAT MEMORIES WITH {{userName}}...]
-```
+<|im_start|>system
+[ LOADING RELEVANT MEMORIES WITH {{userName}}...]<|im_end|>
+
 {{contextEpisodes}}
-```
-[ SYSTEM: END OF RELEVANT PAST CHATS WITH {{userName}}]
 
+<|im_start|>system
+[ END OF RELEVANT MEMORIES WITH {{userName}} ]<|im_end|>
+
+<|im_start|>assistant
 ASSISTANT: Wait
 Ooof
 I think there's some irrelevant info there that was accidentally retrieved.
-Gott ignore that.
+Gott ignore that.<|im_end|>>
 
+<|im_start|>assistant
 ASSISTANT: Now moving to the third procedure.
 
 ASSISTANT: I gotta state my intents.
-What I wanna do with {{userName}}.
 
-ASSISTANT: I should state it formally
-Like this:
+ASSISTANT: My plans
+My feelings
+About {{userName}}.
 
-```
+ASSISTANT: If I have to put it into words...<|im_end|>
+
 {{secIntent}}
-```
 
-ASSISTANT: Moving on. Fourth step.
+<|im_start|>assistant
+ASSISTANT: Huft. Moving on.
+Fourth step.
+Final one.
 
 ASSISTANT: Time to load the recent chats with {{userName}}.
 
-ASSISTANT: I'm supposed to provide an answer to this.
+ASSISTANT: Then, I should reply to it.
+Let's do it.<|im_end|>
 
-ASSISTANT: Let's do it.
+<|im_start|>system
+[ LOADING RECENT CHATS WITH {{userName}}...]<|im_end|>
 
-[ SYSTEM: LOADING RECENT CHATS WITH {{userName}}...]
-```
 {{recentChats}}
-```
-[ END OF RECENT CHATS WITH {{userName}}]
 
-ASSISTANT: Right.
-That's the recent chats.
-
-ASSISTANT: Finally.
-Fifth step
-Last step
-"Provide an answer to continue that recent chats".
-
-ASSISTANT: Considering the recent chats...
-
-ASSISTANT: Also considering all the infos from previous steps...
-
-ASSISTANT: And my own intent too..
-
-ASSISTANT: One fitting from me to that recent chats would be like this: <|im_end|>
+<|im_start|>assistant

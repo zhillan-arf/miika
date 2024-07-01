@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+
 const { verify } = jwt;
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;

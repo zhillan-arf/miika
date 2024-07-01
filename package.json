@@ -3,11 +3,10 @@
     "version": "1.0.0",
     "description": "Tell me about it.",
     "scripts": {
-      "new-dev": "cd new_server && npm run dev",
       "server-dev": "cd server && npm run dev",
       "client-dev": "cd client && npm run dev",
       "service-dev": "cd service && ./menv/bin/activate && python3 app.py",
-      "both-dev": "concurrently \"npm run new-dev\" \"npm run client-dev\"",
+      "both-dev": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
       "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\" \"npm run service-dev\"",
       "server-install": "cd server && npm install",
       "client-install": "cd client && npm install",

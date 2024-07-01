@@ -15,6 +15,7 @@ const imgToB64 = async (imgPath) => {
 
     } catch (err) {
         console.error(`Img load error: ${err}`);
+        return null;
     }
 }
 
