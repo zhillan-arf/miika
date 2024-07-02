@@ -3,11 +3,11 @@ import delay from "./delay.js";
 
 const socketEvents = (io) => {
     io.on('connection', (socket) => {
-        socket.on('requestResponse', async (user, secretary) => {
+        socket.on('requestResponse', async (user, assistant) => {
             socket.emit('waitingResponse', true);
             socket.emit('nowTyping', true);
 
-            const newChats = await makeResponse(user, secretary);
+            const newChats = await makeResponse(user, assistant);
 
             if (newChats) {
                 for (const newChat of newChats) {

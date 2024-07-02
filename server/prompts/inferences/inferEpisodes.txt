@@ -10,7 +10,7 @@ he... let's continue reading
 MANUAL: The following is the step-by-step guide to generate hypothetical memory cues. Step 1. The assistant state explicitly its current intention and assessment in the conversation.
 
 ASSISTANT: state my intent? about {{userName}}?
-well... {{secIntent}}
+well... {{asIntent}}
 
 MANUAL: Step 2. The assistant loads the recent conversation with the user. This transcript will be used to identify missing contexts that should be retrieved from memory using the memory cues.
 

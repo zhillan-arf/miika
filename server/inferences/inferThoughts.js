@@ -1,12 +1,12 @@
 import makePrompt from "../functions/makePrompt.js";
 import infer from "./infer.js";
 
-const inferThoughts = async (recentDailys, recentMonologues, recentChats, secIntent) => {
+const inferThoughts = async (recentDailys, recentMonologues, recentChats, asIntent) => {
     const contexts = {
         recentDailys: recentDailys,
         recentMonologues: recentMonologues,
         recentChats: recentChats,
-        secIntent: secIntent
+        asIntent: asIntent
     }
 
     const localPath = 'inference/inferThoughts';

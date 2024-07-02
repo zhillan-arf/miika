@@ -1,10 +1,10 @@
 import makePrompt from "../functions/makePrompt.js";
 import infer from "./infer.js";
 
-const inferNewIntent = async (contextMonologues, secIntent) => {
+const inferNewIntent = async (contextMonologues, asIntent) => {
     const contexts = {
         contextMonologues: contextMonologues,
-        secIntent: secIntent
+        asIntent: asIntent
     }
 
     const localPath = 'inference/inferNewIntent';

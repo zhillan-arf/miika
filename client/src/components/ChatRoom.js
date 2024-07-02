@@ -12,17 +12,17 @@ import { reformatChat } from '../functions/reformatChats';
 import "../assets/chatroom.css";
 
 const ChatRoom = () => {
-    const { loading, master, secretary, inputChat, setChats, setInputChat } = useContext(DataContext);
+    const { loading, user, assistant, inputChat, setChats, setInputChat } = useContext(DataContext);
     const { socket } = useContext(SocketContext);
 
     const [waitingResponse, setWaitingResponse] = useState(false);
-    const [secTyping, setSecTyping] = useState(false);
+    const [asTyping, setAsTyping] = useState(false);
     const [queueing, setQueueing] = useState(false);
     const [refocus, setRefocus] = useState(0);
 
     const parentRef = useRef(null);
     const receiveRef = useRef(null);
-    const prevSecTypingRef = useRef(secTyping);
+    const prevAsTypingRef = useRef(asTyping);
 
     const receiveResponse = useCallback((newChat) => {
         setChats(chats => {
@@ -31,25 +31,25 @@ const ChatRoom = () => {
 
         if (queueing & !waitingResponse) {
             setQueueing(false);
-            if (socket) socket.emit('requestResponse', master);
+            if (socket) socket.emit('requestResponse', user);
         }
-    }, [socket, queueing, master, waitingResponse]);
+    }, [socket, queueing, user, waitingResponse]);
 
     useEffect(() => {
         receiveRef.current = receiveResponse;
     }, [receiveResponse]);
 
     useEffect(() => {
-        if (prevSecTypingRef.current !== secTyping) {
+        if (prevAsTypingRef.current !== asTyping) {
             setRefocus((prevRefocus) => !prevRefocus);
-            prevSecTypingRef.current = secTyping;
+            prevAsTypingRef.current = asTyping;
         }
-    }, [secTyping, refocus]);
+    }, [asTyping, refocus]);
 
     useEffect(() => {
         if (socket && socket.connected)  {
             socket.on('waitingResponse', setWaitingResponse);
-            socket.on('nowTyping', setSecTyping);
+            socket.on('nowTyping', setAsTyping);
             socket.on('receiveResponse', receiveRef.current);
 
             return () => {
@@ -65,28 +65,28 @@ const ChatRoom = () => {
         newChat._id = await insertChat(newChat);
 
         setChats(chats => {
-            setInputChat(getNewChat(chats.length, master, secretary));
+            setInputChat(getNewChat(chats.length, user, assistant));
             return chats.concat(newChat);
         });
 
         if (!waitingResponse) {
-            socket.emit('requestResponse', master, secretary);
+            socket.emit('requestResponse', user, assistant);
         } else setQueueing(true);
 
         setRefocus(refocus + 1);
 
-    }, [socket, master, secretary, inputChat, waitingResponse, refocus]);
+    }, [socket, user, assistant, inputChat, waitingResponse, refocus]);
 
     if (loading) return <Loading />;
 
     return (
         <div className="container">
-            <Sidebar masterName={master.name} masterProfpicSrc={getProfpicSrc('master', master, secretary)}>
+            <Sidebar userName={user.name} masterProfpicSrc={getProfpicSrc('user', user, assistant)}>
                 1 - midsummer is app...
             </Sidebar>
             <div className="room" ref={parentRef}>
                 <ChatHeader parentRef={parentRef}/>
-                <ChatFeed secTyping={secTyping} refocus={refocus} handleEnter={handleEnter} />
+                <ChatFeed asTyping={asTyping} refocus={refocus} handleEnter={handleEnter} />
             </div>
         </div>
     );

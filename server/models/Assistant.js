@@ -1,12 +1,12 @@
 import { model, Schema } from 'mongoose';
 
-const secretarySchema = new Schema({
+const assistantSchema = new Schema({
     name: String,
     gender: { enum: ["m", "f"] },
     profpic: String,  // b64
     coreGuides: String
 });
 
-const Secretary = model('Secretary', secretarySchema, 'secretaries');
+const Assistant = model('Assistant', assistantSchema, 'assistants');
 
-export default Secretary;
+export default Assistant;

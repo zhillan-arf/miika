@@ -7,7 +7,7 @@ const getDisplayTime = (date) => {
     return `${hours}.${minutes < 10 ? '0' : ''}${minutes}`;
 }
 
-const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypingBox=false, refocus }) => {
+const ChatBox = ({ chat, onEnter, userProfpicSrc, assistantProfpicSrc, isTypingBox=false, refocus }) => {
     const [text, setText] = useState(chat.text || '');
     const textRef = useRef(null);
 
@@ -43,7 +43,7 @@ const ChatBox = ({ chat, onEnter, masterProfpicSrc, secretaryProfpicSrc, isTypin
 
     return (
         <div className='chat-box'>
-            <img className='chat-profpic' src={(chat.role === 'master') ? masterProfpicSrc : secretaryProfpicSrc} alt='profpic'/>
+            <img className='chat-profpic' src={(chat.role === 'master') ? userProfpicSrc : assistantProfpicSrc} alt='profpic'/>
             <div className='chat-identity'>
                 <span className='identity-text'>{chat.userName}<span className='identity-time'> at {getDisplayTime(chat.date)}</span></span>
             </div>

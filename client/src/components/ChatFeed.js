@@ -5,8 +5,8 @@ import ChatBox from "./ChatBox";
 import { DataContext } from "../hooks/DataProvider";
 import '../assets/chatfeed.css';
 
-const ChatFeed = ({ secTyping, refocus, handleEnter }) => {
-    const { master, secretary, chats, inputChat } = useContext(DataContext);
+const ChatFeed = ({ asTyping, refocus, handleEnter }) => {
+    const { user, assistant, chats, inputChat } = useContext(DataContext);
     
     return (
         <div className="chat-feed">
@@ -16,23 +16,23 @@ const ChatFeed = ({ secTyping, refocus, handleEnter }) => {
                     key={chat._id}
                     chat={chat}
                     // onEnter={(text) => handleEdit(text, index)}
-                    masterProfpicSrc={getProfpicSrc('master', master, secretary)}
-                    secretaryProfpicSrc={getProfpicSrc('secretary', master, secretary)}
+                    userProfpicSrc={getProfpicSrc('user', user, assistant)}
+                    assistantProfpicSrc={getProfpicSrc('assistant', user, assistant)}
                 />
             ))}
-            {/* Secretary is typing */}
-            {secTyping && <ChatBox 
+            {/* Assistant is typing */}
+            { asTyping && <ChatBox 
                 key='isTyping'
-                chat={getIsTyping(chats, master, secretary)}
-                secretaryProfpicSrc={getProfpicSrc('secretary', master, secretary)}
-                isTypingBox={secTyping}
+                chat={getIsTyping(chats, user, assistant)}
+                assistantProfpicSrc={getProfpicSrc('assistant', user, assistant)}
+                isTypingBox={asTyping}
             />}
             {/* Current box */}
             <ChatBox
                 key={inputChat._id}
                 chat={inputChat}
                 onEnter={(text) => handleEnter(text)}
-                masterProfpicSrc={getProfpicSrc('master', master, secretary)}
+                masterProfpicSrc={getProfpicSrc('user', user, assistant)}
                 refocus={refocus}
             />
         </div>

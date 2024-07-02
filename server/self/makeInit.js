@@ -17,23 +17,23 @@ const initiate = async (user) => {
         const recentMonologues = getRecentEps(monologues, 300);
         const recentChats = getRecentEps(chats, 250);
 
-        const hypoThoughts = inferThoughts(recentDailys, recentMonologues, recentChats, user.secIntent);
+        const hypoThoughts = inferThoughts(recentDailys, recentMonologues, recentChats, user.asIntent);
         
         const episodes = await Episode.find(
             { userID: user._id, type: { $in: ['convos', 'dailys', 'monologues'] } }, 
             { userID: 0 }
         );
         
-        const contextGuides = await retrieveGuides(guides, user.secIntent, hypoThoughts);
-        const contextEpisodes = await retrieveEpisodes(episodes, user.secIntent, hypoThoughts);
+        const contextGuides = await retrieveGuides(guides, user.asIntent, hypoThoughts);
+        const contextEpisodes = await retrieveEpisodes(episodes, user.asIntent, hypoThoughts);
 
         const [contextMonologues, newMonologues] = await inferNewMonologues(contextGuides, contextEpisodes, recentMonologues);
-        const newIntent = await inferNewIntent(contextMonologues, user.secIntent);
+        const newIntent = await inferNewIntent(contextMonologues, user.asIntent);
         const newChats = await inferInitChats(contextMonologues);
 
         await User.findOneAndUpdate(
             { _id: user._id },
-            { $set: { secIntent: newIntent } }
+            { $set: { asIntent: newIntent } }
         )
 
         await Episode.create(newMonologues);

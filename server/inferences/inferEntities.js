@@ -5,7 +5,7 @@ import Entity from '../models/Entity.js';
 const inferEntities = async (recentChats, contextGuides, contextEpisodes) => {
     const contexts = {
         recentChats: recentChats,
-        secIntent: secIntent
+        asIntent: asIntent
     }
     const localPath = 'inference/inferEntities';
     const entitiesPrompt = await makePrompt(contexts, localPath);

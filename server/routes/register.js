@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import User from '../models/User.js';
 import { hash }  from 'bcrypt';
-import { getDefaultProfpic, getTempSecretaryID } from '../functions/getDefaultProfpic.js';
+import { getDefaultProfpic, getTempAssistantID } from '../functions/getDefaultProfpic.js';
 
 const router = Router();
 const saltRounds = 10;
@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
                 name: req.body.email,  // temp
                 profpic: await getDefaultProfpic('m'),  // temp
                 gender: true,  // temp
-                secretaryID: await getTempSecretaryID('mistley')  // temp
+                assistantID: await getTempAssistantID('mistley')  // temp
             });
             const registeredUser = await user.save();
             const userResponse = {

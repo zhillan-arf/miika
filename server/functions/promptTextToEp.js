@@ -1,9 +1,9 @@
-const promptTextToEps = (userID, text) => {
+const promptTextToEp = (userID, role, text) => {
     const ep = {
         userID: userID,
         type: 'chat',
         date: Date(),
-        role: 'assistant',
+        role: role,
         text: text,
         metatext: null,
         lastRetrieved: Date(),
@@ -13,3 +13,5 @@ const promptTextToEps = (userID, text) => {
 
     return ep;    
 }
+
+export default promptTextToEp;

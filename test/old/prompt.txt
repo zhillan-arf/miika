@@ -73,7 +73,7 @@ About {{userName}}.
 
 ASSISTANT: If I have to put it into words...<|im_end|>
 
-{{secIntent}}
+{{asIntent}}
 
 <|im_start|>assistant
 ASSISTANT: Huft. Moving on.

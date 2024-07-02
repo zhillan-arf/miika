@@ -8,9 +8,9 @@ const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
 export const DataProvider = ({ children }) => {
 
-    const [master, setMaster] = useState(null);
+    const [user, setUser] = useState(null);
     const [inputChat, setInputChat] = useState(null);
-    const [secretary, setSecretary] = useState(null);
+    const [assistant, setAssistant] = useState(null);
     const [chats, setChats] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -23,10 +23,10 @@ export const DataProvider = ({ children }) => {
                 });
                 const data = await response.json();
                 
-                setMaster(data.master);
-                setSecretary(data.secretary);
+                setUser(data.user);
+                setAssistant(data.assistant);
                 setChats(reformatChats(data.chats));
-                setInputChat(getNewChat(data.chats.length, data.master, data.secretary));
+                setInputChat(getNewChat(data.chats.length, data.user, data.assistant));
                 setLoading(false);
 
             } catch (err) {
@@ -38,7 +38,7 @@ export const DataProvider = ({ children }) => {
     }, []);
 
     return (
-        <DataContext.Provider value={{ master, inputChat, secretary, chats, loading, setChats, setInputChat }}>
+        <DataContext.Provider value={{ user, inputChat, assistant, chats, loading, setChats, setInputChat }}>
             {children}
         </DataContext.Provider>
     )

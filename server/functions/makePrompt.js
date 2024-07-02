@@ -1,5 +1,8 @@
+import readFile from 'fs/promises';
+import path from 'path';
+
 const makePrompt = async (contexts, localPath) => {
-    const filePath = resolve(`prompts/${localPath}.txt`);
+    const filePath = path.resolve(`prompts/${localPath}.txt`);
     let prompt = await readFile(filePath, 'utf8');
 
     for (const key in contexts) {

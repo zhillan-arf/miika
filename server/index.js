@@ -15,7 +15,7 @@ import verifyRouter from './routes/verify.js';
 import getChatsRouter from './routes/getChats.js';
 import insertChatRouter from './routes/insertChat.js';
 
-import initSecretaries from './functions/initSecretary.js';
+import initAssistants from './functions/initAssistants.js';
 import initDBs from './functions/initDBs.js';
 
 const app = express();
@@ -66,7 +66,7 @@ db.once('open', () => {
 });
 
 await initDBs();
-await initSecretaries();
+await initAssistants();
 
 socketEvents(io);
 

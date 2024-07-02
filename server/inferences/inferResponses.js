@@ -1,16 +1,16 @@
 import makePrompt from "../functions/makePrompt.js";
 import infer from "./infer.js";
 
-const inferResponses = async (secName, coreGuides, userName, contextGuides, contextEpisodes, contextEntities, secIntent) => {
+const inferResponses = async (asName, coreGuides, userName, contextGuides, contextEpisodes, contextEntities, asIntent) => {
     const contexts = {
-        secName: secName,
+        asName: asName,
         date: Date(),
         coreGuides: coreGuides,
         userName: userName,
         contextGuides: contextGuides,
         contextEpisodes: contextEpisodes,
         contextEntities: contextEntities,
-        secIntent: secIntent
+        asIntent: asIntent
     }
 
     const localPath = 'inference/inferInfos';
