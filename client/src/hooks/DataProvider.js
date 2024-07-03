@@ -26,7 +26,7 @@ export const DataProvider = ({ children }) => {
                 setUser(data.user);
                 setAssistant(data.assistant);
                 setChats(reformatChats(data.chats));
-                setInputChat(getNewChat(data.chats.length, data.user, data.assistant));
+                setInputChat(getNewChat(data.chats.length));
                 setLoading(false);
 
             } catch (err) {

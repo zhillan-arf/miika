@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import { DataContext } from '../hooks/DataProvider';
 import '../assets/chatbox.css';
 
 const getDisplayTime = (date) => {
@@ -10,9 +11,10 @@ const getDisplayTime = (date) => {
 const ChatBox = ({ chat, onEnter, userProfpicSrc, assistantProfpicSrc, isTypingBox=false, refocus }) => {
     const [text, setText] = useState(chat.text || '');
     const textRef = useRef(null);
+    const { user, assistant } = useContext(DataContext);
 
     useEffect(() => {
-        setText(chat.text || '');
+        setText(chat.content || '');
     }, [chat]);
 
     useEffect(() => {
@@ -43,9 +45,12 @@ const ChatBox = ({ chat, onEnter, userProfpicSrc, assistantProfpicSrc, isTypingB
 
     return (
         <div className='chat-box'>
-            <img className='chat-profpic' src={(chat.role === 'master') ? userProfpicSrc : assistantProfpicSrc} alt='profpic'/>
+            <img className='chat-profpic' src={(chat.role === 'user') ? userProfpicSrc : assistantProfpicSrc} alt='profpic'/>
             <div className='chat-identity'>
-                <span className='identity-text'>{chat.userName}<span className='identity-time'> at {getDisplayTime(chat.date)}</span></span>
+                <span className='identity-text'>
+                    {chat.role === 'assistant' ? assistant.name : user.name}
+                    <span className='identity-time'> at {getDisplayTime(chat.date)}</span>
+                </span>
             </div>
             <textarea
                 ref={textRef}

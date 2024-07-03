@@ -7,7 +7,6 @@ const userSchema = new Schema({
   name: String,
   gender: { enum: ["m", "f"] },
   profpic: String,  // b64
-  profile: String,
   asIntent: String
 });
 

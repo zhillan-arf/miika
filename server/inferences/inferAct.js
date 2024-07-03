@@ -7,13 +7,13 @@ const inferAct = async (recentChats) => {
     const actPrompt = await makePrompt(contexts, localPath);
     
     let act = true;
-    try {
-        const act = await JSON.parse(infer(actPrompt).act);
+    // try {
+    //     const act = await JSON.parse(infer(actPrompt).act);
     
-    } catch (err) {
-        console.error(err);
-        return null;
-    }
+    // } catch (err) {
+    //     console.error(err);
+    //     return null;
+    // }  // debug
 
     return act;
 }

@@ -1,15 +1,11 @@
-const getNewChat = (length, user, assistant, role='user', autoFocus=true, readOnly=false, text='') => {
+const getNewChat = (length, content='', role='user', autoFocus=true, readOnly=false) => {
     return {
-        _id: `temp_chat-${length}`,
-        userID: master._id,
-        date: new Date(),
+        chatID: length,
         role: role,
-        userName: role === 'user'? user.name : assistant.name,
-        text: text,
+        content: content,
+        date: new Date(),
         autoFocus: autoFocus,
         readOnly: readOnly,
-        lastRecalled: new Date(),
-        timesRecalled: 1
     }
 }
 

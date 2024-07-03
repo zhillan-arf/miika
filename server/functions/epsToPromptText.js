@@ -4,11 +4,7 @@ const epsToPromptText = (eps) => {
     let recentChats = '';
     
     eps.forEach(ep => {
-        const chat = `<|im_start|>${ep.role}
-        ${ep.text}<|im_end|>
-        
-        `;
-
+        const chat = `<|im_start|>${ep.role}\n${ep.text}<|im_end|>\n\n`;
         recentChats += chat;
     })
 

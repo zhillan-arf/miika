@@ -5,7 +5,7 @@ import insertChat from '../functions/insertChat';
 import getNewChat from '../functions/getNewChat';
 import Loading from './Loading';
 import Sidebar from './Sidebar';
-import getProfpicSrc from '../functions/getProfpicSrc';
+import { getUserProfpic } from '../functions/getProfpicSrc';
 import ChatFeed from './ChatFeed';
 import ChatHeader from './ChatHeader';
 import { reformatChat } from '../functions/reformatChats';
@@ -26,7 +26,7 @@ const ChatRoom = () => {
 
     const receiveResponse = useCallback((newChat) => {
         setChats(chats => {
-            return chats.concat(reformatChat(newChat))
+            return chats.concat(reformatChat(newChat, chats.length))
         });
 
         if (queueing & !waitingResponse) {
@@ -60,12 +60,19 @@ const ChatRoom = () => {
         }
     }, [socket]);
 
-    const handleEnter = useCallback(async (text) => {
-        const newChat = { ...inputChat, autoFocus: false, readOnly: true, text: text, date: new Date(), lastRecalled: new Date() };
-        newChat._id = await insertChat(newChat);
+    const handleEnter = useCallback(async (content) => {
+        const newChat = {
+            ...inputChat,
+            content: content,
+            date: new Date(),
+            autoFocus: false,
+            readOnly: true
+        };
+
+        await insertChat(user, newChat);
 
         setChats(chats => {
-            setInputChat(getNewChat(chats.length, user, assistant));
+            setInputChat(getNewChat(chats.length));
             return chats.concat(newChat);
         });
 
@@ -81,8 +88,8 @@ const ChatRoom = () => {
 
     return (
         <div className="container">
-            <Sidebar userName={user.name} masterProfpicSrc={getProfpicSrc('user', user, assistant)}>
-                1 - midsummer is app...
+            <Sidebar userName={user.name} userProfpicSrc={getUserProfpic(user)}>
+                1 - Obon Day is...
             </Sidebar>
             <div className="room" ref={parentRef}>
                 <ChatHeader parentRef={parentRef}/>

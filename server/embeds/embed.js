@@ -12,9 +12,9 @@ const embed = async (texts) => {
     const episodes = pairs.map((pair) => ({
         userID: user._id,
         type: type,
-        date: Date(),
+        date: new Date(),
         text: pair.text,
-        lastRetrieved: Date(),
+        lastRetrieved: new Date(),
         timesRetrieved: 1,
         embedding: pair.embedding
     }));

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import getProfpicSrc from "../functions/getProfpicSrc";
+import { getUserProfpic, getAsProfpic } from '../functions/getProfpicSrc';
 import getIsTyping from "../functions/getIsTyping";
 import ChatBox from "./ChatBox";
 import { DataContext } from "../hooks/DataProvider";
@@ -13,26 +13,26 @@ const ChatFeed = ({ asTyping, refocus, handleEnter }) => {
             {/* Previous transcripts */}
             {chats.map((chat) => (
                 <ChatBox
-                    key={chat._id}
+                    key={chat.chatID}
                     chat={chat}
                     // onEnter={(text) => handleEdit(text, index)}
-                    userProfpicSrc={getProfpicSrc('user', user, assistant)}
-                    assistantProfpicSrc={getProfpicSrc('assistant', user, assistant)}
+                    userProfpicSrc={getUserProfpic(user)}
+                    assistantProfpicSrc={getAsProfpic(assistant)}
                 />
             ))}
             {/* Assistant is typing */}
             { asTyping && <ChatBox 
                 key='isTyping'
                 chat={getIsTyping(chats, user, assistant)}
-                assistantProfpicSrc={getProfpicSrc('assistant', user, assistant)}
+                assistantProfpicSrc={getAsProfpic(assistant)}
                 isTypingBox={asTyping}
             />}
             {/* Current box */}
             <ChatBox
-                key={inputChat._id}
+                key={inputChat.chatID}
                 chat={inputChat}
                 onEnter={(text) => handleEnter(text)}
-                masterProfpicSrc={getProfpicSrc('user', user, assistant)}
+                userProfpicSrc={getUserProfpic(user)}
                 refocus={refocus}
             />
         </div>

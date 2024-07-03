@@ -3,7 +3,7 @@ import { AuthContext } from "../hooks/AuthProvider";
 import '../assets/dock.css'
 import { FaCalendarAlt, FaAddressBook, FaSignOutAlt, FaClipboardList } from 'react-icons/fa';
 
-const Dock = ({ masterProfpicSrc }) => {
+const Dock = ({ userProfpicSrc }) => {
     const setAuth = useContext(AuthContext);
 
     const handleSetAuth = () => {
@@ -12,7 +12,7 @@ const Dock = ({ masterProfpicSrc }) => {
 
     return (
         <div className="dock">
-            <img src={masterProfpicSrc} alt='' style={{width: '24px', height: '24px', marginTop: '1em'}}/>
+            <img src={userProfpicSrc} alt='' style={{width: '24px', height: '24px', marginTop: '1em'}}/>
             <div className='dock-icon'><FaCalendarAlt/></div>
             <div className='dock-icon'><FaAddressBook/></div>
             <div className='dock-icon'><FaClipboardList/></div>

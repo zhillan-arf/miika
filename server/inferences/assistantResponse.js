@@ -1,22 +1,23 @@
 import makePrompt from "../functions/makePrompt.js";
+import getFormatDate from "../functions/getFormatDate.js";
 import infer from "./infer.js";
 
-const inferResponses = async (asName, coreGuides, userName, contextGuides, contextEpisodes, contextEntities, asIntent) => {
+const assistantResponse = async (asName, coreGuides, userName, contextGuides, contextEpisodes, contextEntities, asIntent) => {
     const contexts = {
         asName: asName,
-        date: Date(),
-        coreGuides: coreGuides,
         userName: userName,
+        coreGuides: coreGuides,
         contextGuides: contextGuides,
         contextEpisodes: contextEpisodes,
         contextEntities: contextEntities,
-        asIntent: asIntent
+        asIntent: asIntent,
+        date: getFormatDate(),
     }
 
-    const localPath = 'inference/inferInfos';
+    const localPath = 'assistants/mist';
     const responsesPrompt = await makePrompt(contexts, localPath);
 
     return await infer(responsesPrompt);
 }
 
-export default inferResponses;
+export default assistantResponse;

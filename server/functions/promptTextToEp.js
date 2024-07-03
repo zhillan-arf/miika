@@ -2,11 +2,11 @@ const promptTextToEp = (userID, role, text) => {
     const ep = {
         userID: userID,
         type: 'chat',
-        date: Date(),
+        date: new Date(),
         role: role,
         text: text,
         metatext: null,
-        lastRetrieved: Date(),
+        lastRetrieved: new Date(),
         timesRetrieved: 1,
         embedding: null
     }

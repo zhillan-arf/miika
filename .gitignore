@@ -9,3 +9,5 @@ service/routes/__pycache__
 server/.env
 service/.env
 client/.env.development
+test/
+test

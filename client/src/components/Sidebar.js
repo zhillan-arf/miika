@@ -2,12 +2,12 @@ import React from "react";
 import Dock from "./Dock";
 import '../assets/sidebar.css'
 
-const Sidebar = ({ masterName, masterProfpicSrc, children }) => {
+const Sidebar = ({ userName, userProfpicSrc, children }) => {
     return (
         <div className="sidebar">
-            <Dock masterProfpicSrc={masterProfpicSrc}/>
+            <Dock userProfpicSrc={userProfpicSrc}/>
             <div className="sidebar-bar">
-                <header className="master-header">{masterName}'s logs</header>
+                <header className="user-header">{userName}'s logs</header>
                 <div className="sidebar-days">{children}</div>
             </div>
         </div>

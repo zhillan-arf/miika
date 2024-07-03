@@ -14,10 +14,10 @@ router.get('/api/getchats', async (req, res) => {
         const assistant = await Assistant.findOne({_id: user.assistantID}).lean();
         const chats = await Episode.find({userID: userID, type:'chat'}).lean();
 
-        const formatChats = chats.map(chat => {
+        const formattedChats = chats.map(chat => {
             return {
                 role: chat.role,
-                text: chat.text,
+                content: chat.text,
                 date: chat.date
             }
         })
@@ -25,7 +25,7 @@ router.get('/api/getchats', async (req, res) => {
         res.status(200).json({
             user: user,
             assistant: assistant,
-            chats: formatChats
+            chats: formattedChats
         });
 
     } catch (err) {

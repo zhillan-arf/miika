@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { ObjectId } from 'mongodb';
 import Episode from "../models/Episode.js";
 import verifyToken from "../functions/verifyToken.js";
 import promptTextToEp from "../functions/promptTextToEp.js";
@@ -12,7 +13,7 @@ router.post('/api/insertchat', async (req, res) => {
         const user = req.user;
         const chat = response.chat;
 
-        const newEp = promptTextToEp(user._id, chat.role, chat.text);
+        const newEp = promptTextToEp(ObjectId(user._id), chat.role, chat.content);
 
         await Episode.create(newEp);
         res.status(201);

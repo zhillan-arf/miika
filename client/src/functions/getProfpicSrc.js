@@ -1,6 +1,7 @@
-const getProfpicSrc = (type, user, assistant) => {
-    if (type === 'user') return `data:image/png;base64,${master.profpic}`;
-    else if (type === 'assistant') return `data:image/png;base64,${assistant.profpic}`;
+export const getUserProfpic = (user) => {
+    return `data:image/png;base64,${user.profpic}`;
 }
 
-export default getProfpicSrc;
+export const getAsProfpic = (assistant) => {
+    return `data:image/png;base64,${assistant.profpic}`;
+}

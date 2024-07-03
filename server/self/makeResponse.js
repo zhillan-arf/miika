@@ -1,7 +1,7 @@
 import Episode from '../models/Episode.js';
 import inferAct from '../inferences/inferAct.js';
 // import inferEntities from '../inferences/inferEntities.js';
-import inferResponses from '../inferences/inferResponses.js';
+import assistantResponse from '../inferences/assistantResponse.js';
 import inferGuides from '../inferences/inferGuides.js';
 import inferEpisodes from '../inferences/inferEpisodes.js';
 import getRecentEps from '../functions/getRecentEps.js';
@@ -25,7 +25,7 @@ const makeResponse = async (user, assistant) => {
         const contextEpisodes = await inferEpisodes(recentChats, episodes, user.asIntent); 
         // const contextEntities = await inferEntities(recentChats, contextGuides, contextEpisodes); 
 
-        const responses = await inferResponses(
+        const responseText = await assistantResponse(
             assistant.name, 
             assistant.coreGuides,
             assistant.name, 
@@ -36,15 +36,20 @@ const makeResponse = async (user, assistant) => {
             recentChats
         );
 
-        const newEp = promptTextToEp(user._id, 'assistant', responses)
+        const newEp = promptTextToEp(user._id, 'assistant', responseText)
         await Episode.insertMany(newEp);
 
-        const newChat = {
-            role: newEp.role,
-            text: newEp.text,
-            date: newEp.date
-        }
-        return newEp;
+        const newChats = responseText.split('ASSISTANT: ')
+            .filter(newChat => newChat.trim() != '')
+            .map(newChat => {
+                return {
+                    role: assistant,
+                    content: newChat.trim(),
+                    date: new Date()
+                }
+            });
+        
+        return newChats;
 
     } catch (err) {
         console.error(`ERROR makeResponse: ${err}`);

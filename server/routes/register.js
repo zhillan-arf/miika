@@ -18,10 +18,10 @@ router.post('/register', async (req, res) => {
             const user = new User({
                 email: req.body.email, 
                 hash: hashedPassword,
-                name: req.body.email,  // temp
+                name: req.body.email.substring(0, req.body.email.indexOf('@')),  // temp
                 profpic: await getDefaultProfpic('m'),  // temp
-                gender: true,  // temp
-                assistantID: await getTempAssistantID('mistley')  // temp
+                gender: 'm',  // temp
+                assistantID: await getTempAssistantID('mist')  // temp
             });
             const registeredUser = await user.save();
             const userResponse = {
