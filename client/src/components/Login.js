@@ -7,7 +7,7 @@ const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 const Login = ({onRegister}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const setAuth = useContext(AuthContext);
+    const { setAuth } = useContext(AuthContext);
 
     const handleLogin = async(e) => {
         e.preventDefault();

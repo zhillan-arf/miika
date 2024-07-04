@@ -7,8 +7,6 @@ const episodeSchema = new Schema({
   role: { type: String, enum: ['user', 'assistant']},
   text: String,
   metatext: String,
-  lastRetrieved: Date,
-  timesRetrieved: Number,
   embedding: [Number]
 });
 

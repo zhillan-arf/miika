@@ -4,8 +4,6 @@ import infer from "./infer.js";
 
 const assistantResponse = async (asName, userName, coreGuides, contextGuides, contextEpisodes, asIntent, recentChats) => {
     const contexts = {
-        asName: asName,
-        userName: userName,
         coreGuides: coreGuides,
         contextGuides: contextGuides,
         contextEpisodes: contextEpisodes,
@@ -13,6 +11,8 @@ const assistantResponse = async (asName, userName, coreGuides, contextGuides, co
         asIntent: asIntent,
         date: getFormatDate(),
         recentChats: recentChats,
+        asName: asName,
+        userName: userName,
     }
 
     const localPath = 'assistants/mist/assistantResponse';

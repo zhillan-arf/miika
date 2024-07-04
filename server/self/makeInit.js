@@ -5,6 +5,7 @@ import inferNewIntent from "../inferences/inferNewIntent.js";
 import inferInitChats from "../inferences/inferInitChats.js";
 import Episode from "../models/Episode.js";
 import User from '../models/User.js'
+import getRecentEps from "../functions/getRecentEps.js";
 
 const initiate = async (user) => {
     try {
@@ -13,8 +14,8 @@ const initiate = async (user) => {
         const chats = await Episode.find({ userID: user._id, type:'chat' }, {userID: 0});
         const guides = await Episode.find({ userID: user._id, type:'guide' }, {userID: 0});
 
-        const recentDailys = getRecentEps(dailys, 250);
-        const recentMonologues = getRecentEps(monologues, 300);
+        const recentDailys = getRecentEps(dailys, 100);
+        const recentMonologues = getRecentEps(monologues, 100);
         const recentChats = getRecentEps(chats, 250);
 
         const hypoThoughts = inferThoughts(recentDailys, recentMonologues, recentChats, user.asIntent);

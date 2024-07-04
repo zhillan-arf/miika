@@ -7,15 +7,16 @@ import readFile from 'fs/promises';  // temp debug
 import path from 'path';  // temp debug
 
 const inferEpisodes = async (recentChats, episodes, asIntent) => {
-    // if (!recentChats || recentChats.length === 0) return null;
+    const nullText = 'There is currently no relevant memory.'
+    if (!recentChats || recentChats.length === 0) return nullText;
     
-    // const hypoContexts = {
-    //     recentChats: recentChats,
-    //     asIntent: asIntent
-    // }
+    const hypoContexts = {
+        recentChats: recentChats,
+        asIntent: asIntent
+    }
 
-    // const localPath = 'inference/inferEpisodes';
-    // const hypoPrompt = await makePrompt(hypoContexts, localPath);
+    const localPath = 'inference/inferEpisodes';
+    const hypoPrompt = await makePrompt(hypoContexts, localPath);
 
     // try {
     //     const queries = await JSON.parse(infer(hypoPrompt));
@@ -24,12 +25,14 @@ const inferEpisodes = async (recentChats, episodes, asIntent) => {
 
     // } catch(err) {
     //     console.error(`ERROR inferEpisodes: ${err}`);
-    //     return null;
+    //     return nullText;
     // }  // debug
 
-    const filePath = path.resolve(`inferences/contextEpisodes.txt`);  // temp debug
-    const buffer = await readFile(filePath, 'utf8');  // temp debug
-    return buffer.toString();  // temp debug
+    // const filePath = path.resolve(`inferences/contextEpisodes.txt`);  // temp debug
+    // const buffer = await readFile(filePath, 'utf8');  // temp debug
+    // return buffer.toString();  // temp debug
+
+    return nullText;
 }
 
 export default inferEpisodes;

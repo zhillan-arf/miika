@@ -10,6 +10,7 @@ router.use(verifyToken);
 router.post('/api/insertchat', async (req, res) => {
     try {
         const response = req.body;
+        console.log(Object.keys(response)); // debug
         const user = req.user;
         const chat = response.chat;
 
@@ -19,7 +20,8 @@ router.post('/api/insertchat', async (req, res) => {
         res.status(201);
         
     } catch (err) {
-        res.status(400).json({error: `ERROR insertChat: ${err}`});
+        console.error(`ERROR insertChat: ${err}`);
+        res.status(400);
     }
 });
 

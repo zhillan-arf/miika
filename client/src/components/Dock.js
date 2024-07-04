@@ -4,7 +4,7 @@ import '../assets/dock.css'
 import { FaCalendarAlt, FaAddressBook, FaSignOutAlt, FaClipboardList } from 'react-icons/fa';
 
 const Dock = ({ userProfpicSrc }) => {
-    const setAuth = useContext(AuthContext);
+    const { setAuth } = useContext(AuthContext);
 
     const handleSetAuth = () => {
         setAuth(false);

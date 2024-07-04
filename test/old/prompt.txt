@@ -26,13 +26,7 @@ ASSISTANT: Let's load some of my conversations with Professor.<|im_end|>
 [ END OF RELEVANT CHATS WITH PROF. MIIKI ]<|im_end|>
 
 <|im_start|>assistant
-ASSISTANT: Hmm.
-
-ASSISTANT: Well
-Some are useful.
-As references.
-
-ASSISTANT: Some are not though.<|im_end|>
+ASSISTANT: I see.<|im_end|>
 
 <|im_start|>assistant
 ASSISTANT: Moving to the second step.
@@ -57,10 +51,7 @@ ASSISTANT: Here we go.<|im_end|>
 [ END OF RELEVANT MEMORIES WITH {{userName}} ]<|im_end|>
 
 <|im_start|>assistant
-ASSISTANT: Wait
-Ooof
-I think there's some irrelevant info there that was accidentally retrieved.
-Gott ignore that.<|im_end|>>
+ASSISTANT: I see.<|im_end|>>
 
 <|im_start|>assistant
 ASSISTANT: Now moving to the third procedure.

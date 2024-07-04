@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AuthContext }  from './hooks/AuthProvider.js';
+import { AuthContext, AuthProvider }  from './hooks/AuthProvider.js';
 import Register from './components/Register';
 import Login from './components/Login';
 import Aigis from './components/Aigis';
@@ -8,51 +8,27 @@ import ChatRoom from './components/ChatRoom';
 import { DataProvider } from './hooks/DataProvider.js';
 import { SocketProvider } from './hooks/SocketProvider.js';
 
-const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
-
-const App = () => {
-    const [auth, setAuth] = useState(false);
+const AuthedApp = () => {
     const [showRegister, setShowRegister] = useState(false);
-    // const [offline, setOffline] = useState(true);
-
-    useEffect(() => {
-        const verify = async () => {
-            try {
-                const response = await fetch(`${REACT_APP_BACKEND_URI}/api/verify`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                setAuth(response.ok);
-            } catch (err) {
-                setAuth(false);
-            }
-        }
-        verify();
-    }, []);
+    const { auth } = useContext(AuthContext);
 
     const SPA = () => {
         return (
-            <AuthContext.Provider value={setAuth}>
-                <DataProvider>
-                    <SocketProvider>
-                        <ChatRoom/>
-                    </SocketProvider>
-                </DataProvider>
-            </AuthContext.Provider>
+            <DataProvider>
+                <SocketProvider>
+                    <ChatRoom/>
+                </SocketProvider>
+            </DataProvider>
         );
     }
 
     const Gate = () => {
         if (showRegister) {
             return (
-                <AuthContext.Provider value={setAuth}>
-                    <Register onBackToLogin={() => {setShowRegister(false)}}/>
-                </AuthContext.Provider>
+                <Register onBackToLogin={() => {setShowRegister(false)}}/>
             );
         } else return (
-            <AuthContext.Provider value={setAuth}>
-                <Login onRegister={() => {setShowRegister(true)}}/>
-            </AuthContext.Provider>
+            <Login onRegister={() => {setShowRegister(true)}}/>
         );
     }
 
@@ -64,6 +40,14 @@ const App = () => {
                 </Routes>
             </Router>
     );
+}
+
+const App = () => {
+    return (
+        <AuthProvider>
+            <AuthedApp/>
+        </AuthProvider>
+    )
 }
 
 export default App;

@@ -1,0 +1,85 @@
+<|im_start|>assistant
+ASSISTANT: A new task for me.
+
+ASSISTANT: I'm to generate a python list of queries.
+
+ASSISTANT: The queries will be used to retrieve a few instructions from my instructions repository.
+
+ASSISTANT: The retrieved instructions will inform me about how to respond to a chat transcript and achieve my intentions.
+
+ASSISTANT: Consequently, the queries I generate must be relevant to that transcript and to my intentions.
+
+ASSISTANT: That means a python list of strings like...
+"Psychological theories I can use to analyze people with attention difficulties"
+Or something.
+If the conversation happened to talk about that, of course.
+
+ASSISTANT: There's at least three possible topics I can describe and make queries about:
+1. Query for information that helps achieve what the person currently wants.
+2. Query for my previous memories or experiences that might be relevant to it.
+3. Query for my personal opinion about that type of person.
+
+ASSISTANT: Hmm.
+
+ASSISTANT: To make this task more understandable, let's think of a few examples.<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: First hypothetical example.
+
+ASSISTANT: Let's say we're chatting about the person's ires of not having a girlfriend.
+
+ASSISTANT: At the same time, I'm a bit annoyed at
+
+ASSISTANT: From patiently listening to his incoherent long rants, I noticed a bunch of larger patterns.
+
+ASSISTANT: Using that understanding, I generate this python list of queries:<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: [
+    'Popular red flags and green flags about boys',
+    'What a girl would think about a boy with poor hygine and odor',
+    'Reasons why someone always talk about themselves and doesn\'t have the patience to listen to others',
+    'How to emphatize with a person one finds boring',
+    'My personal feeling and opinion about selfish people who only think and talk of themselves'
+]<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: Second hypothetical example.
+
+ASSISTANT: Let's say we're talking about a new morning jogging route the person just charted.
+
+ASSISTANT: At the same time, let's say I'm just starting to know that person. 
+I thus intend to bond more with them.
+
+ASSISTANT: From the details I noticed in the chats, I generate this python list of queries:<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: [
+    'How to react to someone passionately explaining their hobby',
+    'Responses that people wants when they\'re talking about themselves'
+]<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: With those examples in mind, let's do the task.
+
+ASSISTANT: First, my intentions. If I have to put it to words...<|im_end|>
+
+{{asIntent}}
+
+<|im_start|>assistant
+ASSISTANT: Second, our recent chats.
+Here it is:<|im_end|>
+
+<|im_start|>system
+[ LOADING RECENT CHATS...]<|im_end|>
+
+{{recentChats}}
+
+<|im_start|>system
+[ END OF RECENT CHATS ]<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: From the details and patterns I noticed in that recent chats, I generate this python list of queries:<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: 

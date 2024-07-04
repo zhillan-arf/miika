@@ -6,7 +6,6 @@ export const SocketContext = createContext();
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
 export const SocketProvider = ({ children }) => {
-
     const [socket, setSocket] = useState(null);
 
     const connectSocket = useCallback(() => {

@@ -31,7 +31,7 @@ export const SERVICE_URI = process.env.SERVICE_URI;
 const allowedOrigins = [REMOTE_URI, CLIENT_URI, SERVICE_URI];
 
 app.use((req, res, next) => {  // debug
-  console.log('Incoming request from origin:', req.headers.origin);
+  console.log('Incoming request from origin:', req.headers.origin);  // debug
   next();
 });
 

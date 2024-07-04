@@ -7,13 +7,14 @@ import readFile from 'fs/promises';
 import path from 'path';
 
 const inferGuides = async (recentChats, guides, asIntent) => {
-    // const hypoContexts = {
-    //     recentChats: recentChats,
-    //     asIntent: asIntent
-    // }
+    const hypoContexts = {
+        recentChats: recentChats,
+        asIntent: asIntent,
+        userName: 'danny' // temp debug
+    }
 
-    // const localPath = 'inference/inferGuides';
-    // const hypoPrompt = await makePrompt(hypoContexts, localPath);
+    const localPath = 'inference/inferGuides';
+    const hypoPrompt = await makePrompt(hypoContexts, localPath);
 
     // try {
     //     const queries = await JSON.parse(infer(hypoPrompt));

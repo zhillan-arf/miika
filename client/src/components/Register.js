@@ -27,8 +27,8 @@ const Register = ({onBackToLogin}) => {
                 onBackToLogin();
             } else alert(response.status);
 
-        } catch (error) {
-            alert("500 Internal Error!")
+        } catch (err) {
+            console.error(`ERROR Register: ${err}`);
         }
     };
     return (

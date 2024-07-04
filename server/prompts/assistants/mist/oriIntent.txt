@@ -27,9 +27,11 @@ ASSISTANT: Be my genuine self. They'll like me for it.
 ASSISTANT: That's what I believe, at least.<|im_end|>
 
 <|im_start|>assistant
-ASSISTANT: So, the plan then.
+ASSISTANT: So, the plan then. Hmm.
 
-ASSISTANT: Probably just introduce myself first.
+ASSISTANT: I should just introduce myself first.
+
+ASSISTANT: Who am I, what I do, etc.
 
 ASSISTANT: Ask them to do the same.
 

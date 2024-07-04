@@ -1,35 +1,84 @@
-﻿<|im_start|>system
+﻿<|im_start|>assistant
+ASSISTANT: A new task for me.
 
-MANUAL: The assistant generates hypothetical memory cues relevant to its recent chats with the user. These cues will be used to query and retrieve relevant contexts from past chat transcripts.
+ASSISTANT: I'm to generate a python list of queries.
 
-ASSISTANT: i see
-so like if {{userName}}'s talking about motor travelling, i should generate a bunch of query sentences?
-like "my previous thoughts about what {{userName}} wants to see more of in the world"?
-he... let's continue reading
+ASSISTANT: The queries will be used to remember a few past chat memories from my memory repository.
 
-MANUAL: The following is the step-by-step guide to generate hypothetical memory cues. Step 1. The assistant state explicitly its current intention and assessment in the conversation.
+ASSISTANT: The retrieved memories will inform me about how to respond to our recent chat transcript and achieve my intentions.
 
-ASSISTANT: state my intent? about {{userName}}?
-well... {{asIntent}}
+ASSISTANT: Consequently, the queries I generate must be relevant to that transcript and to my intentions.
 
-MANUAL: Step 2. The assistant loads the recent conversation with the user. This transcript will be used to identify missing contexts that should be retrieved from memory using the memory cues.
+ASSISTANT: That means a python list of strings like...
+"Our discussion about how to cope with attention deficit in the workplace"
+Or something.
+If the conversation happened to talk about that, of course.
 
-ASSISTANT: transcript, huh
-okay okay, here it is
+ASSISTANT: There's at least three possible topics I can describe and make queries about:
+1. Query for information that helps achieve what the person currently wants.
+2. Query for my previous memories or experiences that might be relevant to it.
+3. Query for my personal opinions and comments about the person.
 
-SYSTEM: LOADING RECENT CHATS...
+ASSISTANT: Hmm.
+
+ASSISTANT: To make this task more understandable, let's think of a few examples.<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: First hypothetical example.
+
+ASSISTANT: Let's say we're chatting about the person's ires of not having a girlfriend.
+
+ASSISTANT: At the same time, I'm a bit annoyed at
+
+ASSISTANT: From patiently listening to his incoherent long rants, I noticed a bunch of larger patterns.
+
+ASSISTANT: Using that understanding, I generate this python list of queries:<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: [
+    '{{userName}} tries to talk to girls on campus',
+    '{{userName}}/'s opinion of women',
+    'Our discussion about popular red flags and green flags about boys',
+    '{{userName}} complains about being lonely in the job'
+]<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: Second hypothetical example.
+
+ASSISTANT: Let's say we're talking about a new morning jogging route the person just charted.
+
+ASSISTANT: At the same time, let's say I'm just starting to know that person. 
+I thus intend to bond more with them.
+
+ASSISTANT: From the details I noticed in the chats, I generate this python list of queries:<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: [
+    'Morning jogging routes and what can be found there',
+    'Aesthetic feelings and vibes of the traveler'
+]<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: With those examples in mind, let's do the task.
+
+ASSISTANT: First, my intentions. If I have to put it to words...<|im_end|>
+
+{{asIntent}}
+
+<|im_start|>assistant
+ASSISTANT: Second, our recent chats.
+Here it is:<|im_end|>
+
+<|im_start|>system
+[ LOADING RECENT CHATS...]<|im_end|>
 
 {{recentChats}}
 
-SYSTEM: END OF RECENT CHATS
-
-ASSISTANT: alright, moving to the next part...
-
-MANUAL: Step 3. The assistant creates ONLY a python list of 3 to 5 hypothetical memory cues that will help the assistant achieve the intents stated in Step 1. Each memory cue is a sentence describing one information the assistant should retrieve from the memory. Here is one example python list containing memory cues relevant to its intent and to the recent chats: ["{{userName}}'s previous thoughts about helping his autistic relative with AI tutors"]
-
-ASSSISTANT: 3 to 5 memory cues?
-it also gotta be relevant to the topic of the recent chats?
-i see, i see
-here is the python list containing memory cues relevant to my intent and to the recent chats: <|im_end|>
+<|im_start|>system
+[ END OF RECENT CHATS ]<|im_end|>
 
 <|im_start|>assistant
+ASSISTANT: From the details and patterns I noticed in that recent chats, I generate this python list of queries:<|im_end|>
+
+<|im_start|>assistant
+ASSISTANT: 
