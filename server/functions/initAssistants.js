@@ -5,10 +5,14 @@ import path from 'path';
 
 const saveAsData = async (asName, asPath) => {
     try {
+        const profpic = await imgToB64(path.resolve(asPath, 'profpic.jpg'));
+        const coreGuidesBuffer = await readFile(path.resolve(asPath, 'coreGuides.txt'));
+        const coreGuides = coreGuidesBuffer.toString();
+
         const assistant = new Assistant({
             name: asName,
-            profpic: await imgToB64(path.resolve(asPath, 'profpic.jpg')),
-            coreGuides: await readFile(path.resolve(asPath, 'coreGuides.txt'))
+            profpic: profpic,
+            coreGuides: coreGuides
         });
         
         await assistant.save();

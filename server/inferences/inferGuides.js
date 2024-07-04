@@ -25,8 +25,9 @@ const inferGuides = async (recentChats, guides, asIntent) => {
     //     return null;
     // }  // debug
 
-    const filePath = path.resolve(`inferences/contextGuides.txt`);  // debug
-    return await readFile(filePath, 'utf8');  // debug
+    const filePath = path.resolve(`inferences/contextGuides.txt`);  // temp debug
+    const buffer = await readFile(filePath, 'utf8');  // temp debug
+    return buffer.toString();
 }
 
 export default inferGuides;

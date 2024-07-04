@@ -7,5 +7,5 @@ export const reformatChat = (chat, idx) => ({
 });
 
 export const reformatChats = (chats) =>  {
-    return chats.map((chat, idx) => {reformatChat(chat, idx)});
+    return chats.map((chat, idx) => reformatChat(chat, idx));
 }

@@ -33,7 +33,7 @@ const ChatRoom = () => {
             setQueueing(false);
             if (socket) socket.emit('requestResponse', user);
         }
-    }, [socket, queueing, user, waitingResponse]);
+    }, [socket, queueing, user, waitingResponse, setChats]);
 
     useEffect(() => {
         receiveRef.current = receiveResponse;
@@ -82,7 +82,7 @@ const ChatRoom = () => {
 
         setRefocus(refocus + 1);
 
-    }, [socket, user, assistant, inputChat, waitingResponse, refocus]);
+    }, [socket, user, assistant, inputChat, waitingResponse, refocus, setChats, setInputChat]);
 
     if (loading) return <Loading />;
 

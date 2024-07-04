@@ -10,4 +10,4 @@ server/.env
 service/.env
 client/.env.development
 test/
-test
+test.js

@@ -8,6 +8,6 @@ export const getDefaultProfpic = async (gender) => {
     return await imgToB64(imgPath);
 }
 
-export const getTempAssistantID = async (sName) => {
-    return await Assistant.findOne({name: sName}, '_id');
+export const getTempAssistantID = async (asName) => {
+    return await Assistant.findOne({name: asName}, '_id');
 }
