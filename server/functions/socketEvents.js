@@ -13,9 +13,6 @@ const socketEvents = (io) => {
                 for (const newChat of newChats) {
                     await delay(newChat.content);
                     socket.emit('receiveResponse', newChat);
-                    socket.emit('nowTyping', false);
-                    await delay(1);
-                    socket.emit('nowTyping', true);
                 }
             }
             

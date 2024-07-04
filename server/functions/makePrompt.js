@@ -3,7 +3,8 @@ import path from 'path';
 
 const makePrompt = async (contexts, localPath) => {
     const filePath = path.resolve(`prompts/${localPath}.txt`);
-    let prompt = await readFile(filePath, 'utf8');
+    const promptBuffer = await readFile(filePath, 'utf8');
+    let prompt = promptBuffer.toString();
 
     for (const key in contexts) {
         const regex = new RegExp(`{{${key}}}, 'g`);

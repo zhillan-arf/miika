@@ -48,6 +48,7 @@ const ChatRoom = () => {
 
     useEffect(() => {
         if (socket && socket.connected)  {
+            
             socket.on('waitingResponse', setWaitingResponse);
             socket.on('nowTyping', setAsTyping);
             socket.on('receiveResponse', receiveRef.current);

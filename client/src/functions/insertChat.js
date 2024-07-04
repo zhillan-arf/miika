@@ -1,18 +1,23 @@
 const REACT_APP_BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
-const insertChat = async (chat) => {
+const insertChat = async (user, chat) => {
     try {
+        const payload = {
+            chat: {
+                role: chat.role,
+                content: chat.content,
+                date: chat.date
+            },
+            user: user
+        }
+
         await fetch(`${REACT_APP_BACKEND_URI}/api/insertchat`, {
             method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                role: chat.role,
-                content: chat.content,
-                date: chat.date
-            })
+            body: JSON.stringify(payload)
         });
 
     } catch (err) {

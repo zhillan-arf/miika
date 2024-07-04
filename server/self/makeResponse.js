@@ -10,33 +10,34 @@ import promptTextToEp from '../functions/promptTextToEp.js'
 
 const makeResponse = async (user, assistant) => {
     try {
-        const chats = await Episode.find({ userID: user._id, type:'chat' }, {userID: 0});
-        const recentChats = await epsToPromptText(getRecentEps(chats, tokenCap=250), user.name, assistant.name);
-        if (!inferAct(recentChats)) return null
+        const chats = await Episode.find({ userID: user._id, type:'chat' });
+        const tokenCap = 250;
+        const fRecentChats = await epsToPromptText(getRecentEps(chats, tokenCap=tokenCap), user.name, assistant.name);
+        if (!inferAct(fRecentChats)) return null
 
         const episodes = await Episode.find(
             { userID: user._id, type: { $in: ['convos', 'dailys'] } }, 
             { userID: 0 }
         );
         
-        const guides = await Episode.find({ userID: user._id, type:'guide' }, {userID: 0});
+        const guides = await Episode.find({ userID: user._id, type:'guide' });  // mimic
 
-        const contextGuides = await inferGuides(recentChats, guides, user.asIntent); 
-        const contextEpisodes = await inferEpisodes(recentChats, episodes, user.asIntent); 
-        // const contextEntities = await inferEntities(recentChats, contextGuides, contextEpisodes); 
+        const contextGuides = await inferGuides(fRecentChats, guides, user.asIntent); // temp debug mimic
+        const contextEpisodes = await inferEpisodes(fRecentChats, episodes, user.asIntent); // temp debug mimic
+        // const contextEntities = await inferEntities(fRecentChats, contextGuides, contextEpisodes); // mimic
 
         const responseText = await assistantResponse(
             assistant.name, 
+            user.name, 
             assistant.coreGuides,
-            assistant.name, 
-            user.asIntent,
             contextGuides, 
             contextEpisodes, 
-            // contextEntities, 
-            recentChats
+            // contextEntities,
+            user.asIntent,
+            fRecentChats
         );
 
-        const newEp = promptTextToEp(user._id, 'assistant', responseText)
+        const newEp = promptTextToEp(user._id, 'assistant', responseText);
         await Episode.insertMany(newEp);
 
         const newChats = responseText.split('ASSISTANT: ')
