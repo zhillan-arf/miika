@@ -3,7 +3,7 @@ import faiss from '../retrievers/faiss.js'
 import rerank from '../retrievers/rerank.js'
 import infer from "./infer.js";
 
-import readFile from 'fs/promises';
+import { readFile } from 'fs/promises';
 import path from 'path';
 
 const inferGuides = async (recentChats, guides, asIntent) => {
@@ -13,7 +13,7 @@ const inferGuides = async (recentChats, guides, asIntent) => {
         userName: 'danny' // temp debug
     }
 
-    const localPath = 'inference/inferGuides';
+    const localPath = 'inferences/inferGuides';
     const hypoPrompt = await makePrompt(hypoContexts, localPath);
 
     // try {

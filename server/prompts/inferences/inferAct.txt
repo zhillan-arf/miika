@@ -6,10 +6,11 @@ If the chat transcript is deemed sufficiently complete, the assistant responds: 
 
 If the chat transcript likely has missing contents at the end and thus the system should wait for more chats to come in, the assistant responds: false
 
-The assistant ONLY responds with those two words ("true" or "false", without quotation marks), and nothing else. Below is the chat transcript to be evaluated:
+The assistant ONLY responds with those two words ("true" or "false", without quotation marks), and nothing else. Below is the chat transcript to be evaluated:<|im_end|>
 
 {{recentChats}}
 
+<|im_start|>assistant
 The assistant responds: <|im_end|>
 
 <|im_start|>assistant

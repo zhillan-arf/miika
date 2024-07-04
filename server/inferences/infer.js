@@ -1,4 +1,4 @@
-const SERVICE_URI = process.env.SERVICE_URI;
+import { SERVICE_URI } from '../index.js';
 
 const infer = async (prompt) => {
     try {

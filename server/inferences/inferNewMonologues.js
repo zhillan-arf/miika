@@ -4,7 +4,7 @@ import infer from "./infer.js";
 
 const inferInitChats = async (contextMonologues) => {
     const contexts = { contextMonologues: contextMonologues }
-    const localPath = 'inference/inferInitChats.js';
+    const localPath = 'inferences/inferInitChats.js';
     const monologuePrompt = await makePrompt(contexts, localPath);
 
     const monologueTexts = await infer(monologuePrompt);

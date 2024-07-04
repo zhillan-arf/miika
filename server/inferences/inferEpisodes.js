@@ -15,7 +15,7 @@ const inferEpisodes = async (recentChats, episodes, asIntent) => {
         asIntent: asIntent
     }
 
-    const localPath = 'inference/inferEpisodes';
+    const localPath = 'inferences/inferEpisodes';
     const hypoPrompt = await makePrompt(hypoContexts, localPath);
 
     // try {

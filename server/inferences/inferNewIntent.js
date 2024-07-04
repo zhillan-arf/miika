@@ -7,7 +7,7 @@ const inferNewIntent = async (contextMonologues, asIntent) => {
         asIntent: asIntent
     }
 
-    const localPath = 'inference/inferNewIntent';
+    const localPath = 'inferences/inferNewIntent';
     const thoughtsPrompt = await makePrompt(contexts, localPath);
 
     const thoughts = await infer(thoughtsPrompt);

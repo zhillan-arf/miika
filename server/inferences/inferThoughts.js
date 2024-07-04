@@ -9,7 +9,7 @@ const inferThoughts = async (recentDailys, recentMonologues, recentChats, asInte
         asIntent: asIntent
     }
 
-    const localPath = 'inference/inferThoughts';
+    const localPath = 'inferences/inferThoughts';
     const infosPrompt = await makePrompt(contexts, localPath);
 
     return await infer(infosPrompt);

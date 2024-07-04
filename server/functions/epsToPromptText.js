@@ -8,7 +8,7 @@ const epsToPromptText = (eps) => {
         recentChats += chat;
     })
 
-    return recentChats;
+    return recentChats.trim();
 }
 
 export default epsToPromptText;

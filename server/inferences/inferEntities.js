@@ -7,7 +7,7 @@ const inferEntities = async (recentChats, contextGuides, contextEpisodes) => {
         recentChats: recentChats,
         asIntent: asIntent
     }
-    const localPath = 'inference/inferEntities';
+    const localPath = 'inferences/inferEntities';
     const entitiesPrompt = await makePrompt(contexts, localPath);
     
     let contextEntities = '';

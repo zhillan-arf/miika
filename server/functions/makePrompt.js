@@ -1,4 +1,4 @@
-import readFile from 'fs/promises';
+import { readFile } from 'fs/promises';
 import path from 'path';
 
 const makePrompt = async (contexts, localPath) => {
@@ -7,9 +7,9 @@ const makePrompt = async (contexts, localPath) => {
     let prompt = promptBuffer.toString();
 
     for (const key in contexts) {
-        const regex = new RegExp(`{{${key}}}, 'g`);
-        prompt = prompt.replace(regex. contexts[key]);
-    }
+        const regex = new RegExp(`{{${key}}}`, 'g');
+        prompt = prompt.replace(regex, contexts[key]);
+    }    
 
     return prompt;
 }
