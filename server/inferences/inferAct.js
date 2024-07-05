@@ -8,8 +8,8 @@ const inferAct = async (recentChats) => {
     
     let act = true;
     try {
-        const inferred = await infer(actPrompt);
-        const act = await JSON.parse(inferred);
+        const act = await infer(actPrompt);
+        console.log(`inferAct: ${act}`);  // debug
     
     } catch (err) {
         console.error(err);

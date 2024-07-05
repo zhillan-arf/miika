@@ -18,7 +18,7 @@ const saveAsData = async (asName, asPath) => {
         await assistant.save();
         
     } catch (err) {
-        console.error(`get assistant init err: ${err}`);
+        console.error(`get assistant init err: ${err.message} // ${err.stack}`);
         throw err;
     }
 }

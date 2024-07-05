@@ -30,7 +30,7 @@ export const DataProvider = ({ children }) => {
                 setLoading(false);
 
             } catch (err) {
-                console.error(`Error at fetching chats: ${err}`);
+                console.error(`Error at fetching chats: ${err.message} // ${err.stack}`);
             }
         }
     

@@ -14,7 +14,7 @@ const faiss = async (queries, docs) => {
         else throw Error(`Response not ok: ${response}`);
 
     } catch (err) {
-        console.error(`ERROR infer: ${err}`);
+        console.error(`ERROR infer: ${err.message} // ${err.stack}`);
         return null;
     }
 }

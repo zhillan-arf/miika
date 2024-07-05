@@ -1,5 +1,5 @@
 import makePrompt from "../functions/makePrompt.js";
-import infer from "./infer.js";
+import infer from "../inferences/infer.js";
 
 const inferThoughts = async (recentDailys, recentMonologues, recentChats, asIntent) => {
     const contexts = {

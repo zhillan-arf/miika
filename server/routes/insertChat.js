@@ -18,7 +18,7 @@ router.post('/api/insertchat', async (req, res) => {
         res.status(201).json({ message: 'Chat saved to memory' });
         
     } catch (err) {
-        console.error(`ERROR insertChat: ${err}`);
+        console.error(`ERROR insertChat: ${err.message} // ${err.stack}`);
         res.status(400);
     }
 });

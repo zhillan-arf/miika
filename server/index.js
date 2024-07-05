@@ -57,8 +57,8 @@ const MONGO_PATH = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1:27017/mi
 connect(MONGO_PATH);
 
 const db = connection;
-db.on('error', (error) => {
-  console.error('Connection error:', error);
+db.on('error', (err) => {
+  console.error(`ERROR indecxt connect: ${err.message} // ${err.stack}`);
 });
 
 db.once('open', () => {

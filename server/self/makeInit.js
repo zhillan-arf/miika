@@ -9,16 +9,14 @@ import getRecentEps from "../functions/getRecentEps.js";
 
 const initiate = async (user) => {
     try {
-        const dailys = await Episode.find({ userID: user._id, type:'daily' }, {userID: 0});
-        const monologues = await Episode.find({ userID: user._id, type:'monologue' }, {userID: 0});
-        const chats = await Episode.find({ userID: user._id, type:'chat' }, {userID: 0});
-        const guides = await Episode.find({ userID: user._id, type:'guide' }, {userID: 0});
+        const dailys = await Episode.find({ userID: user._id, type:'daily' });
+        const monologues = await Episode.find({ userID: user._id, type:'monologue' });
+        const chats = await Episode.find({ userID: user._id, type:'chat' });
+        const guides = await Episode.find({ userID: user._id, type:'guide' });
 
         const recentDailys = getRecentEps(dailys, 100);
         const recentMonologues = getRecentEps(monologues, 100);
-        const recentChats = getRecentEps(chats, 250);
-
-        const hypoThoughts = inferThoughts(recentDailys, recentMonologues, recentChats, user.asIntent);
+        const recentChats = getRecentEps(chats, 100);
         
         const episodes = await Episode.find(
             { userID: user._id, type: { $in: ['convos', 'dailys', 'monologues'] } }, 
@@ -42,7 +40,7 @@ const initiate = async (user) => {
         return newChats;
 
     } catch (err) {
-        console.error(`ERROR initiate: ${err}`);
+        console.error(`ERROR initiate: ${err.message} // ${err.stack}`);
     }
 }
 

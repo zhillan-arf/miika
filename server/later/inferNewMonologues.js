@@ -1,6 +1,6 @@
 import embed from "../embeds/embed.js";
 import makePrompt from "../functions/makePrompt.js";
-import infer from "./infer.js";
+import infer from "../inferences/infer.js";
 
 const inferInitChats = async (contextMonologues) => {
     const contexts = { contextMonologues: contextMonologues }

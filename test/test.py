@@ -1,8 +1,5 @@
 import json, requests, re, datetime, time
 
-with open('new/prompt.txt', 'r') as file:
-    prompt = file.read()
-
 userName = "Danny"
 secName = "Mist"
 date = datetime.datetime.now().strftime("%A, %d %B %Y")
@@ -21,6 +18,9 @@ with open('old/secIntent.txt', 'r') as file:
 
 with open('old/recentChats.txt', 'r') as file:
     recentChats = file.read()
+
+with open('old/prompt.txt', 'r') as file:
+    prompt = file.read()
 
 # def index_queries(queries):
 #     return ''.join([f"{idx + 1}. {query}\n" for idx, query in enumerate(queries)]).rstrip('\n')

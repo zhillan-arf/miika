@@ -1,0 +1,30 @@
+{
+    "ChatML": {
+        "system": {
+            "start": "<|im_start|>system\n",
+            "end": "<|im_end|>"
+        },
+        "user": {
+            "start": "<|im_start|>user\n",
+            "end": "<|im_end|>"
+        },
+        "assistant": {
+            "start": "<|im_start|>assistant\n",
+            "end": "<|im_end|>"
+        }
+    }, 
+    "Pygmalion": {
+        "system": {
+            "start": "<|system|>",
+            "end": ""
+        },
+        "user": {
+            "start": "<|user|>",
+            "end": ""
+        },
+        "assistant": {
+            "start": "<|model|>",
+            "end": ""
+        }
+    }
+}

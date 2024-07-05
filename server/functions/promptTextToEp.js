@@ -1,13 +1,15 @@
-const promptTextToEp = (userID, role, text) => {
+const promptTextToEp = (userID, role, content) => {
+    const data = {
+        role: role,
+        content: content
+    }
+
     const ep = {
         userID: userID,
         type: 'chat',
         date: new Date(),
-        role: role,
-        text: text,
-        metatext: null,
-        lastRetrieved: new Date(),
-        timesRetrieved: 1,
+        data: data,
+        summary: null,
         embedding: null
     }
 

@@ -5,6 +5,7 @@ service/llm_models/models--NousResearch--Hermes-2-Pro-Llama-3-8B
 service/llm_models/models--NousResearch--Hermes-2-Theta-Llama-3-8B
 service/llm_models/models--meta-llama--Meta-Llama-3-8B
 service/llm_models/models--PygmalionAI--pygmalion-2-7b
+service/llm_models/models--awq
 node_modules/
 service/routes/__pycache__
 ./key_generator.py

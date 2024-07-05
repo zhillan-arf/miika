@@ -12,20 +12,26 @@ const makeResponse = async (user, assistant) => {
     try {
         const chats = await Episode.find({ userID: user._id, type:'chat' });
         const tokenCap = 250;
-        const recentChatsText = epsToPromptText(getRecentEps(chats, tokenCap), user.name, assistant.name);
+        const recentChatsText = epsToPromptText(
+            getRecentEps(chats, tokenCap),
+            user.name,
+            assistant.name
+        );
+
+        console.log(`makeResponse recenChats: ${recentChatsText}`);  // debug
         
-        if (!inferAct(recentChatsText)) return null
+        if (!inferAct(recentChatsText)) return null;
 
         const episodes = await Episode.find(
             { userID: user._id, type: { $in: ['convos', 'dailys'] } }, 
             { userID: 0 }
         );
         
-        const guides = await Episode.find({ userID: user._id, type:'guide' });  // mimic
+        const guides = await Episode.find({ userID: user._id, type:'guide' });
 
-        const contextGuides = await inferGuides(recentChatsText, guides, user.asIntent); // temp debug mimic
-        const contextEpisodes = await inferEpisodes(recentChatsText, episodes, user.asIntent); // temp debug mimic
-        // const contextEntities = await inferEntities(recentChatsText, contextGuides, contextEpisodes); // mimic
+        const contextGuides = await inferGuides(recentChatsText, guides, user.asIntent);  // debug mimic
+        const contextEpisodes = await inferEpisodes(recentChatsText, episodes, user.asIntent); // debug mimic
+        // const contextEntities = await inferEntities(recentChatsText, contextGuides, contextEpisodes);
 
         const responseText = await assistantResponse(
             assistant.name, 
@@ -38,8 +44,11 @@ const makeResponse = async (user, assistant) => {
             recentChatsText
         );
 
+        if (!responseText) return null;
+
         const newEp = promptTextToEp(user._id, 'assistant', responseText);
-        await Episode.insertMany(newEp);
+        
+        Episode.insertMany(newEp);
 
         const newChats = responseText.split('ASSISTANT: ')
             .filter(newChat => newChat.trim() != '')
@@ -54,7 +63,7 @@ const makeResponse = async (user, assistant) => {
         return newChats;
 
     } catch (err) {
-        console.error(`ERROR makeResponse: ${err.message}\n${err.stack}`);
+        console.error(`ERROR makeResponse: ${err.message} // ${err.stack}`);
         return null;
     }
 }

@@ -24,7 +24,7 @@ const inferEpisodes = async (recentChats, episodes, asIntent) => {
     //     return await rerank(queries, faissEpisodes);
 
     // } catch(err) {
-    //     console.error(`ERROR inferEpisodes: ${err}`);
+    //     console.error(`ERROR inferEpisodes: ${err.message} // ${err.stack}`);
     //     return nullText;
     // }  // debug
 

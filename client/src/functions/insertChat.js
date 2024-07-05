@@ -21,7 +21,7 @@ const insertChat = async (user, chat) => {
         });
 
     } catch (err) {
-        console.error(`Failed to insert data to server: ${err}`);
+        console.error(`Failed to insert data to server: ${err.message} // ${err.stack}`);
     }
 }
 

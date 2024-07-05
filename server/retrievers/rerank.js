@@ -34,7 +34,7 @@ const rerank = async (queries, eps) => {
         }
         
     } catch (err) {
-        console.error(`ERROR rerank: ${err}`);
+        console.error(`ERROR rerank: ${err.message} // ${err.stack}`);
         return null;
     }
 }

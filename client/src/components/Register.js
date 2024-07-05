@@ -28,7 +28,7 @@ const Register = ({onBackToLogin}) => {
             } else alert(response.status);
 
         } catch (err) {
-            console.error(`ERROR Register: ${err}`);
+            console.error(`ERROR Register: ${err.message} // ${err.stack}`);
         }
     };
     return (
