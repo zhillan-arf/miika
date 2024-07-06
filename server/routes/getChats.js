@@ -7,22 +7,26 @@ import verifyToken from "../functions/verifyToken.js";
 const router = Router();
 router.use(verifyToken);
 
-const formatChats = (chats) => {
-    return chats.flatMap((chat) => {
+const formatGetChats = (chats) => {
+    let formattedChats = [];
 
-        return chat.data.flatMap((datum) => {
-            const texts = datum.content.split(/ASSISTANT: /).filter(text => text.trim());
+    chats.forEach((chat) => {
+        chat.data.forEach((datum) => {
+            const texts = datum.content.split(/^\w+:\s*/gm).filter(text => text.trim());
 
-            return texts.map(text => {
-
-                return {
+            texts.forEach(text => {
+                const formattedChat = {
                     role: datum.role,
                     content: text,
                     date: chat.date
                 }
+
+                formattedChats = formattedChats.concat(formattedChat);
             });
         });
     });
+
+    return formattedChats;
 }
 
 router.get('/api/getchats', async (req, res) => {      
@@ -30,12 +34,11 @@ router.get('/api/getchats', async (req, res) => {
         const userID = req.userID;
         let user = await User.findOne({_id: userID}, 'email assistantID name gender profpic').lean();
 
-        const assistant = await Assistant.findOne({_id: user.assistantID}).lean();
+        const assistant = await Assistant.findOne({_id: user.assistantID}, 'name gender profpic').lean();
         delete user.assistantID;
 
         const chats = await Episode.find({userID: userID, type:'chat'}).lean();
-
-        const formattedChats = formatChats(chats)
+        const formattedChats = formatGetChats(chats);
 
         const payload = {
             user: user,

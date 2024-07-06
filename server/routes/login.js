@@ -11,11 +11,9 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    console.log(email);
     const user = await User.findOne({ email: email });
     if (user) {
         const isMatch = await compare(password, user.hash);
-        console.log(isMatch);
         if (isMatch) {
             const tokenPayload = { userID : user._id }
             const token = sign(tokenPayload, JWT_SECRET_KEY,{ expiresIn: '3h' });

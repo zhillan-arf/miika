@@ -9,14 +9,12 @@ const inferAct = async (recentChats) => {
     let act = true;
     try {
         const act = await infer(actPrompt);
-        console.log(`inferAct: ${act}`);  // debug
+        return act;
     
     } catch (err) {
         console.error(err);
         return null;
     }
-
-    return act;
 }
 
 export default inferAct;

@@ -23,7 +23,8 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer);
 const { connect, connection } = mongoosePkg;
 
-// Middlewares
+// Middlewares and Consts
+export const FORMATNAME = 'ChatML';
 const CLIENT_URI = process.env.CLIENT_URI;
 const REMOTE_URI = process.env.REMOTE_URI;
 export const SERVICE_URI = process.env.SERVICE_URI;

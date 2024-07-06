@@ -48,7 +48,7 @@ const ChatBox = ({ chat, onEnter, userProfpicSrc, assistantProfpicSrc, isTypingB
             <img className='chat-profpic' src={(chat.role === 'user') ? userProfpicSrc : assistantProfpicSrc} alt='profpic'/>
             <div className='chat-identity'>
                 <span className='identity-text'>
-                    {chat.role === 'assistant' ? assistant.name : user.name}
+                    {chat.role === 'user' ? user.name : assistant.name}
                     <span className='identity-time'> at {getDisplayTime(chat.date)}</span>
                 </span>
             </div>

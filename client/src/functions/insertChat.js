@@ -8,7 +8,7 @@ const insertChat = async (user, chat) => {
                 content: chat.content,
                 date: chat.date
             },
-            user: user
+            userEmail: user.email
         }
 
         await fetch(`${REACT_APP_BACKEND_URI}/api/insertchat`, {

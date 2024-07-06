@@ -20,7 +20,7 @@ const inferEntities = async (recentChats, contextGuides, contextEpisodes) => {
         }
         
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 
     return contextEntities;

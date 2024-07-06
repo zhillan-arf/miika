@@ -5,22 +5,22 @@ import inferGuides from '../inferences/inferGuides.js';
 import inferEpisodes from '../inferences/inferEpisodes.js';
 import getRecentEps from '../functions/getRecentEps.js';
 import epsToPromptText from '../functions/epsToPromptText.js';
-import promptTextToEp from '../functions/promptTextToEp.js';
+import formatChats from '../functions/formatChats.js';
 import Episode from '../models/Episode.js';
 
 const makeResponse = async (user, assistant) => {
     try {
         const chats = await Episode.find({ userID: user._id, type:'chat' });
         const tokenCap = 250;
-        const recentChatsText = epsToPromptText(
+
+        const recentChatsText = await epsToPromptText(
             getRecentEps(chats, tokenCap),
             user.name,
             assistant.name
         );
 
-        console.log(`makeResponse recenChats: ${recentChatsText}`);  // debug
-        
-        if (!inferAct(recentChatsText)) return null;
+        const act = await inferAct(recentChatsText);
+        if (!act) return null;
 
         const episodes = await Episode.find(
             { userID: user._id, type: { $in: ['convos', 'dailys'] } }, 
@@ -33,7 +33,7 @@ const makeResponse = async (user, assistant) => {
         const contextEpisodes = await inferEpisodes(recentChatsText, episodes, user.asIntent); // debug mimic
         // const contextEntities = await inferEntities(recentChatsText, contextGuides, contextEpisodes);
 
-        const responseText = await assistantResponse(
+        const responses = await assistantResponse(
             assistant.name, 
             user.name, 
             assistant.coreGuides,
@@ -44,26 +44,25 @@ const makeResponse = async (user, assistant) => {
             recentChatsText
         );
 
-        if (!responseText) return null;
+        console.log(`mR responses: ${JSON.stringify(responses)}`);  // debug
 
-        const newEp = promptTextToEp(user._id, 'assistant', responseText);
-        
-        Episode.insertMany(newEp);
+        if (!responses) return null;
 
-        const newChats = responseText.split('ASSISTANT: ')
-            .filter(newChat => newChat.trim() != '')
-            .map(newChat => {
-                return {
-                    role: assistant,
-                    content: newChat.trim(),
-                    date: new Date()
-                }
-            });
-        
+        const newEp = {
+            userID: user._id,
+            type: 'chat',
+            date: new Date(),
+            data: responses,
+            summary: null,
+            embedding: null
+        }
+
+        await Episode.insertMany(newEp);
+
+        const newChats = await formatChats(responses);
         return newChats;
 
     } catch (err) {
-        console.error(`ERROR makeResponse: ${err.message} // ${err.stack}`);
         return null;
     }
 }

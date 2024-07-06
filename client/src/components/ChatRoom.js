@@ -78,7 +78,7 @@ const ChatRoom = () => {
         });
 
         if (!waitingResponse) {
-            socket.emit('requestResponse', user, assistant);
+            socket.emit('requestResponse', user.email, assistant.name);
         } else setQueueing(true);
 
         setRefocus(refocus + 1);

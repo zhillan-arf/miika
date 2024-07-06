@@ -1,5 +1,6 @@
 import makePrompt from "../functions/makePrompt.js";
 import getFormatDate from "../functions/getFormatDate.js";
+import formatResponses from "../functions/formatResponses.js";
 import infer from "./infer.js";
 
 const assistantResponse = async (asName, userName, coreGuides, contextGuides, contextEpisodes, asIntent, recentChats) => {
@@ -16,9 +17,12 @@ const assistantResponse = async (asName, userName, coreGuides, contextGuides, co
     }
 
     const localPath = 'assistants/mist/assistantResponse';
-    const responsesPrompt = await makePrompt(contexts, localPath);
+    const responsePrompt = await makePrompt(contexts, localPath);
 
-    return await infer(responsesPrompt);
+    const responseText = await infer(responsePrompt);
+    const responses = await formatResponses(responseText);  // arr of str
+
+    return responses;
 }
 
 export default assistantResponse;

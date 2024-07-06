@@ -8,8 +8,8 @@ const episodeSchema = new Schema({
     role: { type: String },
     content: { type: String }
   }],
-  summary: String,
-  embedding: [Number]
+  summary: { type: String, default: null },
+  embedding: { type: [Number], default: null }
 });
 
 const Episode = model('Episode', episodeSchema, 'episodes');

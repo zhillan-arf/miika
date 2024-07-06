@@ -1,13 +1,18 @@
 import makeResponse from "../self/makeResponse.js";
 import delay from "./delay.js";
+import User from "../models/User.js";
+import Assistant from "../models/Assistant.js";
 
 const socketEvents = (io) => {
     io.on('connection', (socket) => {
-        socket.on('requestResponse', async (user, assistant) => {
+        socket.on('requestResponse', async (userEmail, asName) => {
             socket.emit('waitingResponse', true);
             socket.emit('nowTyping', true);
 
-            const newChats = await makeResponse(user, assistant);
+            const userData = await User.findOne({email: userEmail});
+            const asData = await Assistant.findOne({name: asName});
+
+            const newChats = await makeResponse(userData, asData);
 
             if (newChats) {
                 for (const newChat of newChats) {
@@ -15,7 +20,8 @@ const socketEvents = (io) => {
                     socket.emit('receiveResponse', newChat);
                 }
             }
-            
+
+            delay(1);            
             socket.emit('nowTyping', false);
             socket.emit('waitingResponse', false);
         });
