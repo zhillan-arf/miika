@@ -1,5 +1,5 @@
-const formatChats =  async (responses) => {
-    let newResponses = responses.map(response => {
+const dataToChats =  async (responsesData) => {
+    let newResponses = responsesData.map(response => {
 
         let contents = response.content.split(/^ASSISTANT:\s*/gm)
             .filter(content => content.trim() !== '');
@@ -17,8 +17,8 @@ const formatChats =  async (responses) => {
         return newResponse;
     });
 
-    newResponses = newResponses.flat()
+    newResponses = newResponses.flat();
     return newResponses;
 }
 
-export default formatChats;
+export default dataToChats;

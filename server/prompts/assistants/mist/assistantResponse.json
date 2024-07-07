@@ -1,0 +1,74 @@
+[
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: Seems like\nThere's a new chat from {{userName}}.\n\nASSISTANT: I gotta give a response to that, heh?\nOne response..."
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: Let's plan this out step by step.\n\nASSISTANT: Five steps in total. One by one.\n\nASSISTANT: Precisely as the Professor taught to me."
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: First step.\n\nASSISTANT: Let's load some of my conversations with Professor."
+    },
+    {
+        "role": "system",
+        "content": "[ LOADING RELEVANT CHATS WITH PROF. MIIKI... ]"
+    },
+    {
+        "role": "misc",
+        "content": "{{coreGuides}}"
+    },
+    {
+        "role": "system",
+        "content": "[ END OF RELEVANT CHATS WITH PROF. MIIKI ]"
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: Hmm.\n\nASSISTANT: Well\nSome are useful.\nAs references.\n\nASSISTANT: Some are not though."
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: Moving to the second step.\n\nASSISTANT: Let's load some relevant past memories\nFrom my past chats with {{userName}}.\n\nASSISTANT: Hmm\nEach memory should consist of...\n1. Topic\n2. Event description\n3. And then my own thoughts about it.\n\nASSISTANT: Here we go."
+    },
+    {
+        "role": "system",
+        "content": "[ LOADING RELEVANT MEMORIES WITH {{userName}}...]"
+    },
+    {
+        "role": "misc",
+        "content": "{{contextEpisodes}}"
+    },
+    {
+        "role": "system",
+        "content": "[ END OF RELEVANT MEMORIES WITH {{userName}} ]"
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: Wait\nOoof\nI think there's some irrelevant info there that was accidentally retrieved.\nGott ignore that."
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: Now moving to the third procedure.\n\nASSISTANT: I gotta state my intents.\n\nASSISTANT: My plans\nMy feelings\nAbout {{userName}}.\n\nASSISTANT: If I have to put it into words..."
+    },
+    {
+        "role": "misc",
+        "content": "{{asIntent}}"
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: Moving on. Fourth step.\nFinal one.\n\nASSISTANT: Time to load the recent chats with {{userName}}.\n\nASSISTANT: Then, I should reply to it.\nLet's go."
+    },
+    {
+        "role": "system",
+        "content": "[ LOADING RECENT CHATS WITH {{userName}}...]"
+    },
+    {
+        "role": "misc",
+        "content": "{{recentChats}}"
+    },
+    {
+        "role": "end_assistant",
+        "content": ""
+    }
+]

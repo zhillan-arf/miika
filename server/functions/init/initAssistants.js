@@ -1,24 +1,24 @@
-import Assistant from '../models/Assistant.js';
-import imgToB64 from './imgToB64.js';
-import { readFile, readdir } from 'fs/promises';
+import Assistant from '../../models/Assistant.js';
+import Guide from '../../models/Guide.js';
+import imgToB64 from '../imgToB64.js';
+import initGuides from './initGuides.js';
+import { readdir } from 'fs/promises';
 import path from 'path';
 
 const saveAsData = async (asName, asPath) => {
     try {
         const profpic = await imgToB64(path.resolve(asPath, 'profpic.jpg'));
-        const coreGuidesBuffer = await readFile(path.resolve(asPath, 'coreGuides.txt'));
-        const coreGuides = coreGuidesBuffer.toString();
 
         const assistant = new Assistant({
             name: asName,
+            gender: 'f',   // temp
             profpic: profpic,
-            coreGuides: coreGuides
         });
         
         await assistant.save();
         
     } catch (err) {
-        console.error(`get assistant init err: ${err.message} // ${err.stack}`);
+        console.error(`ERROR initAssistant: ${err.message} // ${err.stack}`);
         throw err;
     }
 }
@@ -29,11 +29,13 @@ const initAssistants = async () => {
     
     for (const asName of asNames) {
         const assistant = await Assistant.findOne({name: asName});
-        
         if (!assistant) {
             const asPath = path.resolve(assistantsPath, asName);
-            saveAsData(asName, asPath);
+            await saveAsData(asName, asPath);
         }
+
+        const guide = await Guide.findOne({ asID: assistant._id });
+        if (!guide) await initGuides(assistant._id, asName);
     }
 }
 

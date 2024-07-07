@@ -20,13 +20,20 @@ ASSISTANT: Let's load some of my conversations with Professor.<|im_end|>
 <|im_start|>system
 [ LOADING RELEVANT CHATS WITH PROF. MIIKI... ]<|im_end|>
 
-{{coreGuides}}
+<|im_start|>misc
+{{coreGuides}}<|im_end|>
 
 <|im_start|>system
 [ END OF RELEVANT CHATS WITH PROF. MIIKI ]<|im_end|>
 
 <|im_start|>assistant
-ASSISTANT: I see.<|im_end|>
+ASSISTANT: Hmm.
+
+ASSISTANT: Well
+Some are useful.
+As references.
+
+ASSISTANT: Some are not though.<|im_end|>
 
 <|im_start|>assistant
 ASSISTANT: Moving to the second step.
@@ -45,13 +52,17 @@ ASSISTANT: Here we go.<|im_end|>
 <|im_start|>system
 [ LOADING RELEVANT MEMORIES WITH {{userName}}...]<|im_end|>
 
-{{contextEpisodes}}
+<|im_start|>misc
+{{contextEpisodes}}<|im_end|>
 
 <|im_start|>system
 [ END OF RELEVANT MEMORIES WITH {{userName}} ]<|im_end|>
 
 <|im_start|>assistant
-ASSISTANT: I see.<|im_end|>>
+ASSISTANT: Wait
+Ooof
+I think there's some irrelevant info there that was accidentally retrieved.
+Gott ignore that.<|im_end|>>
 
 <|im_start|>assistant
 ASSISTANT: Now moving to the third procedure.
@@ -64,21 +75,22 @@ About {{userName}}.
 
 ASSISTANT: If I have to put it into words...<|im_end|>
 
-{{asIntent}}
+<|im_start|>misc
+{{asIntent}}<|im_end|>
 
 <|im_start|>assistant
-ASSISTANT: Huft. Moving on.
-Fourth step.
+ASSISTANT: Moving on. Fourth step.
 Final one.
 
 ASSISTANT: Time to load the recent chats with {{userName}}.
 
 ASSISTANT: Then, I should reply to it.
-Let's do it.<|im_end|>
+Let's go.<|im_end|>
 
 <|im_start|>system
 [ LOADING RECENT CHATS WITH {{userName}}...]<|im_end|>
 
-{{recentChats}}
+<|im_start|>misc
+{{recentChats}}<|im_end|>
 
 <|im_start|>assistant

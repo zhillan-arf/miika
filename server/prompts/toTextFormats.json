@@ -11,6 +11,14 @@
         "assistant": {
             "start": "<|im_start|>assistant\n",
             "end": "<|im_end|>"
+        },
+        "end_assistant": {
+            "start": "<|im_start|>assistant\n",
+            "end": "\n"
+        },
+        "misc": {
+            "start": "",
+            "end": ""
         }
     }, 
     "Pygmalion": {
@@ -24,6 +32,14 @@
         },
         "assistant": {
             "start": "<|model|>",
+            "end": ""
+        },
+        "end_assistant": {
+            "start": "<|assistant|>\n",
+            "end": "\n"
+        },
+        "misc": {
+            "start": "",
             "end": ""
         }
     }

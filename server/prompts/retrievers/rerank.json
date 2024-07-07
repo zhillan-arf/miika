@@ -1,0 +1,10 @@
+[
+    {
+        "role": "system",
+        "content": "The assistant selects only the indexes of texts that is highly relevant to one of the queries or more. \n\nThe queries to be compared with the texts:\n{{queries}}\n\nThe indexes and contents of the texts:\n{{texts}}\n\nThe output is a python list of indexes of the texts relevant to the query. An example: [0, 1, 5, 8]\n\nHowever, if no text is relevant to the queries, the output is the empty python list []\n\nNow, this is the python list of indexes of the texts relevant to the queries:"
+    },
+    {
+        "role": "end_assistant",
+        "content": ""
+    }
+]

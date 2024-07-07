@@ -12,7 +12,7 @@ const formatGetChats = (chats) => {
 
     chats.forEach((chat) => {
         chat.data.forEach((datum) => {
-            const texts = datum.content.split(/^\w+:\s*/gm).filter(text => text.trim());
+            const texts = datum.content.split(/^(?:ASSISTANT|USER):\s*/g).filter(text => text.trim());
 
             texts.forEach(text => {
                 const formattedChat = {
@@ -32,10 +32,10 @@ const formatGetChats = (chats) => {
 router.get('/api/getchats', async (req, res) => {      
     try {
         const userID = req.userID;
-        let user = await User.findOne({_id: userID}, 'email assistantID name gender profpic').lean();
+        let user = await User.findOne({_id: userID}, 'email asID name gender profpic').lean();
 
-        const assistant = await Assistant.findOne({_id: user.assistantID}, 'name gender profpic').lean();
-        delete user.assistantID;
+        const assistant = await Assistant.findOne({_id: user.asID}, 'name gender profpic').lean();
+        delete user.asID;
 
         const chats = await Episode.find({userID: userID, type:'chat'}).lean();
         const formattedChats = formatGetChats(chats);

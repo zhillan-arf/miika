@@ -1,68 +1,59 @@
-// import inferEntities from '../inferences/inferEntities.js';
 import inferAct from '../inferences/inferAct.js';
+import dataToText from '../functions/dataToText.js';
 import assistantResponse from '../inferences/assistantResponse.js';
-import inferGuides from '../inferences/inferGuides.js';
-import inferEpisodes from '../inferences/inferEpisodes.js';
-import getRecentEps from '../functions/getRecentEps.js';
-import epsToPromptText from '../functions/epsToPromptText.js';
-import formatChats from '../functions/formatChats.js';
-import Episode from '../models/Episode.js';
+import getRecentsText from './response/getRecentText.js';
+import getCoreText from './response/getCoreText.js';
+import getContextText from './response/getContextText.js';
+import getEpsText from './response/getEpsText.js';
+import saveResponses from './response/saveResponses.js';
+import formatChats from './response/dataToChats.js';
+import dataToChats from './response/dataToChats.js';
 
 const makeResponse = async (user, assistant) => {
     try {
-        const chats = await Episode.find({ userID: user._id, type:'chat' });
-        const tokenCap = 250;
+        // Get Data
+        const recentChatsText = await getRecentsText(user._id);
 
-        const recentChatsText = await epsToPromptText(
-            getRecentEps(chats, tokenCap),
-            user.name,
-            assistant.name
+        const answerNow = await inferAct(recentChatsText);
+        if (!answerNow) return null;
+
+        const asIntentText = await dataToText(user.asIntent);
+
+        const coreGuidesText = getCoreText(assistant._id);
+
+        const contextGuidesText = getContextText(
+            assistant._id, 
+            recentChatsText, 
+            asIntentText
         );
 
-        const act = await inferAct(recentChatsText);
-        if (!act) return null;
-
-        const episodes = await Episode.find(
-            { userID: user._id, type: { $in: ['convos', 'dailys'] } }, 
-            { userID: 0 }
+        const contextEpisodesText = getEpsText(
+            user._id, 
+            recentChatsText, 
+            asIntentText
         );
-        
-        const guides = await Episode.find({ userID: user._id, type:'guide' });
 
-        const contextGuides = await inferGuides(recentChatsText, guides, user.asIntent);  // debug mimic
-        const contextEpisodes = await inferEpisodes(recentChatsText, episodes, user.asIntent); // debug mimic
-        // const contextEntities = await inferEntities(recentChatsText, contextGuides, contextEpisodes);
-
-        const responses = await assistantResponse(
+        // Get Responses
+        const responsesData = await assistantResponse(
             assistant.name, 
             user.name, 
-            assistant.coreGuides,
-            contextGuides, 
-            contextEpisodes, 
-            // contextEntities,
-            user.asIntent,
+            coreGuidesText,
+            contextGuidesText, 
+            contextEpisodesText, 
+            asIntentText,
             recentChatsText
         );
 
-        console.log(`mR responses: ${JSON.stringify(responses)}`);  // debug
+        if (!responsesData || responsesData.length == 0) return null;
 
-        if (!responses) return null;
+        // Handle Response
+        await saveResponses(user._id, responsesData);
 
-        const newEp = {
-            userID: user._id,
-            type: 'chat',
-            date: new Date(),
-            data: responses,
-            summary: null,
-            embedding: null
-        }
-
-        await Episode.insertMany(newEp);
-
-        const newChats = await formatChats(responses);
-        return newChats;
+        const newChats = await dataToChats(responsesData);
+        return newChats;        
 
     } catch (err) {
+        console.error(`ERROR makeResponse: ${err.stack}`);
         return null;
     }
 }

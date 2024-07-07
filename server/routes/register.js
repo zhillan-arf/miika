@@ -2,7 +2,7 @@ import { Router } from 'express';
 import User from '../models/User.js';
 import { hash }  from 'bcrypt';
 import { getDefaultProfpic, getTempAssistantID } from '../functions/getDefaultProfpic.js';
-import getOriIntent from '../functions/getOriIntent.js';
+import getOriIntent from '../functions/init/getOriIntent.js';
 
 const router = Router();
 const saltRounds = 10;
@@ -26,10 +26,10 @@ router.post('/register', async (req, res) => {
             const user = new User({
                 email: req.body.email, 
                 hash: hashedPassword,
+                asID: asID,
                 name: userName,
-                profpic: profpicB64,
                 gender: gender,
-                assistantID: asID,
+                profpic: profpicB64,
                 asIntent: await getOriIntent(asName)
             });
 

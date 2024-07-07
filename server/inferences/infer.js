@@ -1,4 +1,7 @@
-import { SERVICE_URI } from '../index.js';
+import { config } from 'dotenv';
+config();
+
+const SERVICE_URI = process.env.SERVICE_URI;
 
 const infer = async (prompt) => {
     try {
@@ -9,9 +12,10 @@ const infer = async (prompt) => {
         });
         
         if (response.ok) {
-            const data = await response.json()
+            const data = await response.json();
             return data.inferred;
         }
+
         else throw Error(`Response not ok: ${JSON.stringify(response)}`);
         
     } catch (err) {

@@ -14,9 +14,7 @@ import loginRouter from './routes/login.js';
 import verifyRouter from './routes/verify.js';
 import getChatsRouter from './routes/getChats.js';
 import insertChatRouter from './routes/insertChat.js';
-
-import initAssistants from './functions/initAssistants.js';
-import initDBs from './functions/initDBs.js';
+import initDBs from './functions/init/initDBs.js';
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -24,10 +22,9 @@ const io = new Server(httpServer);
 const { connect, connection } = mongoosePkg;
 
 // Middlewares and Consts
-export const FORMATNAME = 'ChatML';
+const SERVICE_URI = process.env.SERVICE_URI;
 const CLIENT_URI = process.env.CLIENT_URI;
 const REMOTE_URI = process.env.REMOTE_URI;
-export const SERVICE_URI = process.env.SERVICE_URI;
 
 const allowedOrigins = [REMOTE_URI, CLIENT_URI, SERVICE_URI];
 
@@ -67,7 +64,6 @@ db.once('open', () => {
 });
 
 await initDBs();
-await initAssistants();
 
 socketEvents(io);
 

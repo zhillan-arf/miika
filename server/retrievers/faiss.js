@@ -10,7 +10,11 @@ const faiss = async (queries, docs) => {
             body: JSON.stringify({queries: queries, docs: docs})
         });
 
-        if (response.ok) return await response.json().results;
+        if (response.ok) {
+            const selectedEps = await response.json().results
+            return selectedEps;
+        }
+
         else throw Error(`Response not ok: ${response}`);
 
     } catch (err) {

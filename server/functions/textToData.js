@@ -3,7 +3,7 @@ import getFormat from "./getFormat.js";
 const userFormat = getFormat('user');
 const asFormat = getFormat('assistant');
 
-const fixText = (text) => {
+const fixText = async (text) => {
     const startIdx = text.indexOf(userFormat.start);
     if (startIdx !== -1) text = text.substring(0, startIdx);
 
@@ -16,7 +16,7 @@ const fixText = (text) => {
     return fixedText;
 }
 
-const splitResponses = (text) => {
+const splitResponses = async (text) => {
     let responses = text.split(asFormat.start)
         .filter(text => text.trim() !== '');
 
@@ -40,10 +40,10 @@ const splitResponses = (text) => {
     return responses;
 }
 
-const formatResponses = (text) => {
-    const fixedText = fixText(text);
-    const responses = splitResponses(fixedText);
+const textToData = async (text) => {
+    const fixedText = await fixText(text);
+    const responses = await splitResponses(fixedText);
     return responses;
 }
 
-export default formatResponses;
+export default textToData;

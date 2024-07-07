@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 
 const episodeSchema = new Schema({
   userID: { type: Schema.Types.ObjectId, ref: 'User' },
-  type: { type: String, enum: ["chat", "guide", "monologue", "convos", "dailys" ] },
+  type: { type: String, enum: ['chat', 'monologue', 'convos', 'dailys' ] },
   date: { type: Date, default: Date.now },
   data: [{
     role: { type: String },

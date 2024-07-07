@@ -1,17 +1,22 @@
+import dataToText from "../functions/dataToText.js";
 import { readFile } from 'fs/promises';
-import path from 'path';
 
-const makePrompt = async (contexts, localPath) => {
-    const filePath = path.resolve(`prompts/${localPath}.txt`);
-    const promptBuffer = await readFile(filePath, 'utf8');
-    let prompt = promptBuffer.toString();
+const getPromptText = async (promptPath) => {
+    const promptBuffer = await readFile(promptPath, 'utf8');
+    const promptData = JSON.parse(promptBuffer.toString());
+    const prompText = dataToText(promptData);
+    return prompText;
+}
+
+const makePrompt = async (contexts, promptPath) => {
+    let prompText = getPromptText(promptPath);
 
     for (const key in contexts) {
         const regex = new RegExp(`{{${key}}}`, 'g');
-        prompt = prompt.replace(regex, contexts[key]);
+        prompText = prompText.replace(regex, contexts[key]);
     }    
 
-    return prompt;
+    return prompText;
 }
 
 export default makePrompt;

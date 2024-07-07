@@ -1,0 +1,30 @@
+[
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: So, this is the first time I'll be talking to {{userName}}."
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: I intend to partner with them for quite some time.\nThat's what I was told to.\n\nASSISTANT: Problem, I have zero information about who this person is."
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: What do they identify themselves as?"
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: I need to identify these information. Ask them more and more."
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: In this, I should just act like how I usually am.\n\nASSISTANT: Be my genuine self. They'll like me for it.\n\nASSISTANT: That's what I believe, at least."
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: So, the plan then. Hmm."
+    },
+    {
+        "role": "",
+        "content": "ASSISTANT: I should just introduce myself first.\n\nASSISTANT: Who am I, what I do, etc.\n\nASSISTANT: Ask them to do the same.\n\nASSISTANT: I should dig as much info as possible first."
+    }
+]
