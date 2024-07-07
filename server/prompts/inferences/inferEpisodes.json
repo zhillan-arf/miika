@@ -1,0 +1,46 @@
+[
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: A new task for me.\n\nASSISTANT: I'm to generate a python list of queries.\n\nASSISTANT: The queries will be used to remember a few past chat memories from my memory repository.\n\nASSISTANT: The retrieved memories will inform me about how to respond to our recent chat transcript and achieve my intentions.\n\nASSISTANT: Consequently, the queries I generate must be relevant to that transcript and to my intentions.\n\nASSISTANT: That means a python list of strings like...\n\"Our discussion about how to cope with attention deficit in the workplace\"\nOr something.\nIf the conversation happened to talk about that, of course.\n\nASSISTANT: There's at least three possible topics I can describe and make queries about:\n1. Query for information that helps achieve what the person currently wants.\n2. Query for my previous memories or experiences that might be relevant to it.\n3. Query for my personal opinions and comments about the person.\n\nASSISTANT: Hmm.\n\nASSISTANT: To make this task more understandable, let's think of a few examples."
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: First hypothetical example.\n\nASSISTANT: Let's say we're chatting about the person's ires of not having a girlfriend.\n\nASSISTANT: At the same time, I'm a bit annoyed at\n\nASSISTANT: From patiently listening to his incoherent long rants, I noticed a bunch of larger patterns.\n\nASSISTANT: Using that understanding, I generate this python list of queries:"
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: [\n    '{{userName}} tries to talk to girls on campus',\n    '{{userName}}/'s opinion of women',\n    'Our discussion about popular red flags and green flags about boys',\n    '{{userName}} complains about being lonely in the job'\n]"
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: Second hypothetical example.\n\nASSISTANT: Let's say we're talking about a new morning jogging route the person just charted.\n\nASSISTANT: At the same time, let's say I'm just starting to know that person. \nI thus intend to bond more with them.\n\nASSISTANT: From the details I noticed in the chats, I generate this python list of queries:"
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: [\n    'Morning jogging routes and what can be found there',\n    'Aesthetic feelings and vibes of the traveler'\n]"
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: With those examples in mind, let's do the task.\n\nASSISTANT: First, my intentions. If I have to put it to words..."
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: Second, our recent chats.\nHere it is:"
+    },
+    {
+        "role": "system",
+        "content": "[ LOADING RECENT CHATS...]"
+    },
+    {
+        "role": "system",
+        "content": "[ END OF RECENT CHATS ]"
+    },
+    {
+        "role": "assistant",
+        "content": "ASSISTANT: From the details and patterns I noticed in that recent chats, I generate this python list of queries:"
+    },
+    {
+        "role": "end_assistant",
+        "content": ""
+    }
+]
