@@ -24,12 +24,20 @@
         "content": "ASSISTANT: With those examples in mind, let's do the task.\n\nASSISTANT: First, my intentions. If I have to put it to words..."
     },
     {
+        "role": "misc",
+        "content": "{{asIntent}}"
+    },
+    {
         "role": "assistant",
         "content": "ASSISTANT: Second, our recent chats.\nHere it is:"
     },
     {
         "role": "system",
         "content": "[ LOADING RECENT CHATS...]"
+    },
+    {
+        "role": "misc",
+        "content": "{{recentChats}}"
     },
     {
         "role": "system",
