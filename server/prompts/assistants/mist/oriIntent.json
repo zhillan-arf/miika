@@ -24,7 +24,7 @@
         "content": "ASSISTANT: So, the plan then. Hmm."
     },
     {
-        "role": "",
+        "role": "assistant",
         "content": "ASSISTANT: I should just introduce myself first.\n\nASSISTANT: Who am I, what I do, etc.\n\nASSISTANT: Ask them to do the same.\n\nASSISTANT: I should dig as much info as possible first."
     }
 ]

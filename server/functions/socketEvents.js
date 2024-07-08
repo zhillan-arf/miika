@@ -19,9 +19,15 @@ const socketEvents = (io) => {
                     await delay(newChat.content);
                     socket.emit('receiveResponse', newChat);
                 }
+
+                await delay(1);
+                
+            } else {
+                console.log("sE No response");  // debug
+                await delay(3);
             }
 
-            delay(1);            
+                        
             socket.emit('nowTyping', false);
             socket.emit('waitingResponse', false);
         });

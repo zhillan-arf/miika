@@ -10,7 +10,8 @@ const buffer = await readFile(filePath);
 const formats = JSON.parse(buffer.toString());
 
 const getFormat = (role) => {
-    const { start, end } = formats[FORMATNAME][role];
+    const start = formats[FORMATNAME][role].start;
+    const end = formats[FORMATNAME][role].end;
     return { start: start, end: end };
 }
 

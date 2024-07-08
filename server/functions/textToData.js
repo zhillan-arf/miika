@@ -41,8 +41,12 @@ const splitResponses = async (text) => {
 }
 
 const textToData = async (text) => {
+    if(!text) return null;
+
     const fixedText = await fixText(text);
+
     const responses = await splitResponses(fixedText);
+    
     return responses;
 }
 

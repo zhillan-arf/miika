@@ -1,13 +1,13 @@
 import makePrompt from "../functions/makePrompt.js";
-import faiss from '../retrievers/faiss.js'
+import ann from '../retrievers/ann.js'
 import rerank from '../retrievers/rerank.js'
 import infer from "./infer.js";
 import path from 'path';
 
 const inferEps = async (recentChatsText, eps, asIntentText) => {
-    if (!episodes || episodes.length === 0) return null;
+    if (!eps || eps.length === 0) return null;
 
-    const promptPath = path.resolve('prompts/inferences/inferEpisodes.json');
+    const promptPath = path.resolve('prompts/inferences/inferEps.json');
     
     const hypoContexts = {
         recentChats: recentChatsText,
@@ -18,8 +18,8 @@ const inferEps = async (recentChatsText, eps, asIntentText) => {
 
     try {
         const queries = await JSON.parse(infer(hypoPrompt));
-        const faissEps = await faiss(queries, eps);
-        const rerankEps = await rerank(queries, faissEps);
+        const ANNEps = await ann(queries, eps);
+        const rerankEps = await rerank(queries, ANNEps);
         return rerankEps;
 
     } catch(err) {

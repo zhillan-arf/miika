@@ -12,7 +12,7 @@ const initDBs = async () => {
             await model.createCollection();
         } catch (err) {
             if (err.code === 48) {
-                console.log(`${model.modelName} already instantiated.`);
+                console.error(`${model.modelName} already instantiated.`);
             } else throw err;
         }
     }

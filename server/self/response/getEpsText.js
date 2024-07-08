@@ -3,10 +3,10 @@ import epsToText from "../../functions/epsToText.js";
 import dataToText from "../../functions/dataToText.js";
 import Episode from "../../models/Episode.js";
 
-const startingData = {
+const startingData = [{
     'role': 'system',
     'content': 'No relevant memory was found.'
-}
+}]
 
 const getEpsText = async (userID, recentChatsText, asIntentText) => {
     let contextEpisodesText = '';

@@ -10,13 +10,15 @@ const infer = async (prompt) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({prompt: prompt})
         });
-        
-        if (response.ok) {
-            const data = await response.json();
-            return data.inferred;
-        }
 
-        else throw Error(`Response not ok: ${JSON.stringify(response)}`);
+        const data = await response.json();
+        
+        if (response.ok) return data.inferred;
+
+        else {
+            console.error(`ERROR infer response: ${data.error}`);
+            return null;
+        }
         
     } catch (err) {
         console.error(`ERROR infer: ${err.message} // ${err.stack}`);

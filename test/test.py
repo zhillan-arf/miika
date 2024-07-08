@@ -43,7 +43,7 @@ for key, value in contexts.items():
     regex = re.compile(r'{{' + re.escape(key) + r'}}')
     prompt = regex.sub(value, prompt)
 
-# print(prompt)
+print(prompt)
 
 data = { 'prompt': prompt }
 

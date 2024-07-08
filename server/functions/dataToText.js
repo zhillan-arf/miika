@@ -1,6 +1,6 @@
 import getFormat from './getFormat.js';
 
-const wrapData = (content, role) => {
+const wrapData = (role, content) => {
     const format = getFormat(role);
 
     if (format.start || format.start === '') {

@@ -6,7 +6,6 @@ import getCoreText from './response/getCoreText.js';
 import getContextText from './response/getContextText.js';
 import getEpsText from './response/getEpsText.js';
 import saveResponses from './response/saveResponses.js';
-import formatChats from './response/dataToChats.js';
 import dataToChats from './response/dataToChats.js';
 
 const makeResponse = async (user, assistant) => {
@@ -19,19 +18,20 @@ const makeResponse = async (user, assistant) => {
 
         const asIntentText = await dataToText(user.asIntent);
 
-        const coreGuidesText = getCoreText(assistant._id);
+        const coreGuidesText = await getCoreText(assistant._id);
 
-        const contextGuidesText = getContextText(
+        const contextGuidesText = await getContextText(
             assistant._id, 
             recentChatsText, 
             asIntentText
         );
 
-        const contextEpisodesText = getEpsText(
+        const contextEpisodesText = await getEpsText(
             user._id, 
             recentChatsText, 
             asIntentText
         );
+
 
         // Get Responses
         const responsesData = await assistantResponse(

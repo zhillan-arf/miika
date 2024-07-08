@@ -15,7 +15,8 @@ const saveAsData = async (asName, asPath) => {
             profpic: profpic,
         });
         
-        await assistant.save();
+        const savedAssistant = await assistant.save();
+        return savedAssistant;
         
     } catch (err) {
         console.error(`ERROR initAssistant: ${err.message} // ${err.stack}`);
@@ -28,10 +29,11 @@ const initAssistants = async () => {
     const asNames = await readdir(assistantsPath);
     
     for (const asName of asNames) {
-        const assistant = await Assistant.findOne({name: asName});
+        let assistant = await Assistant.findOne({name: asName});
+
         if (!assistant) {
             const asPath = path.resolve(assistantsPath, asName);
-            await saveAsData(asName, asPath);
+            assistant = await saveAsData(asName, asPath);
         }
 
         const guide = await Guide.findOne({ asID: assistant._id });
