@@ -13,7 +13,7 @@ const makeResponse = async (user, assistant) => {
         // Get Data
         const recentChatsText = await getRecentsText(user._id);
 
-        const answerNow = await inferAct(recentChatsText);
+        const answerNow = await inferAct(user._id);
         if (!answerNow) return null;
 
         const asIntentText = await dataToText(user.asIntent);

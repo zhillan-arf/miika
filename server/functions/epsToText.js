@@ -5,10 +5,10 @@ const epsToText = async (eps) => {
     
     let textss = '';
 
-    await eps.forEach(ep => {
-        const texts = dataToText(ep.data);
+    for (const ep of eps) {
+        const texts = await dataToText(ep.data);
         textss += texts;
-    });
+    }
 
     return textss.trim();
 }

@@ -24,7 +24,7 @@ const socketEvents = (io) => {
                 
             } else {
                 console.log("sE No response");  // debug
-                await delay(3);
+                await delay(2);
             }
 
                         

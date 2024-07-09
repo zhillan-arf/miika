@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from blueprints.helloworld import helloworld_bp
 from blueprints.infer import infer_bp
 from blueprints.embed import embed_bp
-from service.blueprints.ann import ann_bp
+from blueprints.ann import ann_bp
 import os
 
 app = Flask(__name__)

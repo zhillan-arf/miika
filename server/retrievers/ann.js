@@ -12,7 +12,7 @@ const ann = async (queries, docs) => {
 
         const data = await response.json();
         
-        if (response.ok) return data.results;
+        if (response.ok) return data.filtered;
 
         else {
             console.error(`ERROR ANN response: ${data.error}`);

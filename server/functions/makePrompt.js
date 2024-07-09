@@ -12,12 +12,13 @@ const makePrompt = async (contexts, promptPath) => {
     let promptText = await getPromptText(promptPath);
 
     console.log(`mP path: ${promptPath}`);  // debug
-    console.log(`mP prompt: ${promptText}`);  // debug
 
     for (const key in contexts) {
         const regex = new RegExp(`{{${key}}}`, 'g');
         promptText = promptText.replace(regex, contexts[key]);
     }    
+
+    console.log(`mP text: ${promptText}`);  // debug
 
     return promptText;
 }

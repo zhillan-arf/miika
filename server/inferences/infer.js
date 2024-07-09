@@ -5,6 +5,8 @@ const SERVICE_URI = process.env.SERVICE_URI;
 
 const infer = async (prompt) => {
     try {
+        if (!prompt) return null;
+        
         const response = await fetch(`${SERVICE_URI}/api/infer`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
