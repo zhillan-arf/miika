@@ -21,12 +21,13 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer);
 const { connect, connection } = mongoosePkg;
 
-// Middlewares and Consts
+// Resources
 const SERVICE_URI = process.env.SERVICE_URI;
 const CLIENT_URI = process.env.CLIENT_URI;
-const REMOTE_URI = process.env.REMOTE_URI;
+const REMOTE_CLIENT_URI = process.env.REMOTE_CLIENT_URI;
+const REMOTE_SERVER_URI = process.env.REMOTE_SERVER_URI;
 
-const allowedOrigins = [REMOTE_URI, CLIENT_URI, SERVICE_URI];
+const allowedOrigins = [REMOTE_CLIENT_URI, REMOTE_SERVER_URI, CLIENT_URI, SERVICE_URI];
 
 app.use((req, res, next) => {  // debug
   console.log('Incoming request from origin:', req.headers.origin);  // debug
@@ -34,9 +35,16 @@ app.use((req, res, next) => {  // debug
 });
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    if (true) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST']
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept']
 }));
 
 app.use((req, res, next) => {

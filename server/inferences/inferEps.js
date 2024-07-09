@@ -4,14 +4,14 @@ import rerank from '../retrievers/rerank.js'
 import infer from "./infer.js";
 import path from 'path';
 
-const inferEps = async (recentChatsText, eps, asIntentText) => {
+const inferEps = async (chatsSysPrompt, eps, asIntentPrompt) => {
     if (!eps || eps.length === 0) return null;
 
     const promptPath = path.resolve('prompts/inferences/inferEps.json');
     
     const hypoContexts = {
-        recentChats: recentChatsText,
-        asIntent: asIntentText
+        recentChats: chatsSysPrompt,
+        asIntent: asIntentPrompt
     }
 
     const hypoPrompt = await makePrompt(hypoContexts, promptPath);

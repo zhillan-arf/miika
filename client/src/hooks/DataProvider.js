@@ -21,6 +21,8 @@ export const DataProvider = ({ children }) => {
                     method: 'GET',
                     credentials: 'include'
                 });
+                console.log('response');  // debug
+                console.log(response);  // debug
                 const data = await response.json();
                 
                 setUser(data.user);
@@ -33,7 +35,7 @@ export const DataProvider = ({ children }) => {
                 console.error(`Error at fetching chats: ${err.message} // ${err.stack}`);
             }
         }
-    
+
         fetchSetData();
     }, []);
 

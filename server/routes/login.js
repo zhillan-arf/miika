@@ -17,6 +17,7 @@ router.post('/login', async (req, res) => {
         if (isMatch) {
             const tokenPayload = { userID : user._id }
             const token = sign(tokenPayload, JWT_SECRET_KEY,{ expiresIn: '3h' });
+            console.log(`tokennya: ${token}`);  // debug
             res.cookie('token', token, {
                 httpOnly: true,
                 secure: false,

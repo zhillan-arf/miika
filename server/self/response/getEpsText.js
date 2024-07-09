@@ -8,20 +8,18 @@ const startingData = [{
     'content': 'No relevant memory was found.'
 }]
 
-const getEpsText = async (userID, recentChatsText, asIntentText) => {
-    let contextEpisodesText = '';
+const getEpsText = async (userID, chatsSysPrompt, asIntentPrompt) => {
+    let epsPrompt = await dataToText(startingData);
 
     const episodes = await Episode.find({ userID: userID, type: { $in: ['convos', 'dailys'] }});
 
-    const contextEpisodes = await inferEps(recentChatsText, episodes, asIntentText);
+    const contextEps = await inferEps(chatsSysPrompt, episodes, asIntentPrompt);
 
-    if (contextEpisodes) {
-        contextEpisodesText = await epsToText(contextEpisodes);
-    } else {
-        contextEpisodesText = await dataToText(startingData);
-    }
-    
-    return contextEpisodesText;
+    if (contextEps) {
+        epsPrompt = await epsToText(contextEps);
+    } 
+
+    return epsPrompt;
 }
 
 export default getEpsText;

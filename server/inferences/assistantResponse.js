@@ -4,14 +4,14 @@ import textToData from "../functions/textToData.js";
 import infer from "./infer.js";
 import path from 'path';
 
-const assistantResponse = async (asName, userName, coreGuides, contextGuides, contextEpisodes, asIntent, recentChats) => {
+const assistantResponse = async (asName, userName, corePrompt, contextPrompt, epsPrompt, intentPrompt, chatsPrompt) => {
     const contexts = {
-        coreGuides: coreGuides,
-        contextGuides: contextGuides,
-        contextEpisodes: contextEpisodes,
-        asIntent: asIntent,
+        coreGuides: corePrompt,
+        contextGuides: contextPrompt,
+        contextEpisodes: epsPrompt,
+        asIntent: intentPrompt,
         date: getFormatDate(),
-        recentChats: recentChats,
+        recentChats: chatsPrompt,
         asName: asName,
         userName: userName,
     }

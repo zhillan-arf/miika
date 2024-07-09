@@ -13,6 +13,35 @@ const indexDocs = (docs) => {
     return docs.map((guide, idx) => `${idx}. ${guide.summary}`).join('/n');
 }
 
+const fixIndexes = async (indexes) => {
+    // Fix array
+    if (typeof indexes === 'string') {
+        const indexesMatch = indexes.match(/\[.*?\]/);
+        if (!indexesMatch) throw Error('rerank: No indexes inferred'); 
+
+        indexes = JSON.parse(indexesMatch[0]);
+    }
+
+    // Fix array content
+    const formats = getFormat('assistant');
+
+    const numIndexes = queries.map(elmt => {
+        if (!isNaN(elmt) && typeof elmt === 'number' && isFinite(elmt)) {
+            return elmt;
+        }
+        
+        const pattern = new RegExp(`${formats.start}|${formats.end}`, 'g');
+        const newElmt = elmt.replace(pattern, '').trim();
+
+        if (newElmt !== '') return parseInt(newElmt);
+        else return null;
+    });
+
+    const filterIndexes = numIndexes.filter(elmt => !elmt && elmt !== 0);
+
+    return filterIndexes;
+}
+
 const rerank = async (queries, docs) => {  // guides and eps
     if (!queries || !docs) return null;
 
@@ -25,7 +54,8 @@ const rerank = async (queries, docs) => {  // guides and eps
     const rerankPrompt = await makePrompt(contexts, promptPath);
 
     try {
-        const indexes = await JSON.parse(infer(rerankPrompt));
+        const indexesRaw = await infer(rerankPrompt);
+        const indexes = await fixIndexes(indexesRaw);
 
         if (indexesValid(indexes)) {
             const selectedDocs = docs.filter((elmt, idx) => indexes.includes(idx));
