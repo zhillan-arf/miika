@@ -1,0 +1,22 @@
+{ 
+    "system": {
+        "start": "<<start>>",
+        "end": "<<end>>"
+    },
+    "user": {
+        "start": "<<user>>",
+        "end": "<<end>>"
+    },
+    "assistant": {
+        "start": "<<assistant>>",
+        "end": "<<end>>"
+    },
+    "end_assistant": {
+        "start": "<<end_assistant>>",
+        "end": "<<end>>"
+    },
+    "misc": {
+        "start": "<<misc>>",
+        "end": "<<end>>"
+    }
+}
