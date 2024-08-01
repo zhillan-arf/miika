@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>LLM Prompt Experimentation</title>
+    <style>
+        pre {
+            width: 100%;
+            max-width: 100vw;
+            height: auto;
+            max-height: 50vh; /* Adjust the height as needed */
+            overflow: auto;
+            white-space: pre-wrap; /* Ensure text wraps */
+            word-wrap: break-word; /* Break long words */
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const SERVICE_URI = 'http://localhost:3001';
@@ -19,7 +30,6 @@
                     body: JSON.stringify({ prompt: prompt })
                 });
                 const end = performance.now();
-                alert(response.ok);
                 const result = await response.json();
                 document.getElementById('result').innerText = JSON.stringify(result.inferred);
                 document.getElementById('latency').innerText = (end - start) + ' ms';
