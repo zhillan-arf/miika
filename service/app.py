@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+from flask import Flask
+from flask_cors import CORS
 from blueprints.helloworld import helloworld_bp
 from blueprints.infer import infer_bp
 from blueprints.embed import embed_bp
@@ -6,6 +7,7 @@ from blueprints.ann import ann_bp
 import os
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 app.register_blueprint(helloworld_bp)
 app.register_blueprint(infer_bp)

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LLM Prompt Experimentation</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const SERVICE_URI = 'http://localhost:3001';
+
+            document.getElementById('promptForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const prompt = document.getElementById('prompt').value;
+                const start = performance.now();
+                const response = await fetch(`${SERVICE_URI}/api/infer`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+                const end = performance.now();
+                alert(response.ok);
+                const result = await response.json();
+                document.getElementById('result').innerText = JSON.stringify(result.inferred);
+                document.getElementById('latency').innerText = (end - start) + ' ms';
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>LLM Prompt Experimentation</h1>
+    <form id="promptForm">
+        <label for="prompt">Enter Prompt:</label><br>
+        <textarea id="prompt" name="prompt" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <h2>Inference Result</h2>
+    <pre id="result"></pre>
+    <h2>Latency</h2>
+    <pre id="latency"></pre>
+</body>
+</html>
