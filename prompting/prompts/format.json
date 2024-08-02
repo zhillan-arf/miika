@@ -1,0 +1,22 @@
+{ 
+    "system": {
+        "start": "<|im_start|>system\n",
+        "end": "<|im_end|>"
+    },
+    "user": {
+        "start": "<|im_start|>user\n",
+        "end": "<|im_end|>"
+    },
+    "assistant": {
+        "start": "<|im_start|>assistant\n",
+        "end": "<|im_end|>"
+    },
+    "end_assistant": {
+        "start": "<|im_start|>assistant\n",
+        "end": ""
+    },
+    "misc": {
+        "start": "",
+        "end": ""
+    }
+}

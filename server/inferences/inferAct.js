@@ -3,19 +3,20 @@ import infer from "./infer.js";
 import path from 'path';
 
 const inferAct = async (chatsSysPrompt) => {
-    const contexts = { recentChats: chatsSysPrompt }
-    const promptPath = path.resolve('prompts/inferences/inferAct.json');
+    return true;
+    // const contexts = { recentChats: chatsSysPrompt }
+    // const promptPath = path.resolve('prompts/inferences/inferAct.json');
     
-    const actPrompt = await makePrompt(contexts, promptPath);
+    // const actPrompt = await makePrompt(contexts, promptPath);
     
-    try {
-        const act = await infer(actPrompt);
-        return act;
+    // try {
+    //     const act = await infer(actPrompt);
+    //     return act;
     
-    } catch (err) {
-        console.error(err.stack);
-        return null;
-    }
+    // } catch (err) {
+    //     console.error(err.stack);
+    //     return null;
+    // }
 }
 
 export default inferAct;

@@ -15,8 +15,26 @@
         }
     </style>
     <script>
+        // import { readFile } from 'fs/promises';
+
+        // const jsonToFormattedText = (contentArray, formats) => {
+        //     return contentArray.map(item => {
+        //         const format = formats[item.role];
+        //         if (format) {
+        //             return `${format.start}${item.content}${format.end}`;
+        //         }
+        //         return item.content;
+        //     }).join('\n');
+        // };
+
+        // const readTheFile = (filePath) => {
+        //     // implementations here
+        // };
+
         document.addEventListener('DOMContentLoaded', () => {
             const SERVICE_URI = 'http://localhost:3001';
+
+            // Inference
 
             document.getElementById('promptForm').addEventListener('submit', async function(event) {
                 event.preventDefault();
@@ -34,6 +52,18 @@
                 document.getElementById('result').innerText = JSON.stringify(result.inferred);
                 document.getElementById('latency').innerText = (end - start) + ' ms';
             });
+
+            // JSON
+
+        //     document.getElementById('formatForm').addEventListener('submit', async (event) => {
+        //         event.preventDefault();
+        //         const jsontext = document.getElementById('jsontext').value;
+        //         const contentArray = await JSON.parse(jsontext);
+        //         const formatsFilePath = 'prompts/format.json';
+        //         const formats = await readJSONFile(formatsFilePath);
+        //         const formattedText = jsonToFormattedText(contentArray, formats);
+        //         document.getElementById('tokres').innerText = formattedText;
+        //     })
         });
     </script>
 </head>
@@ -48,5 +78,13 @@
     <pre id="result"></pre>
     <h2>Latency</h2>
     <pre id="latency"></pre>
+
+    <form id="formatForm">
+        <label for="jsontext">Enter JSON:</label><br>
+        <textarea id="jsontext" name="jsontext" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <h2>Special Tokens Text</h2>
+    <pre id="tokres"></pre>
 </body>
 </html>
